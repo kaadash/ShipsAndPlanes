@@ -15,7 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.transform.Rotate;
@@ -32,15 +32,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        StackPane root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Pane root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 //        root.setId("bg");
-//        primaryStage.getIcons().add(new Image("images/Fall.png"));
+        primaryStage.getIcons().add(new Image("images/Fall.png"));
         Map.prepareMap(root);
-        Button test = new Button("adsdasd");
+        Button btn = new Button("create new passenger plane");
+        root.getChildren().add(btn);
+        btn.setOnAction(event->{
+            Dashboard.createNewPassengerPlane(root);
+        });
 
 
-        root.getChildren().add(test);
-        Dashboard.createNewPassengerPlane(root);
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         primaryStage.setMaximized(true);

@@ -17,6 +17,7 @@ public abstract class MeansOfTransport {
     protected ArrayList<Point> route = new ArrayList<Point>();
 
     protected static int ID;
+
     public MeansOfTransport(ArrayList<Point> allDestination){
 
     }
@@ -29,19 +30,27 @@ public abstract class MeansOfTransport {
     public void movement(){
 
     }
-
     public void remove () {
 
     }
 
-    public void draw() {
-
+    public ArrayList<Point> getRoute() {
+        return route;
     }
+
+    public void setCurrentDestination(Point currentDestination) {
+        this.currentDestination = currentDestination;
+    }
+
     public Point getCurrentPosition() {
         return currentPosition;
     }
 
     public Point getCurrentDestination() {
         return currentDestination;
+    }
+
+    public void setCurrentPosition(Point currentPosition) {
+        this.currentPosition = currentPosition;
     }
 }

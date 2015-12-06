@@ -3,6 +3,7 @@ package controllers;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import meansOfTransport.MilitaryAircraft;
 import spawners.Airport;
@@ -27,31 +28,26 @@ public class Map {
 
     private ArrayList<MilitaryAircraft> militaryAircrafts;
     private ArrayList<Harbor> harbors;
-    public static void prepareMap(StackPane stack) {
-        generateCivilAirports(5);
+    public static void prepareMap(Pane stack) {
+        generateCivilAirports(10);
         for (CivilAirport airport:civilAirports) {
             ImageView imageToAdd = airport.draw(airport.getImagePath());
-            imageToAdd.setFitHeight(80);
-            imageToAdd.setFitWidth(80);
-            imageToAdd.setTranslateX(airport.getPosition().getX());
-            imageToAdd.setTranslateY(airport.getPosition().getY());
+            imageToAdd.setFitHeight(50);
+            imageToAdd.setFitWidth(50);
+            imageToAdd.setLayoutX(airport.getPosition().getX());
+            imageToAdd.setLayoutY(airport.getPosition().getY());
             stack.getChildren().add(imageToAdd);
         }
     }
 
     public static void generateCivilAirports(int numberOfAirports) {
-//        for (int i = 0; i < numberOfAirports; i++) {
-//            int x = (int)(Math.random() * 500) - 250;
-//            int y = (int)(Math.random() * 500) - 250;
-//            System.out.print(x);
-//            Point position = new Point(x, y);
-//            CivilAirport airport = new CivilAirport(position);
-//            civilAirports.add(airport);
-//        }
-        CivilAirport airport = new CivilAirport(new Point(100, 100));
-        civilAirports.add(airport);
-        airport = new CivilAirport(new Point(-300, -300));
-        civilAirports.add(airport);
+        for (int i = 0; i < numberOfAirports; i++) {
+            int x = (int)(Math.random() * 700);
+            int y = (int)(Math.random() * 700);
+            Point position = new Point(x, y);
+            CivilAirport airport = new CivilAirport(position);
+            civilAirports.add(airport);
+        }
     }
     public static ArrayList<Point> getDestinationCord (ArrayList<CivilAirport> destination) {
         ArrayList<Point> cordinates = new ArrayList<Point>();

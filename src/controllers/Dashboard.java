@@ -2,8 +2,13 @@ package controllers;
 
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import meansOfTransport.AircraftCarrier;
@@ -31,29 +36,35 @@ public class Dashboard {
     private TravelShip[] travelShipCollection;
     private Passenger[] passengerCollection;
 
-    public static void createNewPassengerPlane(StackPane root) {
+    public static void createNewPassengerPlane(Pane root) {
+        int sizeImage = 100;
         ArrayList<Point> destinationList =  Map.getDestinationCord(Map.getCivilAirports());
         PassengerPlane newPassengerPlane = new PassengerPlane(destinationList);
         passengerPlanes.add(newPassengerPlane);
 
-//        newPassengerPlane.animate(
-//                newPassengerPlane.getCurrentDestination(),
-//                newPassengerPlane.draw(newPassengerPlane.getImagePath()));
         ImageView newPassengerPlaneImg = newPassengerPlane.draw(newPassengerPlane.getImagePath());
-        newPassengerPlaneImg.setFitHeight(100);
-        newPassengerPlaneImg.setFitWidth(100);
-        newPassengerPlaneImg.setTranslateX(newPassengerPlane.getCurrentPosition().getX());
-        newPassengerPlaneImg.setTranslateY(newPassengerPlane.getCurrentPosition().getY());
+        newPassengerPlaneImg.setFitHeight(sizeImage);
+        newPassengerPlaneImg.setFitWidth(sizeImage);
 
-        TranslateTransition tt =
-                new TranslateTransition(Duration.seconds(5), newPassengerPlaneImg);
+        newPassengerPlane.animate(newPassengerPlaneImg);
+        DoubleProperty xValue = new SimpleDoubleProperty();
+        xValue.bind(newPassengerPlaneImg.translateXProperty());
 
-        tt.setFromX( newPassengerPlane.getCurrentPosition().getX());
-        tt.setToX( newPassengerPlane.getCurrentDestination().getX() );
-        tt.setFromY( newPassengerPlane.getCurrentPosition().getX());
-        tt.setToY( newPassengerPlane.getCurrentDestination().getY() );
-        tt.setCycleCount( Timeline.INDEFINITE );
-        tt.play();
+        xValue.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                double translateConst = sizeImage/2 + newPassengerPlane.getCurrentPosition().getX();
+                if((double)newValue + translateConst  == newPassengerPlane.getCurrentDestination().getX()) {
+                    newPassengerPlane.getRoute().add(newPassengerPlane.getRoute().get(0));
+                    newPassengerPlane.getRoute().remove(0);
+                    Point destination = newPassengerPlane.getRoute().get(1);
+                    Point currentPosition = newPassengerPlane.getRoute().get(0);
+                    newPassengerPlane.setCurrentDestination(destination);
+                    newPassengerPlane.setCurrentPosition(currentPosition );
+                    newPassengerPlane.animate(newPassengerPlaneImg);
+                }
+            }
+        });
         root.getChildren().add(newPassengerPlaneImg);
     }
     public Passenger spawnPassenger() {

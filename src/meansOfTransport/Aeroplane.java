@@ -1,9 +1,11 @@
 package meansOfTransport;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.scene.image.*;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 import java.awt.Point;
@@ -44,17 +46,19 @@ public class Aeroplane extends MeansOfTransport {
         return imageView;
     }
 
-    public void animate(Point destination, ImageView imageView) {
-        Timeline timeline = new Timeline();
-        System.out.print(destination);
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(true);
-        KeyValue kvX = new KeyValue(imageView.translateXProperty(), destination.getX());
-        KeyValue kvY = new KeyValue(imageView.translateYProperty(), destination.getY());
+    public void animate(ImageView planeImage) {
+        planeImage.setLayoutX(this.getCurrentPosition().getX());
+        planeImage.setLayoutY(this.getCurrentPosition().getY());
 
-        final KeyFrame kf = new KeyFrame(Duration.millis(3000), kvX, kvY);
-        timeline.getKeyFrames().add(kf);
-        timeline.play();
+        Path path = new Path();
+        path.getElements().add(new MoveTo(0, 0));
+        path.getElements().add(new LineTo(this.getCurrentDestination().getX() - this.getCurrentPosition().getX(),
+                this.getCurrentDestination().getY() - this.getCurrentPosition().getY() ));
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.millis(4000));
+        pathTransition.setPath(path);
+        pathTransition.setNode(planeImage);
+        pathTransition.play();
     }
 
     public void reportIssue () {

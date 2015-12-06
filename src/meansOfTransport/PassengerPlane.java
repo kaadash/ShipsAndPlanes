@@ -16,7 +16,6 @@ public class PassengerPlane extends Aeroplane {
 
     public PassengerPlane(ArrayList<Point> allDestination) {
         super(allDestination);
-        System.out.print(this.currentPosition);
     }
     public Point findNearestAirport() {
         Point nearestAirport = new Point();
