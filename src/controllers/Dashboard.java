@@ -43,6 +43,7 @@ public class Dashboard {
         passengerPlanes.add(newPassengerPlane);
 
         ImageView newPassengerPlaneImg = newPassengerPlane.draw(newPassengerPlane.getImagePath());
+        newPassengerPlane.openInformationPanel(newPassengerPlaneImg);
         newPassengerPlaneImg.setFitHeight(sizeImage);
         newPassengerPlaneImg.setFitWidth(sizeImage);
 
@@ -54,6 +55,11 @@ public class Dashboard {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 double translateConst = sizeImage/2 + newPassengerPlane.getCurrentPosition().getX();
+                newPassengerPlane.lossOfFuel();
+                newPassengerPlane.setTempPosition(new Point(
+                        (int)((double)newValue + translateConst),
+                        (int)(newPassengerPlane.getCurrentDestination().getY())
+                ));
                 if((double)newValue + translateConst  == newPassengerPlane.getCurrentDestination().getX()) {
                     newPassengerPlane.getRoute().add(newPassengerPlane.getRoute().get(0));
                     newPassengerPlane.getRoute().remove(0);
@@ -62,6 +68,7 @@ public class Dashboard {
                     newPassengerPlane.setCurrentDestination(destination);
                     newPassengerPlane.setCurrentPosition(currentPosition );
                     newPassengerPlane.animate(newPassengerPlaneImg);
+                    newPassengerPlane.setFuel(1000);
                 }
             }
         });

@@ -4,6 +4,8 @@ import javafx.scene.image.*;
 import javafx.scene.image.Image;
 
 import java.awt.Point;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +15,8 @@ public abstract class MeansOfTransport {
     protected Point currentPosition;
 
     protected Point currentDestination;
+
+    protected Point tempPosition;
 
     protected ArrayList<Point> route = new ArrayList<Point>();
 
@@ -30,10 +34,10 @@ public abstract class MeansOfTransport {
     public void movement(){
 
     }
+
     public void remove () {
 
     }
-
     public ArrayList<Point> getRoute() {
         return route;
     }
@@ -52,5 +56,9 @@ public abstract class MeansOfTransport {
 
     public void setCurrentPosition(Point currentPosition) {
         this.currentPosition = currentPosition;
+    }
+
+    public Point getTempPosition() {
+        return tempPosition;
     }
 }
