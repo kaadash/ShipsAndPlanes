@@ -48,30 +48,22 @@ public class Dashboard {
         newPassengerPlaneImg.setFitWidth(sizeImage);
 
         newPassengerPlane.animate(newPassengerPlaneImg);
-        DoubleProperty xValue = new SimpleDoubleProperty();
-        xValue.bind(newPassengerPlaneImg.translateXProperty());
+//        DoubleProperty xValue = new SimpleDoubleProperty();
 
-        xValue.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                double translateConst = sizeImage/2 + newPassengerPlane.getCurrentPosition().getX();
-                newPassengerPlane.lossOfFuel();
-                newPassengerPlane.setTempPosition(new Point(
-                        (int)((double)newValue + translateConst),
-                        (int)(newPassengerPlane.getCurrentDestination().getY())
-                ));
-                if((double)newValue + translateConst  == newPassengerPlane.getCurrentDestination().getX()) {
-                    newPassengerPlane.getRoute().add(newPassengerPlane.getRoute().get(0));
-                    newPassengerPlane.getRoute().remove(0);
-                    Point destination = newPassengerPlane.getRoute().get(1);
-                    Point currentPosition = newPassengerPlane.getRoute().get(0);
-                    newPassengerPlane.setCurrentDestination(destination);
-                    newPassengerPlane.setCurrentPosition(currentPosition );
-                    newPassengerPlane.animate(newPassengerPlaneImg);
-                    newPassengerPlane.setFuel(1000);
-                }
-            }
-        });
+        double xValue = newPassengerPlaneImg.translateXProperty().doubleValue();
+        double translateConst = sizeImage/2 + newPassengerPlane.getCurrentPosition().getX();
+
+        newPassengerPlane.lossOfFuel();
+        if(translateConst  == newPassengerPlane.getCurrentDestination().getX()) {
+            newPassengerPlane.getRoute().add(newPassengerPlane.getRoute().get(0));
+            newPassengerPlane.getRoute().remove(0);
+            Point destination = newPassengerPlane.getRoute().get(1);
+            Point currentPosition = newPassengerPlane.getRoute().get(0);
+            newPassengerPlane.setCurrentDestination(destination);
+            newPassengerPlane.setCurrentPosition(currentPosition );
+            newPassengerPlane.animate(newPassengerPlaneImg);
+            newPassengerPlane.setFuel(1000);
+        }
         root.getChildren().add(newPassengerPlaneImg);
     }
     public Passenger spawnPassenger() {

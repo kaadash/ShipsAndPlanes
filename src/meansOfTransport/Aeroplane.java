@@ -27,30 +27,17 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by kadash on 18.10.15.
  */
 public class Aeroplane extends MeansOfTransport {
-    protected IntegerProperty numberOfStaff = new SimpleIntegerProperty();
-    protected DoubleProperty fuel = new SimpleDoubleProperty();
+    protected int numberOfStaff;
 
+    protected int fuel;
 
-    // START TEST
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-    public void setTempPosition(Point position) {
-        pcs.firePropertyChange("tempPosition", this.tempPosition, position);
-        this.tempPosition = position;
-    }
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        pcs.addPropertyChangeListener(listener);
-    }
-// END TEST
-
-
-
-
+    public static Semaphore aeroplaneCrossRoads = new Semaphore(1);
     public Aeroplane(ArrayList<Point> allDestination)
     {
         super(allDestination);
@@ -60,13 +47,12 @@ public class Aeroplane extends MeansOfTransport {
         Collections.shuffle(this.route);
         this.currentDestination = this.route.get(1);
         this.currentPosition = this.route.get(0);
-        this.fuel.setValue(1000);
-    }
-    public void lossOfFuel() {
-        int currentValue = this.fuel.intValue();
-        this.fuel.setValue(currentValue - 1);
+        this.fuel = 1000;
     }
 
+    public void lossOfFuel() {
+        this.fuel--;
+    }
     public Point findNearestAirport () {
         Point nearestAirport = new Point();
         nearestAirport.x = 12;
@@ -76,8 +62,7 @@ public class Aeroplane extends MeansOfTransport {
 
     public ImageView draw (String imagePath) {
         Image image = new Image(imagePath);
-        ImageView imageView = new ImageView(image);
-        return imageView;
+        return new ImageView(image);
     }
 
     public void animate(ImageView planeImage) {
@@ -97,7 +82,7 @@ public class Aeroplane extends MeansOfTransport {
 
     public void openInformationPanel(ImageView planeImage){
         planeImage.setOnMouseClicked(event->{
-            Label fuelLabel = new Label(this.fuel.getValue().toString());
+            Label fuelLabel = new Label(Integer.toString(this.getFuel()));
             fuelLabel.setTranslateX(50);
             Label currentDestinationLabel = new Label();
             Label currentPositionLabel = new Label();
@@ -112,17 +97,8 @@ public class Aeroplane extends MeansOfTransport {
                 root.getChildren().add(fuelLabel);
                 root.getChildren().add(currentDestinationLabel);
                 root.getChildren().add(currentPositionLabel);
-                this.fuel.addListener(new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue o, Object oldVal,
-                                        Object newVal) {
-                        fuelLabel.setText(o.getValue().toString());
-                    }
-                });
-                this.addPropertyChangeListener((evt) -> {
-                    currentDestinationLabel.setText(this.getCurrentDestination().toString());
-                    currentPositionLabel.setText(this.getTempPosition().toString());
-                });
+                currentDestinationLabel.setText(this.getCurrentDestination().toString());
+                currentPositionLabel.setText(this.getTempPosition().toString());
                 Stage stage = new Stage();
                 stage.setTitle("Aeroplane Panel");
                 stage.setScene(new Scene(root, 450, 450));
@@ -145,8 +121,21 @@ public class Aeroplane extends MeansOfTransport {
 
     }
 
-    public void setFuel(double fuel) {
-        this.fuel.set(fuel);
+    public int getFuel() {
+        return fuel;
     }
 
+    public void setFuel(int fuel) {
+        this.fuel = fuel;
+    }
+    @Override
+    public void run() {
+        while(true){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

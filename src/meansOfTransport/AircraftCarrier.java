@@ -18,5 +18,14 @@ public class AircraftCarrier extends Ship{
 //    public MilitaryAircraft spawnMilitaryAircraft () {
 //        return new MilitaryAircraft();
 //    }
-
+    @Override
+    public void run() {
+        while(true){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

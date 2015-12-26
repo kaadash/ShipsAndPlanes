@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by kadash on 18.10.15.
  */
-public abstract class MeansOfTransport {
+public abstract class MeansOfTransport implements Runnable {
     protected Point currentPosition;
 
     protected Point currentDestination;
