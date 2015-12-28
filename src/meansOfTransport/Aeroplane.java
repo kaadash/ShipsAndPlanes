@@ -37,12 +37,13 @@ public class Aeroplane extends MeansOfTransport {
         }
         Collections.shuffle(this.route);
         this.crossRoadPoint = new Point(550, 350);
-        this.currentDestination = this.route.get(1);
+//        this.currentDestination = this.route.get(1);
+        this.currentDestination = this.crossRoadPoint;
         this.currentPosition = this.route.get(0);
         this.fuel = 1000;
-
+        this.ID = (int)(Math.random() * 20);
         int sizeImage = 50;
-        openInformationPanel(imageViewPlane);
+        openInformationPanel();
         imageViewPlane.setFitHeight(sizeImage);
         imageViewPlane.setFitWidth(sizeImage);
         context.getChildren().add(imageViewPlane);
@@ -64,12 +65,12 @@ public class Aeroplane extends MeansOfTransport {
         return new ImageView(image);
     }
 
-    public void openInformationPanel(ImageView planeImage) {
-        planeImage.setOnMouseClicked(event -> {
+    public void openInformationPanel() {
+        imageViewPlane.setOnMouseClicked(event -> {
             Label fuelLabel = new Label(Integer.toString(this.getFuel()));
             fuelLabel.setTranslateX(50);
             Label currentDestinationLabel = new Label();
-            Label currentPositionLabel = new Label();
+            Label currentPositionLabel = new Label(currentPosition.toString());
             currentDestinationLabel.setTranslateX(150);
             currentDestinationLabel.setTranslateY(100);
             currentPositionLabel.setTranslateX(150);
@@ -81,8 +82,7 @@ public class Aeroplane extends MeansOfTransport {
                 root.getChildren().add(fuelLabel);
                 root.getChildren().add(currentDestinationLabel);
                 root.getChildren().add(currentPositionLabel);
-                currentDestinationLabel.setText(this.getCurrentDestination().toString());
-                currentPositionLabel.setText(this.getTempPosition().toString());
+                currentDestinationLabel.setText(currentDestination.toString());
                 Stage stage = new Stage();
                 stage.setTitle("Aeroplane Panel");
                 stage.setScene(new Scene(root, 450, 450));
@@ -120,34 +120,69 @@ public class Aeroplane extends MeansOfTransport {
 
     @Override
     public void run() {
+        boolean beenIncrossRoad = false;
         double delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
         double delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
         double goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
 
         while (true) {
             try {
-//                        this.crossRoadPoint.getX() - this.getCurrentPosition().getX(),
-//                                this.crossRoadPoint.getY() - this.getCurrentPosition().getY()
-                double speed_per_tick = 0.2;
+                double speed_per_tick = 2;
                 double currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                 double currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
                 double dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
-                if (dist > 0 ) {
+                System.out.println(dist);
+
+                if (Math.floor(dist) != 0) {
                     double ratio = speed_per_tick / goal_dist;
                     double x_move = ratio * delta_x;
                     double y_move = ratio * delta_y;
                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                             y_move + getCurrentPosition().getY()));
-                    System.out.println(x_move + " " + delta_x + " " + y_move + " " + delta_y);
-                    System.out.println(dist);
-                    System.out.println(getCurrentPosition());
+                    if(dist < 70 && !beenIncrossRoad && dist > 2) {
+                        try {
+                            aeroplaneCrossRoads.acquire();
+                            System.out.println("---- Wchodzę! ---- >>>> " + ID);
+                            try {
+                                while(Math.floor(dist) >= 1){
+                                    currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
+                                    currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
+                                    dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
+                                    setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
+                                            y_move + getCurrentPosition().getY()));
+                                    animate();
+                                    System.out.println("bla bla " + dist);
+                                    Thread.sleep(35);
+                                }
+                            }
+                            finally {
+                                System.out.println("---- Wychodzę! ---- >>>> " + ID );
+                                currentDestination = route.get((int)(Math.random() * 9));
+                                beenIncrossRoad = true;
+                                delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
+                                delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
+                                goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                                aeroplaneCrossRoads.release();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+//                    System.out.println(x_move + " " + delta_x + " " + y_move + " " + delta_y);
+//                    System.out.println(dist);
+//                    System.out.println(getCurrentPosition());
 
                 } else {
-                    setCurrentPosition(getCurrentDestination());
+                    System.out.println("Czy wchodzę tutaj?");
+                    currentDestination = crossRoadPoint;
+                    beenIncrossRoad = false;
+                    delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
+                    delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
+                    goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+
+//                    setCurrentPosition(getCurrentDestination());
                 }
-//                        currentPosition.setLocation(currentPosition.getX() - 5, currentPosition.getY() - 5);
-//                System.out.println(currentPosition);
-                Thread.sleep(20);
+                Thread.sleep(35);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -155,6 +190,7 @@ public class Aeroplane extends MeansOfTransport {
                 @Override
                 public void run() {
                     animate();
+                    openInformationPanel();
                 }
             });
         }

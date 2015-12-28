@@ -27,7 +27,7 @@ public abstract class MeansOfTransport implements Runnable {
 
     protected Pane context;
 
-    protected static int ID;
+    protected int ID;
 
     public MeansOfTransport(ArrayList<Point> allDestination, Pane context){
         this.context = context;
