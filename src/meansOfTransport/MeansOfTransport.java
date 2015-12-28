@@ -2,28 +2,35 @@ package meansOfTransport;
 
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by kadash on 18.10.15.
  */
 public abstract class MeansOfTransport implements Runnable {
-    protected Point currentPosition;
+    protected Point2D currentPosition;
 
-    protected Point currentDestination;
+    protected Point2D currentDestination;
+
+    protected Point crossRoadPoint;
 
     protected Point tempPosition;
 
     protected ArrayList<Point> route = new ArrayList<Point>();
 
+    protected Pane context;
+
     protected static int ID;
 
-    public MeansOfTransport(ArrayList<Point> allDestination){
-
+    public MeansOfTransport(ArrayList<Point> allDestination, Pane context){
+        this.context = context;
     }
 
     public Point[] generateRoute() {
@@ -38,27 +45,35 @@ public abstract class MeansOfTransport implements Runnable {
     public void remove () {
 
     }
+
     public ArrayList<Point> getRoute() {
         return route;
     }
-
-    public void setCurrentDestination(Point currentDestination) {
+    public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;
     }
 
-    public Point getCurrentPosition() {
+    public Point2D getCurrentPosition() {
         return currentPosition;
     }
 
-    public Point getCurrentDestination() {
+    public Point2D getCurrentDestination() {
         return currentDestination;
     }
 
-    public void setCurrentPosition(Point currentPosition) {
+    public void setCurrentPosition(Point2D currentPosition) {
         this.currentPosition = currentPosition;
     }
 
     public Point getTempPosition() {
         return tempPosition;
+    }
+
+    public Point getCrossRoadPoint() {
+        return crossRoadPoint;
+    }
+
+    public void setCrossRoadPoint(Point crossRoadPoint) {
+        this.crossRoadPoint = crossRoadPoint;
     }
 }

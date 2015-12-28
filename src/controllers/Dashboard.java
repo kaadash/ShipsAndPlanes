@@ -32,39 +32,38 @@ public class Dashboard {
 
     private MilitaryAircraft[] militaryAircraftCollection;
     private static ArrayList<PassengerPlane> passengerPlanes = new ArrayList<PassengerPlane>();
+    private static ArrayList<Thread> passengerPlanesThreads = new ArrayList<Thread>();
     private AircraftCarrier[] aircraftCarrierCollection;
     private TravelShip[] travelShipCollection;
     private Passenger[] passengerCollection;
+    private static int loop = 0;
 
     public static void createNewPassengerPlane(Pane root) {
-        int sizeImage = 100;
         ArrayList<Point> destinationList =  Map.getDestinationCord(Map.getCivilAirports());
-        PassengerPlane newPassengerPlane = new PassengerPlane(destinationList);
+        PassengerPlane newPassengerPlane = new PassengerPlane(destinationList, root);
         passengerPlanes.add(newPassengerPlane);
+//        newPassengerPlane.run();
+        passengerPlanesThreads.add(new Thread(newPassengerPlane));
+        passengerPlanesThreads.get(loop).start();
+        loop++;
 
-        ImageView newPassengerPlaneImg = newPassengerPlane.draw(newPassengerPlane.getImagePath());
-        newPassengerPlane.openInformationPanel(newPassengerPlaneImg);
-        newPassengerPlaneImg.setFitHeight(sizeImage);
-        newPassengerPlaneImg.setFitWidth(sizeImage);
-
-        newPassengerPlane.animate(newPassengerPlaneImg);
-//        DoubleProperty xValue = new SimpleDoubleProperty();
-
-        double xValue = newPassengerPlaneImg.translateXProperty().doubleValue();
-        double translateConst = sizeImage/2 + newPassengerPlane.getCurrentPosition().getX();
-
-        newPassengerPlane.lossOfFuel();
-        if(translateConst  == newPassengerPlane.getCurrentDestination().getX()) {
-            newPassengerPlane.getRoute().add(newPassengerPlane.getRoute().get(0));
-            newPassengerPlane.getRoute().remove(0);
-            Point destination = newPassengerPlane.getRoute().get(1);
-            Point currentPosition = newPassengerPlane.getRoute().get(0);
-            newPassengerPlane.setCurrentDestination(destination);
-            newPassengerPlane.setCurrentPosition(currentPosition );
-            newPassengerPlane.animate(newPassengerPlaneImg);
-            newPassengerPlane.setFuel(1000);
-        }
-        root.getChildren().add(newPassengerPlaneImg);
+////        DoubleProperty xValue = new SimpleDoubleProperty();
+//
+//        double xValue = newPassengerPlaneImg.translateXProperty().doubleValue();
+//        double translateConst = sizeImage/2 + newPassengerPlane.getCurrentPosition().getX();
+//
+//        newPassengerPlane.lossOfFuel();
+//        if(translateConst  == newPassengerPlane.getCurrentDestination().getX()) {
+//            newPassengerPlane.getRoute().add(newPassengerPlane.getRoute().get(0));
+//            newPassengerPlane.getRoute().remove(0);
+//            Point destination = newPassengerPlane.getRoute().get(1);
+//            Point currentPosition = newPassengerPlane.getRoute().get(0);
+//            newPassengerPlane.setCurrentDestination(destination);
+//            newPassengerPlane.setCurrentPosition(currentPosition );
+//            newPassengerPlane.animate(newPassengerPlaneImg);
+//            newPassengerPlane.setFuel(1000);
+//        }
+//        root.getChildren().add(newPassengerPlaneImg);
     }
     public Passenger spawnPassenger() {
         return new Passenger();

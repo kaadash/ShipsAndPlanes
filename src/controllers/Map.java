@@ -1,12 +1,8 @@
 package controllers;
 
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import meansOfTransport.MilitaryAircraft;
-import spawners.Airport;
 import spawners.CivilAirport;
 import spawners.Harbor;
 
@@ -41,14 +37,27 @@ public class Map {
     }
 
     public static void generateCivilAirports(int numberOfAirports) {
+        Point[] cords = new Point[10];
+        int distance = 250;
+        double sizeOfStep = Math.PI/numberOfAirports * 2;
+        double angle = 0;
+
+//        Generator of city in circle
         for (int i = 0; i < numberOfAirports; i++) {
-            int x = (int)(Math.random() * 700);
-            int y = (int)(Math.random() * 700);
-            Point position = new Point(x, y);
-            CivilAirport airport = new CivilAirport(position);
+            angle +=sizeOfStep;
+            int y = (int)Math.floor( distance * Math.sin( angle ) );
+            int x = (int)Math.floor( distance * Math.cos( angle ) );
+            cords[i] = new Point(x, y);
+        }
+
+//        Adding cities into global civilAirports
+        for (Point cord: cords){
+            cord.setLocation(cord.getX() + 550, cord.getY() + 350);
+            CivilAirport airport = new CivilAirport(cord);
             civilAirports.add(airport);
         }
     }
+
     public static ArrayList<Point> getDestinationCord (ArrayList<CivilAirport> destination) {
         ArrayList<Point> cordinates = new ArrayList<Point>();
         for (int i = 0; i < destination.size(); i++) {

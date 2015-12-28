@@ -1,6 +1,7 @@
 package meansOfTransport;
 
 import javafx.scene.image.*;
+import javafx.scene.layout.Pane;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -14,8 +15,8 @@ public class PassengerPlane extends Aeroplane {
 
     private final String imagePath = "images/aircraft.png";
 
-    public PassengerPlane(ArrayList<Point> allDestination) {
-        super(allDestination);
+    public PassengerPlane(ArrayList<Point> allDestination, Pane context) {
+        super(allDestination, context);
     }
     public Point findNearestAirport() {
         Point nearestAirport = new Point();
@@ -26,14 +27,14 @@ public class PassengerPlane extends Aeroplane {
     public String getImagePath() {
         return imagePath;
     }
-    @Override
-    public void run() {
-        while(true){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    @Override
+//    public void run() {
+//        while(true){
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }
