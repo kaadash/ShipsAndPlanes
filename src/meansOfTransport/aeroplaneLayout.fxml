@@ -12,14 +12,25 @@
 
 
 <?import javafx.scene.text.Text?>
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="center" hgap="10" vgap="10" fx:controller="controllers.AeroplaneController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
     <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Fuel: "  />
-    <Label GridPane.columnIndex="1" GridPane.rowIndex="0" text="0" />
+    <Label fx:id="fuelValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
     <Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="Passengers: " />
+    <Label fx:id="passengersValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
     <Label GridPane.columnIndex="0" GridPane.rowIndex="2" text="Current position: " />
+    <Label fx:id="currentPositionLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
     <Label GridPane.columnIndex="0" GridPane.rowIndex="3" text="ID: " />
+    <Label fx:id="IDLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
     <Label GridPane.columnIndex="0" GridPane.rowIndex="4" text="Current destination: " />
+    <Label fx:id="currentDestinationLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
     <Label GridPane.columnIndex="0" GridPane.rowIndex="5" text="Route: " />
+    <Label fx:id="routeLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
     <Button GridPane.columnIndex="6" GridPane.rowIndex="6" text="Report Issue"  />
 </GridPane>
