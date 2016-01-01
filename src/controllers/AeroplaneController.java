@@ -39,7 +39,6 @@ public class AeroplaneController implements Initializable {
                            int ID, Point2D currentDestination, ArrayList<Point> route) {
 
         fuelValueLabel.setText(Integer.toString(fuel));
-        System.out.println(currentPosition);
         passengersValueLabel.setText(Integer.toString(passengersValue));
         currentPositionLabel.setText(currentPosition.toString());
         IDLabel.setText(Integer.toString(ID));

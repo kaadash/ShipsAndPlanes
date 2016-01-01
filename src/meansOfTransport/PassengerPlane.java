@@ -13,10 +13,12 @@ public class PassengerPlane extends Aeroplane {
     private int maxPassengers;
     private int currentPassengers;
 
-    private final String imagePath = "images/aircraft.png";
+    private final String imagePath = "images/airplane.png";
 
-    public PassengerPlane(ArrayList<Point> allDestination, Pane context) {
+    public PassengerPlane(ArrayList<Point> allDestination, Pane context, int ID) {
         super(allDestination, context);
+        this.ID = ID;
+        this.imageViewPlane.setImage(new Image(imagePath));
     }
     public Point findNearestAirport() {
         Point nearestAirport = new Point();
@@ -27,14 +29,5 @@ public class PassengerPlane extends Aeroplane {
     public String getImagePath() {
         return imagePath;
     }
-//    @Override
-//    public void run() {
-//        while(true){
-//            try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+
 }

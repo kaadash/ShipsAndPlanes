@@ -1,31 +1,31 @@
 package meansOfTransport;
 
 import controllers.AeroplaneController;
+import controllers.Dashboard;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import travelDependency.Passenger;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.ResourceBundle;
+import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
-public class Aeroplane extends MeansOfTransport{
+public abstract class Aeroplane extends MeansOfTransport{
     protected int numberOfStaff;
 
     protected int fuel;
+    private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
 
-    private ImageView imageViewPlane = new ImageView(new Image("images/aircraft.png"));
+    protected ImageView imageViewPlane = new ImageView(new Image("images/aircraft.png"));
 
     public static Semaphore aeroplaneCrossRoads = new Semaphore(1);
 
@@ -39,9 +39,7 @@ public class Aeroplane extends MeansOfTransport{
         this.currentDestination = this.crossRoadPoint;
         this.currentPosition = this.route.get(0);
         this.fuel = 1000;
-        this.ID = (int)(Math.random() * 20);
         int sizeImage = 50;
-        openInformationPanel();
         imageViewPlane.setFitHeight(sizeImage);
         imageViewPlane.setFitWidth(sizeImage);
         context.getChildren().add(imageViewPlane);
@@ -92,14 +90,6 @@ public class Aeroplane extends MeansOfTransport{
 
     }
 
-    public int getFuel() {
-        return fuel;
-    }
-
-    public void setFuel(int fuel) {
-        this.fuel = fuel;
-    }
-
     public void animate() {
         imageViewPlane.setLayoutX(this.getCurrentPosition().getX());
         imageViewPlane.setLayoutY(this.getCurrentPosition().getY());
@@ -131,6 +121,7 @@ public class Aeroplane extends MeansOfTransport{
                     if(dist < 70 && !beenIncrossRoad && dist > 2) {
                         try {
                             aeroplaneCrossRoads.acquire();
+//                                Critical Section
 //                            System.out.println("---- Wchodzę! ---- >>>> " + ID);
                             try {
                                 while(Math.floor(dist) >= 1){
@@ -145,10 +136,13 @@ public class Aeroplane extends MeansOfTransport{
                                 }
                             }
                             finally {
+//                                Leaving critical section
 //                                System.out.println("---- Wychodzę! ---- >>>> " + ID );
                                 if(destinationPointer == route.size() - 1) {
                                     destinationPointer = 0;
                                 }
+                                currentPosition.setLocation(this.getCurrentPosition().getX() - 25,
+                                        this.getCurrentPosition().getY() - 25);
                                 currentDestination = route.get(destinationPointer);
                                 destinationPointer++;
                                 beenIncrossRoad = true;
@@ -163,9 +157,15 @@ public class Aeroplane extends MeansOfTransport{
                     }
 
                 } else {
-//                    System.out.println("Czy wchodzę tutaj?");
                     currentDestination = crossRoadPoint;
                     beenIncrossRoad = false;
+                    checkAndAddNewPassengers();
+                    checkAndAddRemovePassengers();
+
+//                    imageViewPlane.setLayoutX(this.getCurrentPosition().getX());
+
+                    currentPosition.setLocation(this.getCurrentPosition().getX() + 25,
+                            this.getCurrentPosition().getY() + 25);
                     delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                     delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
                     goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
@@ -181,5 +181,52 @@ public class Aeroplane extends MeansOfTransport{
                 }
             });
         }
+    }
+    private void checkAndAddNewPassengers() {
+        int counterOfPassengersToAdd = 0;
+        ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
+        for(Passenger passenger : Dashboard.waitingPassengers) {
+            if ((passenger.getCurrentPosition().getX() == (int)Math.floor(currentPosition.getX())
+                    || passenger.getCurrentPosition().getX() == (int)Math.ceil(currentPosition.getX()))
+                    && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
+                    || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))) {
+
+                numberOfStaff++;
+                passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+                toRemove.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+                System.out.println("Dodano " + numberOfStaff);
+                System.out.println(passenger.getCurrentPosition());
+                System.out.println(currentPosition);
+            }
+            counterOfPassengersToAdd++;
+        }
+        Dashboard.waitingPassengers.removeAll(toRemove);
+    }
+
+    private void checkAndAddRemovePassengers() {
+
+        int counterOfPassengersToRemove = 0;
+        ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
+        for(Passenger passenger : passengersOnBoard) {
+            if((passenger.getCurrentDestination().getX() == (int)Math.floor(currentPosition.getX())
+                || passenger.getCurrentDestination().getX() == (int)Math.ceil(currentPosition.getX()))
+                && (passenger.getCurrentDestination().getY() == (int)Math.floor(currentPosition.getY())
+                || passenger.getCurrentDestination().getY() == (int)Math.ceil(currentPosition.getY()))) {
+                passenger.changeRoute();
+                numberOfStaff--;
+                Dashboard.waitingPassengers.add(passenger);
+                toRemove.add(passengersOnBoard.get(counterOfPassengersToRemove));
+            }
+            counterOfPassengersToRemove++;
+        }
+        passengersOnBoard.removeAll(toRemove);
+    }
+
+    public int getFuel() {
+        return fuel;
+    }
+
+    public void setFuel(int fuel) {
+        this.fuel = fuel;
     }
 }
