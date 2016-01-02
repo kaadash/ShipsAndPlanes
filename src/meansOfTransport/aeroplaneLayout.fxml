@@ -1,36 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
+<TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AeroplaneController">
+    <tabs>
+        <Tab text="Overview">
+            <content>
+                <GridPane alignment="center" hgap="10" vgap="10">
+                    <children>
 
-<?import javafx.scene.text.Text?>
-<GridPane alignment="center" hgap="10" vgap="10" fx:controller="controllers.AeroplaneController" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+                        <Label text="Fuel: " GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="fuelValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-    <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Fuel: "  />
-    <Label fx:id="fuelValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Passengers: " GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="passengersValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-    <Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="Passengers: " />
-    <Label fx:id="passengersValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Current position: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="currentPositionLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-    <Label GridPane.columnIndex="0" GridPane.rowIndex="2" text="Current position: " />
-    <Label fx:id="currentPositionLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="ID: " GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="IDLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-    <Label GridPane.columnIndex="0" GridPane.rowIndex="3" text="ID: " />
-    <Label fx:id="IDLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Current destination: " GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Label fx:id="currentDestinationLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-    <Label GridPane.columnIndex="0" GridPane.rowIndex="4" text="Current destination: " />
-    <Label fx:id="currentDestinationLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="Route: " GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Label fx:id="routeLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-    <Label GridPane.columnIndex="0" GridPane.rowIndex="5" text="Route: " />
-    <Label fx:id="routeLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Button text="Report Issue" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    </children>
+                </GridPane>
+            </content>
+        </Tab>
+        <Tab text="Passengers">
+            <content>
+                <TableView fx:id="tableView" >
+                    <columns>
+                        <TableColumn text="Imię">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                        </TableColumn>
 
-    <Button GridPane.columnIndex="6" GridPane.rowIndex="6" text="Report Issue"  />
-</GridPane>
+                        <TableColumn text="Nazwisko">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="surname" />
+                            </cellValueFactory>
+                        </TableColumn>
+
+                        <TableColumn text="Wiek">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="age" />
+                            </cellValueFactory>
+                        </TableColumn>
+
+                        <TableColumn text="PESEL">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="PESEL" />
+                            </cellValueFactory>
+                        </TableColumn>
+
+                        <TableColumn text="Trasa">
+                        </TableColumn>
+
+                        <TableColumn text="Typ podróży">
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>

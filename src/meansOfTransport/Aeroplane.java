@@ -5,6 +5,7 @@ import controllers.Dashboard;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -16,7 +17,6 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.concurrent.Semaphore;
 
 public abstract class Aeroplane extends MeansOfTransport{
@@ -64,9 +64,9 @@ public abstract class Aeroplane extends MeansOfTransport{
     public void openInformationPanel() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            GridPane root = fxmlLoader.load(getClass().getResource("aeroplaneLayout.fxml").openStream());
+            TabPane root = fxmlLoader.load(getClass().getResource("aeroplaneLayout.fxml").openStream());
             AeroplaneController aeroplaneController = (AeroplaneController) fxmlLoader.getController();
-            aeroplaneController.updateView(fuel, numberOfStaff, currentPosition, ID, currentDestination, route);
+            aeroplaneController.updateView(fuel, numberOfStaff, currentPosition, ID, currentDestination, route, passengersOnBoard);
             imageViewPlane.setOnMouseClicked(event -> {
                 Stage stage = new Stage();
                 stage.setTitle("Aeroplane Panel");
@@ -141,8 +141,8 @@ public abstract class Aeroplane extends MeansOfTransport{
                                 if(destinationPointer == route.size() - 1) {
                                     destinationPointer = 0;
                                 }
-                                currentPosition.setLocation(this.getCurrentPosition().getX() - 25,
-                                        this.getCurrentPosition().getY() - 25);
+                                currentPosition.setLocation(this.getCurrentPosition().getX(),
+                                        this.getCurrentPosition().getY());
                                 currentDestination = route.get(destinationPointer);
                                 destinationPointer++;
                                 beenIncrossRoad = true;
@@ -164,8 +164,8 @@ public abstract class Aeroplane extends MeansOfTransport{
 
 //                    imageViewPlane.setLayoutX(this.getCurrentPosition().getX());
 
-                    currentPosition.setLocation(this.getCurrentPosition().getX() + 25,
-                            this.getCurrentPosition().getY() + 25);
+                    currentPosition.setLocation(this.getCurrentPosition().getX(),
+                            this.getCurrentPosition().getY());
                     delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                     delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
                     goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));

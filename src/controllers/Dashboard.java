@@ -49,7 +49,7 @@ public class Dashboard {
     }
 
     public static void spawnPassengers() {
-        int numberToSpawn = (int)(Math.random() * 200) + 20;
+        int numberToSpawn = (int)(Math.random() * 20) + 20;
         while (numberToSpawn > 0) {
             waitingPassengers.add(new Passenger());
             numberToSpawn--;
