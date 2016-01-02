@@ -20,6 +20,7 @@ import travelDependency.Passenger;
 import java.awt.Point;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by kadash on 18.10.15.
@@ -40,18 +41,19 @@ public class Dashboard {
 
     public static void createNewPassengerPlane(Pane root) {
         ArrayList<Point> destinationList =  Map.getDestinationCord(Map.getCivilAirports());
+        Collections.shuffle(destinationList);
+        spawnPassengers(destinationList.get(0));
         PassengerPlane newPassengerPlane = new PassengerPlane(destinationList, root, numberOfPassengerPlane);
         passengerPlanes.add(newPassengerPlane);
         passengerPlanesThreads.add(new Thread(newPassengerPlane));
         passengerPlanesThreads.get(numberOfPassengerPlane).start();
         numberOfPassengerPlane++;
-        spawnPassengers();
     }
 
-    public static void spawnPassengers() {
-        int numberToSpawn = (int)(Math.random() * 20) + 20;
+    public static void spawnPassengers(Point startingPosition) {
+        int numberToSpawn = (int)(Math.random() * 100) + 20;
         while (numberToSpawn > 0) {
-            waitingPassengers.add(new Passenger());
+            waitingPassengers.add(new Passenger(startingPosition));
             numberToSpawn--;
             numberOfPassenger++;
         }

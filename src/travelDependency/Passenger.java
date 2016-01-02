@@ -29,15 +29,20 @@ public class Passenger implements Runnable {
 
     private int routePointer;
 
-    public Passenger() {
+    public Passenger(Point currentPosition) {
         this.PESEL = generatePESEL();
         this.name = generateName();
         this.surname = generateName();
         this.age = generateAge();
         this.route = Map.getDestinationCord(Map.getCivilAirports());
         Collections.shuffle(this.route);
+        this.route.add(0, currentPosition);
+        this.route.remove(this.route.size() - 1);
+        this.route.remove(this.route.size() - 2);
+        this.route.add(currentPosition);
         this.changeRoute();
     }
+
     public String generatePESEL(){
         String PESELNumber = "";
         while(PESELNumber.length() < 9) {
@@ -45,7 +50,6 @@ public class Passenger implements Runnable {
         }
         return PESELNumber;
     }
-
     public String generateName() {
         String names[] = {"Anna", "Artur", "Jan", "Iza", "Maciej", "Monika", "Kuba"};
         return names[(int)(Math.random() * names.length)];
@@ -90,6 +94,7 @@ public class Passenger implements Runnable {
     public int getRoutePointer() {
         return routePointer;
     }
+
     public void setRoutePointer(int routePointer) {
         this.routePointer = routePointer;
     }
@@ -99,7 +104,6 @@ public class Passenger implements Runnable {
     public void setName(String name) {
         this.name = name;
     }
-
     public String getSurname() {
         return surname;
     }
@@ -122,5 +126,13 @@ public class Passenger implements Runnable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setCurrentPosition(Point2D currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public void setCurrentDestination(Point2D currentDestination) {
+        this.currentDestination = currentDestination;
     }
 }

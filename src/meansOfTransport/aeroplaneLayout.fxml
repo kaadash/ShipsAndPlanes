@@ -29,7 +29,7 @@
                         <Label text="Route: " GridPane.columnIndex="0" GridPane.rowIndex="5" />
                         <Label fx:id="routeLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                        <Button text="Report Issue" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Button text="Report Issue" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#reportIssue" />
                     </children>
                 </GridPane>
             </content>
@@ -62,7 +62,16 @@
                             </cellValueFactory>
                         </TableColumn>
 
-                        <TableColumn text="Trasa">
+                        <TableColumn text="Trasa - poprzednia pozycja">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="currentPosition" />
+                            </cellValueFactory>
+                        </TableColumn>
+
+                        <TableColumn text="Trasa - obecny cel">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="currentDestination" />
+                            </cellValueFactory>
                         </TableColumn>
 
                         <TableColumn text="Typ podróży">

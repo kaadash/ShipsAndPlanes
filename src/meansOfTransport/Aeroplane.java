@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import travelDependency.Passenger;
@@ -16,7 +15,6 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
 public abstract class Aeroplane extends MeansOfTransport{
@@ -34,7 +32,6 @@ public abstract class Aeroplane extends MeansOfTransport{
         for (int i = 0; i < allDestination.size(); i++) {
             this.route.add(allDestination.get(i));
         }
-        Collections.shuffle(this.route);
         this.crossRoadPoint = new Point(550, 350);
         this.currentDestination = this.crossRoadPoint;
         this.currentPosition = this.route.get(0);
@@ -46,7 +43,7 @@ public abstract class Aeroplane extends MeansOfTransport{
     }
 
     public void lossOfFuel() {
-        this.fuel--;
+        this.fuel -= 4;
     }
 
     public Point findNearestAirport() {
@@ -56,17 +53,12 @@ public abstract class Aeroplane extends MeansOfTransport{
         return nearestAirport;
     }
 
-    public ImageView draw(String imagePath) {
-        Image image = new Image(imagePath);
-        return new ImageView(image);
-    }
-
     public void openInformationPanel() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             TabPane root = fxmlLoader.load(getClass().getResource("aeroplaneLayout.fxml").openStream());
             AeroplaneController aeroplaneController = (AeroplaneController) fxmlLoader.getController();
-            aeroplaneController.updateView(fuel, numberOfStaff, currentPosition, ID, currentDestination, route, passengersOnBoard);
+            aeroplaneController.updateView(fuel, currentPosition, ID, currentDestination, route, passengersOnBoard);
             imageViewPlane.setOnMouseClicked(event -> {
                 Stage stage = new Stage();
                 stage.setTitle("Aeroplane Panel");
@@ -87,7 +79,7 @@ public abstract class Aeroplane extends MeansOfTransport{
     }
 
     public void restoreFuel() {
-
+        this.fuel = 1000;
     }
 
     public void animate() {
@@ -98,7 +90,10 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     @Override
     public void run() {
-        int destinationPointer = 0;
+        int destinationPointer = 1;
+//        Check if in starting city, there are passengers wanting to travel
+        checkAndAddNewPassengers(destinationPointer);
+
         boolean beenIncrossRoad = false;
         double delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
         double delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
@@ -157,13 +152,11 @@ public abstract class Aeroplane extends MeansOfTransport{
                     }
 
                 } else {
-                    currentDestination = crossRoadPoint;
-                    beenIncrossRoad = false;
-                    checkAndAddNewPassengers();
+                    checkAndAddNewPassengers(destinationPointer);
                     checkAndAddRemovePassengers();
-
-//                    imageViewPlane.setLayoutX(this.getCurrentPosition().getX());
-
+                    restoreFuel();
+                    beenIncrossRoad = false;
+                    currentDestination = crossRoadPoint;
                     currentPosition.setLocation(this.getCurrentPosition().getX(),
                             this.getCurrentPosition().getY());
                     delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
@@ -177,37 +170,43 @@ public abstract class Aeroplane extends MeansOfTransport{
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
+                    lossOfFuel();
                     animate();
                 }
             });
         }
     }
-    private void checkAndAddNewPassengers() {
+    private void checkAndAddNewPassengers(int destinationPointer) {
         int counterOfPassengersToAdd = 0;
         ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
         for(Passenger passenger : Dashboard.waitingPassengers) {
+
+//            This is the most ugly condition ever :c
             if ((passenger.getCurrentPosition().getX() == (int)Math.floor(currentPosition.getX())
                     || passenger.getCurrentPosition().getX() == (int)Math.ceil(currentPosition.getX()))
                     && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
-                    || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))) {
+                    || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))
+
+                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getX()
+                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getY()
+                    ) {
 
                 numberOfStaff++;
                 passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
                 toRemove.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
-                System.out.println("Dodano " + numberOfStaff);
-                System.out.println(passenger.getCurrentPosition());
-                System.out.println(currentPosition);
             }
             counterOfPassengersToAdd++;
         }
         Dashboard.waitingPassengers.removeAll(toRemove);
     }
 
+
     private void checkAndAddRemovePassengers() {
 
         int counterOfPassengersToRemove = 0;
         ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
         for(Passenger passenger : passengersOnBoard) {
+//            This is the most ugly condition ever :c
             if((passenger.getCurrentDestination().getX() == (int)Math.floor(currentPosition.getX())
                 || passenger.getCurrentDestination().getX() == (int)Math.ceil(currentPosition.getX()))
                 && (passenger.getCurrentDestination().getY() == (int)Math.floor(currentPosition.getY())
