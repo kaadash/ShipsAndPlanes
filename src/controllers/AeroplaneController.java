@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import meansOfTransport.Aeroplane;
+import meansOfTransport.PassengerPlane;
 import travelDependency.Passenger;
 
 import java.awt.*;
@@ -22,6 +23,8 @@ import java.util.ResourceBundle;
  * Created by kadash on 29.12.15.
  */
 public class AeroplaneController implements Initializable {
+    private PassengerPlane passengerPlaneContext;
+
     @FXML
     private Label fuelValueLabel;
     @FXML
@@ -37,41 +40,48 @@ public class AeroplaneController implements Initializable {
     @FXML
     private TableView<Passenger> tableView;
     @FXML
-    public Point2D reportIssue() {
-//        TODO: implement, delete mockup
-        Point2D mockupCurrentPosition = new Point2D.Double(120, 120);
+    public void reportIssue() {
+        Point2D currentPosition = passengerPlaneContext.getCurrentPosition();
         double minDist = Integer.MAX_VALUE;
         Point2D minDistDestination = new Point2D.Double();
         for(Point civilAirport : Map.getDestinationCord(Map.getCivilAirports())) {
-            double deltaX = civilAirport.getX() - mockupCurrentPosition.getX();
-            double deltaY = civilAirport.getY() - mockupCurrentPosition.getY();
+            double deltaX = civilAirport.getX() - currentPosition.getX();
+            double deltaY = civilAirport.getY() - currentPosition.getY();
             double tempDist = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
             if(minDist > tempDist) {
                 minDist = tempDist;
                 minDistDestination.setLocation(civilAirport.getX(), civilAirport.getY());
             }
         }
-        return minDistDestination;
+        System.out.println("Nearest City " + minDistDestination);
+        System.out.println("Current position " + passengerPlaneContext.getCurrentPosition());
+        passengerPlaneContext.setBeenIncrossRoad(true);
+        passengerPlaneContext.setCurrentDestination(minDistDestination);
     }
+    @FXML
+    private void deletePassengerPlane(){
+        Dashboard.removePassengerPlane(passengerPlaneContext.getID());
+    }
+
 
     private StringProperty text = new SimpleStringProperty(this, "text", "");
 
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
+    public void updateView(PassengerPlane passengerPlane) {
+        passengerPlaneContext = passengerPlane;
+
+        fuelValueLabel.setText(Integer.toString(passengerPlane.getFuel()));
+        passengersValueLabel.setText(Integer.toString(passengerPlane.getPassengersOnBoard().size()) +
+                "/" + passengerPlane.getMaxPassengers());
+        currentPositionLabel.setText(passengerPlane.getCurrentPosition().toString());
+        IDLabel.setText(Integer.toString(passengerPlane.getID()));
+        currentDestinationLabel.setText(passengerPlane.getCurrentDestination().toString());
+//        routeLabel.setText(passengerPlane.getRoute().toString());
+        ObservableList<Passenger> data = FXCollections.observableArrayList(passengerPlane.getPassengersOnBoard());
+        tableView.setItems(data);
     }
 
-    public void updateView(int fuel, Point2D currentPosition,
-                           int ID, Point2D currentDestination, ArrayList<Point> route,
-                           ArrayList<Passenger> passengers) {
-
-        fuelValueLabel.setText(Integer.toString(fuel));
-        passengersValueLabel.setText(Integer.toString(passengers.size()));
-        currentPositionLabel.setText(currentPosition.toString());
-        IDLabel.setText(Integer.toString(ID));
-        currentDestinationLabel.setText(currentDestination.toString());
-//        routeLabel.setText(route.toString());
-        ObservableList<Passenger> data = FXCollections.observableArrayList(passengers);
-        tableView.setItems(data);
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
     }
 
 }

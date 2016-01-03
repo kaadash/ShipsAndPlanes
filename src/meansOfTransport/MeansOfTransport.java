@@ -33,15 +33,6 @@ public abstract class MeansOfTransport implements Runnable {
         this.context = context;
     }
 
-    public Point[] generateRoute() {
-        Point[] route = new Point[2];
-        return route;
-    }
-
-    public void movement(){
-
-    }
-
     public void remove () {
 
     }
@@ -49,10 +40,10 @@ public abstract class MeansOfTransport implements Runnable {
     public ArrayList<Point> getRoute() {
         return route;
     }
+
     public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;
     }
-
     public Point2D getCurrentPosition() {
         return currentPosition;
     }
@@ -75,5 +66,9 @@ public abstract class MeansOfTransport implements Runnable {
 
     public void setCrossRoadPoint(Point crossRoadPoint) {
         this.crossRoadPoint = crossRoadPoint;
+    }
+
+    public int getID() {
+        return ID;
     }
 }

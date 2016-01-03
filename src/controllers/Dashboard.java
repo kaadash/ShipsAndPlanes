@@ -21,6 +21,7 @@ import java.awt.Point;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Created by kadash on 18.10.15.
@@ -56,6 +57,18 @@ public class Dashboard {
             waitingPassengers.add(new Passenger(startingPosition));
             numberToSpawn--;
             numberOfPassenger++;
+        }
+    }
+    public static void removePassengerPlane(int ID) {
+        Iterator<PassengerPlane> passengerPlaneIterator = passengerPlanes.iterator();
+        int loopCounter = 0;
+        while (passengerPlaneIterator.hasNext()) {
+            PassengerPlane p = passengerPlaneIterator.next();
+            if (p.getID()==ID) {
+                passengerPlaneIterator.remove();
+                passengerPlanesThreads.get(loopCounter).interrupt();
+            }
+            loopCounter++;
         }
     }
 }
