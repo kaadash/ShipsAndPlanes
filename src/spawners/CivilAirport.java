@@ -8,7 +8,7 @@ import java.awt.Point;
  * Created by kadash on 18.10.15.
  */
 public class CivilAirport extends Airport{
-    private final String imagePath = "images/AIRPORT.jpg";
+    private final String imagePath = "images/Airport-icon.png";
 
     public CivilAirport(Point civilAirportPosition) {
         super(civilAirportPosition);

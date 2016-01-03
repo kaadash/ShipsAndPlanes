@@ -13,6 +13,7 @@ public class MilitaryAircraft extends Aeroplane {
     public MilitaryAircraft(ArrayList<Point> allDestination, Pane context) {
         super(allDestination, context);
     }
+
     public Point findNearestAirport() {
         Point nearestAirport = new Point();
         nearestAirport.x = 12;

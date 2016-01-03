@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import meansOfTransport.MilitaryAircraft;
 import spawners.CivilAirport;
 import spawners.Harbor;
+import spawners.MilitaryAirport;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -22,23 +23,19 @@ public class Map {
 
     private static ArrayList<CivilAirport> civilAirports = new ArrayList<CivilAirport>();
 
+    private static ArrayList<MilitaryAirport> militaryAirports = new ArrayList<MilitaryAirport>();
+
     private ArrayList<MilitaryAircraft> militaryAircrafts;
+
     private ArrayList<Harbor> harbors;
+
     public static void prepareMap(Pane stack) {
-        generateCivilAirports(10);
-        for (CivilAirport airport:civilAirports) {
-            ImageView imageToAdd = airport.draw(airport.getImagePath());
-            imageToAdd.setFitHeight(50);
-            imageToAdd.setFitWidth(50);
-            imageToAdd.setLayoutX(airport.getPosition().getX());
-            imageToAdd.setLayoutY(airport.getPosition().getY());
-            stack.getChildren().add(imageToAdd);
-        }
+        generateCivilAirports(10, stack);
+        generateMilitaryAirports(10, stack);
     }
 
-    public static void generateCivilAirports(int numberOfAirports) {
-        Point[] cords = new Point[10];
-        int distance = 250;
+    public static ArrayList<Point> generateCordsInCircle(int numberOfAirports, int distance) {
+        ArrayList<Point> cords = new ArrayList<Point>();
         double sizeOfStep = Math.PI/numberOfAirports * 2;
         double angle = 0;
 
@@ -47,14 +44,31 @@ public class Map {
             angle +=sizeOfStep;
             int y = (int)Math.floor( distance * Math.sin( angle ) );
             int x = (int)Math.floor( distance * Math.cos( angle ) );
-            cords[i] = new Point(x, y);
+            cords.add(new Point(x, y));
         }
+        return cords;
+    }
 
+    public static void generateCivilAirports(int numberOfAirports, Pane context) {
+
+        ArrayList<Point> cords = generateCordsInCircle(numberOfAirports, 250);
 //        Adding cities into global civilAirports
         for (Point cord: cords){
             cord.setLocation(cord.getX() + 550, cord.getY() + 350);
             CivilAirport airport = new CivilAirport(cord);
+            airport.draw(context, airport.getImagePath());
             civilAirports.add(airport);
+        }
+    }
+
+    public static void generateMilitaryAirports(int numberOfAirports, Pane context) {
+        ArrayList<Point> cords = generateCordsInCircle(numberOfAirports, 350);
+//        Adding cities into global military airports
+        for (Point cord: cords){
+            cord.setLocation(cord.getX() + 550, cord.getY() + 350);
+            MilitaryAirport airport = new MilitaryAirport(cord);
+            airport.draw(context, airport.getImagePath());
+            militaryAirports.add(airport);
         }
     }
 
@@ -65,7 +79,11 @@ public class Map {
         }
         return cordinates;
     }
+
     public static ArrayList<CivilAirport> getCivilAirports() {
         return civilAirports;
+    }
+    public static ArrayList<MilitaryAirport> getMilitaryAirports() {
+        return militaryAirports;
     }
 }

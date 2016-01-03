@@ -24,7 +24,7 @@ public class PassengerPlane extends Aeroplane {
 
     private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
 
-    private final String imagePath = "images/airplane.png";
+    private final String imagePath = "images/aircraft.png";
 
     public PassengerPlane(ArrayList<Point> allDestination, Pane context, int ID) {
         super(allDestination, context);
