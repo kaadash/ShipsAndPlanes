@@ -14,10 +14,4 @@ public class MilitaryAircraft extends Aeroplane {
         super(allDestination, context);
     }
 
-    public Point findNearestAirport() {
-        Point nearestAirport = new Point();
-        nearestAirport.x = 12;
-        nearestAirport.y = 12;
-        return nearestAirport;
-    }
 }
