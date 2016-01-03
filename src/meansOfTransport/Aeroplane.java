@@ -12,6 +12,7 @@ public abstract class Aeroplane extends MeansOfTransport{
     protected boolean beenIncrossRoad;
 
     protected int fuel;
+    protected boolean asyncWasReportSent;
 
     private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
     protected ImageView imageViewPlane = new ImageView(new Image("images/aircraft.png"));
@@ -28,6 +29,7 @@ public abstract class Aeroplane extends MeansOfTransport{
         this.currentPosition = this.route.get(0);
         this.fuel = 1000;
         this.beenIncrossRoad = false;
+        this.asyncWasReportSent = false;
         int sizeImage = 50;
         imageViewPlane.setFitHeight(sizeImage);
         imageViewPlane.setFitWidth(sizeImage);
@@ -49,10 +51,10 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     }
 
-
     public void landOnNearestAirport() {
 
     }
+
 
     public void restoreFuel() {
         this.fuel = 1000;
@@ -63,13 +65,13 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     }
 
-
-
-
-
     public int getFuel() {
         return fuel;
     }
+
+
+
+
 
     public void setFuel(int fuel) {
         this.fuel = fuel;
@@ -81,5 +83,13 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     public void setBeenIncrossRoad(boolean beenIncrossRoad) {
         this.beenIncrossRoad = beenIncrossRoad;
+    }
+
+    public boolean isAsyncWasReportSent() {
+        return asyncWasReportSent;
+    }
+
+    public void setAsyncWasReportSent(boolean asyncWasReportSent) {
+        this.asyncWasReportSent = asyncWasReportSent;
     }
 }

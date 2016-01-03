@@ -53,10 +53,8 @@ public class AeroplaneController implements Initializable {
                 minDistDestination.setLocation(civilAirport.getX(), civilAirport.getY());
             }
         }
-        System.out.println("Nearest City " + minDistDestination);
-        System.out.println("Current position " + passengerPlaneContext.getCurrentPosition());
-        passengerPlaneContext.setBeenIncrossRoad(true);
         passengerPlaneContext.setCurrentDestination(minDistDestination);
+        passengerPlaneContext.setAsyncWasReportSent(true);
     }
     @FXML
     private void deletePassengerPlane(){

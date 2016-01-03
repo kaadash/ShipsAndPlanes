@@ -33,15 +33,6 @@ public class PassengerPlane extends Aeroplane {
         this.maxPassengers = 30;
     }
 
-    public Point findNearestAirport() {
-        Point nearestAirport = new Point();
-        nearestAirport.x = 12;
-        nearestAirport.y = 12;
-        return nearestAirport;
-    }
-    public String getImagePath() {
-        return imagePath;
-    }
     public void openInformationPanel() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -127,7 +118,13 @@ public class PassengerPlane extends Aeroplane {
                 double currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                 double currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
                 double dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
-//                System.out.println(dist);
+                if(asyncWasReportSent) {
+                    delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
+                    delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
+                    goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                    beenIncrossRoad = true;
+                    asyncWasReportSent = false;
+                }
 
                 if (Math.floor(dist) != 0) {
                     double ratio = speed_per_tick / goal_dist;
@@ -142,13 +139,22 @@ public class PassengerPlane extends Aeroplane {
 //                            System.out.println("---- Wchodzę! ---- >>>> " + ID);
                             try {
                                 while(Math.floor(dist) >= 1){
+                                    if(asyncWasReportSent) {
+                                        delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
+                                        delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
+                                        goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                                        ratio = speed_per_tick / goal_dist;
+                                        x_move = ratio * delta_x;
+                                        y_move = ratio * delta_y;
+                                        aeroplaneCrossRoads.release();
+                                        asyncWasReportSent = false;
+                                    }
                                     currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                                     currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
                                     dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
                                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                                             y_move + getCurrentPosition().getY()));
                                     animate();
-//                                    System.out.println("bla bla " + dist);
                                     Thread.sleep(35);
                                 }
                             }
