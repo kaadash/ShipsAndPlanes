@@ -13,11 +13,15 @@ public abstract class Airport {
 
     protected Point position;
 
+    protected Point leftLanePoint;
+
+    protected Point rightLanePoint;
     protected String imagePath;
 
     protected int maxCapacity;
 
     protected int currentNumberOfPlanes;
+
     public Airport(Point airportPosition) {
         this.position = airportPosition;
     }
@@ -32,16 +36,31 @@ public abstract class Airport {
 
         context.getChildren().add(imageView);
     }
-
     public Point getPosition() {
         return position;
     }
+
     public void setPosition(Point position) {
         this.position = position;
     }
-
     public String getImagePath() {
         return imagePath;
+    }
+
+    public Point getLeftLanePoint() {
+        return leftLanePoint;
+    }
+
+    public void setLeftLanePoint(Point leftLanePoint) {
+        this.leftLanePoint = leftLanePoint;
+    }
+
+    public Point getRightLanePoint() {
+        return rightLanePoint;
+    }
+
+    public void setRightLanePoint(Point rightLanePoint) {
+        this.rightLanePoint = rightLanePoint;
     }
 
 }
