@@ -71,36 +71,45 @@ public class Map {
         for (Point cord: cords){
             civilAirportLoopCounter++;
             cord.setLocation(cord.getX() + 550, cord.getY() + 350);
-            CivilAirport airport = new CivilAirport(cord);
             int loopModulo = civilAirportLoopCounter % 3;
             switch (loopModulo) {
-                case 0: airport.setRightLanePoint(cord);
-                    rightTrackAirports.add(cord);
+                case 0: rightTrackAirports.add(cord);
                     civilAirportLoopCounter = 0;
                     break;
-                case 1: airport.draw(context, airport.getImagePath());
-                    centerTrackAirports.add(cord);
+                case 1: centerTrackAirports.add(cord);
+                    CivilAirport airport = new CivilAirport(cord);
+                    airport.draw(context, airport.getImagePath());
+                    civilAirports.add(airport);
                     break;
-                case 2:  airport.setLeftLanePoint(cord);
-                    leftTrackAirports.add(cord);
+                case 2: leftTrackAirports.add(cord);
                     break;
                 default:
                     System.out.println("error");
                     break;
             }
-            civilAirports.add(airport);
         }
         civilAirportLoopCounter = 0;
         for(Point track : leftTrackAirports) {
             Point centerCord = centerTrackAirports.get(civilAirportLoopCounter);
             Point rightCord = rightTrackAirports.get(civilAirportLoopCounter);
 
+            civilAirports.get(civilAirportLoopCounter).setLeftLaneStartingPoint(track);
+            civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightCord);
+
+            Point leftLineEndingPoint = new Point((int)(track.getX() + 550 - centerCord.getX()),
+                    (int)(track.getY() + 350 - centerCord.getY()));
+            Point rightLineEndingPoint = new Point( (int)(centerCord.getX() - rightCord.getX() + 550),
+                    (int)(centerCord.getY() - rightCord.getY() + 350));
+
+            civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(track);
+            civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightCord);
+
             Line leftLine = new Line(track.getX(), track.getY(),
-                    -centerCord.getX() + track.getX() + 550, -centerCord.getY() + track.getY() + 350);
+                    leftLineEndingPoint.getX(), leftLineEndingPoint.getY() );
 
             Line centerLine = new Line(centerCord.getX(), centerCord.getY(), 550, 350);
             Line rightLine = new Line(rightCord.getX(), rightCord.getY(),
-                    centerCord.getX() - rightCord.getX() + 550, centerCord.getY() - rightCord.getY() + 350);
+                    rightLineEndingPoint.getX(), rightLineEndingPoint.getY());
             context.getChildren().addAll(leftLine, centerLine, rightLine);
             civilAirportLoopCounter++;
         }

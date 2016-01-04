@@ -13,18 +13,25 @@ public abstract class Airport {
 
     protected Point position;
 
-    protected Point leftLanePoint;
+    protected Point leftLaneStartingPoint;
 
-    protected Point rightLanePoint;
+    protected Point rightLaneStartingPoint;
+
+    protected Point leftLaneEndingPoint;
+
+    protected Point rightLaneEndingPoint;
+
     protected String imagePath;
 
     protected int maxCapacity;
+
 
     protected int currentNumberOfPlanes;
 
     public Airport(Point airportPosition) {
         this.position = airportPosition;
     }
+
     public void draw (Pane context, String imagePath) {
         Image image = new Image(imagePath);
         ImageView imageView = new ImageView(image);
@@ -36,10 +43,10 @@ public abstract class Airport {
 
         context.getChildren().add(imageView);
     }
+
     public Point getPosition() {
         return position;
     }
-
     public void setPosition(Point position) {
         this.position = position;
     }
@@ -47,20 +54,35 @@ public abstract class Airport {
         return imagePath;
     }
 
-    public Point getLeftLanePoint() {
-        return leftLanePoint;
+    public Point setLeftLaneStartingPoint() {
+        return leftLaneStartingPoint;
+    }
+    public void setLeftLaneStartingPoint(Point leftLaneStartingPoint) {
+        this.leftLaneStartingPoint = leftLaneStartingPoint;
     }
 
-    public void setLeftLanePoint(Point leftLanePoint) {
-        this.leftLanePoint = leftLanePoint;
+    public Point getRightLaneStartingPoint() {
+        return rightLaneStartingPoint;
     }
 
-    public Point getRightLanePoint() {
-        return rightLanePoint;
+    public void setRightLaneStartingPoint(Point rightLaneStartingPoint) {
+        this.rightLaneStartingPoint = rightLaneStartingPoint;
     }
 
-    public void setRightLanePoint(Point rightLanePoint) {
-        this.rightLanePoint = rightLanePoint;
+    public Point getLeftLaneEndingPoint() {
+        return leftLaneEndingPoint;
+    }
+
+    public void setLeftLaneEndingPoint(Point leftLaneEndingPoint) {
+        this.leftLaneEndingPoint = leftLaneEndingPoint;
+    }
+
+    public Point getRightLaneEndingPoint() {
+        return rightLaneEndingPoint;
+    }
+
+    public void setRightLaneEndingPoint(Point rightLaneEndingPoint) {
+        this.rightLaneEndingPoint = rightLaneEndingPoint;
     }
 
 }
