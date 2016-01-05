@@ -90,6 +90,7 @@ public class PassengerPlane extends Aeroplane {
                     || passenger.getCurrentDestination().getX() == (int)Math.ceil(currentPosition.getX()))
                     && (passenger.getCurrentDestination().getY() == (int)Math.floor(currentPosition.getY())
                     || passenger.getCurrentDestination().getY() == (int)Math.ceil(currentPosition.getY()))) {
+
                 passenger.changeRoute();
                 numberOfStaff--;
                 Dashboard.waitingPassengers.add(passenger);

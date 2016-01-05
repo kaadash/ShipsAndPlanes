@@ -43,17 +43,18 @@ public class Map {
 //        Generator of city in circle
         for (int i = 0; i < numberOfAirports; i++) {
             angle +=sizeOfStep;
-            int y1 = (int)Math.floor( distance * Math.sin( angle - 0.2 ) );
-            int x1 = (int)Math.floor( distance * Math.cos(angle - 0.2) );
-            cords.add(new Point(x1, y1));
+// I know that for example A2 isn't name of variable, it is name of highway
+            int y2 = (int)Math.floor( distance * Math.sin( angle + 0.20 ) );
+            int x2 = (int)Math.floor( distance * Math.cos(angle + 0.20) );
+            cords.add(new Point(x2, y2));
 
             int y = (int)Math.floor( distance * Math.sin( angle ) );
             int x = (int)Math.floor( distance * Math.cos( angle ) );
             cords.add(new Point(x, y));
-// I know that for example A2 isn't name of variable, it is name of highway
-            int y2 = (int)Math.floor( distance * Math.sin( angle + 0.2 ) );
-            int x2 = (int)Math.floor( distance * Math.cos(angle + 0.2 ) );
-            cords.add(new Point(x2, y2));
+
+            int y1 = (int)Math.floor( distance * Math.sin(angle + 0.4) );
+            int x1 = (int)Math.floor( distance * Math.cos( angle + 0.4) );
+            cords.add(new Point(x1, y1));
         }
         return cords;
     }
@@ -63,8 +64,8 @@ public class Map {
         ArrayList<Point> cords = generateCordsInCircle(numberOfAirports, 250);
 //        Adding cities into global civilAirports
         ArrayList<Point> leftTrackAirports = new ArrayList<Point>();
-        ArrayList<Point> rightTrackAirports = new ArrayList<Point>();
         ArrayList<Point> centerTrackAirports = new ArrayList<Point>();
+        ArrayList<Point> rightTrackAirports = new ArrayList<Point>();
 
         int civilAirportLoopCounter = 0;
 
@@ -73,7 +74,7 @@ public class Map {
             cord.setLocation(cord.getX() + 550, cord.getY() + 350);
             int loopModulo = civilAirportLoopCounter % 3;
             switch (loopModulo) {
-                case 0: rightTrackAirports.add(cord);
+                case 0: leftTrackAirports.add(cord);
                     civilAirportLoopCounter = 0;
                     break;
                 case 1: centerTrackAirports.add(cord);
@@ -81,7 +82,7 @@ public class Map {
                     airport.draw(context, airport.getImagePath());
                     civilAirports.add(airport);
                     break;
-                case 2: leftTrackAirports.add(cord);
+                case 2: rightTrackAirports.add(cord);
                     break;
                 default:
                     System.out.println("error");
@@ -98,8 +99,9 @@ public class Map {
 
             Point leftLineEndingPoint = new Point((int)(track.getX() + 550 - centerCord.getX()),
                     (int)(track.getY() + 350 - centerCord.getY()));
-            Point rightLineEndingPoint = new Point( (int)(centerCord.getX() - rightCord.getX() + 550),
-                    (int)(centerCord.getY() - rightCord.getY() + 350));
+
+            Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + 550),
+                    (int)(rightCord.getY() - centerCord.getY() + 350));
 
             civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(track);
             civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightCord);
