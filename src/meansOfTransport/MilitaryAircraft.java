@@ -1,6 +1,7 @@
 package meansOfTransport;
 
 import javafx.scene.layout.Pane;
+import spawners.Airport;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
  */
 public class MilitaryAircraft extends Aeroplane {
     private String ammoType;
-    public MilitaryAircraft(ArrayList<Point> allDestination, Pane context) {
-        super(allDestination, context);
+    public MilitaryAircraft(Pane context) {
+        super(context);
     }
 
 }

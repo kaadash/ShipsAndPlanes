@@ -9,6 +9,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import spawners.Airport;
+import spawners.CivilAirport;
 import travelDependency.Passenger;
 
 import java.awt.Point;
@@ -26,8 +28,14 @@ public class PassengerPlane extends Aeroplane {
 
     private final String imagePath = "images/aircraft.png";
 
-    public PassengerPlane(ArrayList<Point> allDestination, Pane context, int ID) {
-        super(allDestination, context);
+    public PassengerPlane(ArrayList<CivilAirport> allDestination, Pane context, int ID) {
+        super(context);
+        for (Airport airport : allDestination) {
+            this.route.add(airport);
+        }
+        this.currentPosition = this.route.get(0).getRightLaneStartingPoint();
+        this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
+
         this.ID = ID;
         this.imageViewPlane.setImage(new Image(imagePath));
         this.maxPassengers = 30;
@@ -67,8 +75,8 @@ public class PassengerPlane extends Aeroplane {
                     && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
                     || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))
 
-                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getX()
-                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getY()
+                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getPosition().getX()
+                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getPosition().getX()
                     ) {
 
                 numberOfStaff++;
@@ -167,7 +175,7 @@ public class PassengerPlane extends Aeroplane {
                                 }
                                 currentPosition.setLocation(this.getCurrentPosition().getX(),
                                         this.getCurrentPosition().getY());
-                                currentDestination = route.get(destinationPointer);
+                                currentDestination = route.get(destinationPointer).getLeftLaneEndingPoint();
                                 destinationPointer++;
                                 beenIncrossRoad = true;
                                 delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();

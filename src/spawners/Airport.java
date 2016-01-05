@@ -25,8 +25,8 @@ public abstract class Airport {
 
     protected int maxCapacity;
 
-
     protected int currentNumberOfPlanes;
+
 
     public Airport(Point airportPosition) {
         this.position = airportPosition;
@@ -47,15 +47,12 @@ public abstract class Airport {
     public Point getPosition() {
         return position;
     }
+
     public void setPosition(Point position) {
         this.position = position;
     }
     public String getImagePath() {
         return imagePath;
-    }
-
-    public Point setLeftLaneStartingPoint() {
-        return leftLaneStartingPoint;
     }
     public void setLeftLaneStartingPoint(Point leftLaneStartingPoint) {
         this.leftLaneStartingPoint = leftLaneStartingPoint;
@@ -83,6 +80,10 @@ public abstract class Airport {
 
     public void setRightLaneEndingPoint(Point rightLaneEndingPoint) {
         this.rightLaneEndingPoint = rightLaneEndingPoint;
+    }
+
+    public Point getLeftLaneStartingPoint() {
+        return leftLaneStartingPoint;
     }
 
 }

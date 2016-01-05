@@ -1,6 +1,7 @@
 package meansOfTransport;
 
 import javafx.scene.layout.Pane;
+import spawners.Airport;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  */
 public class AircraftCarrier extends Ship{
     private String ammoType;
-    public AircraftCarrier(ArrayList<Point> allDestination, Pane context) {
+    public AircraftCarrier(ArrayList<Airport> allDestination, Pane context) {
         super(allDestination, context);
     }
     public Point getRandomHarbor() {

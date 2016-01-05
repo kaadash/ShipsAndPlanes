@@ -15,6 +15,8 @@ import meansOfTransport.AircraftCarrier;
 import meansOfTransport.MilitaryAircraft;
 import meansOfTransport.PassengerPlane;
 import meansOfTransport.TravelShip;
+import spawners.Airport;
+import spawners.CivilAirport;
 import travelDependency.Passenger;
 
 import java.awt.Point;
@@ -41,9 +43,9 @@ public class Dashboard {
     public static ArrayList<Passenger> waitingPassengers = new ArrayList<Passenger>();
 
     public static void createNewPassengerPlane(Pane root) {
-        ArrayList<Point> destinationList =  Map.getDestinationCord(Map.getCivilAirports());
+        ArrayList<CivilAirport> destinationList =  Map.getCivilAirports();
         Collections.shuffle(destinationList);
-        spawnPassengers(destinationList.get(0));
+        spawnPassengers(destinationList.get(0).getRightLaneStartingPoint());
         PassengerPlane newPassengerPlane = new PassengerPlane(destinationList, root, numberOfPassengerPlane);
         passengerPlanes.add(newPassengerPlane);
         passengerPlanesThreads.add(new Thread(newPassengerPlane));

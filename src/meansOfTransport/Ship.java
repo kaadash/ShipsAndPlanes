@@ -1,6 +1,7 @@
 package meansOfTransport;
 
 import javafx.scene.layout.Pane;
+import spawners.Airport;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
  */
 public abstract class Ship extends MeansOfTransport {
     protected int maxVelocity;
-    public Ship(ArrayList<Point> allDestination, Pane context) {
-        super(allDestination, context);
+    public Ship(ArrayList<Airport> allDestination, Pane context) {
+        super(context);
     }
     public void goToNextHarbor(){
 

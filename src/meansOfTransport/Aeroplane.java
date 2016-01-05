@@ -1,6 +1,7 @@
 package meansOfTransport;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
+import spawners.Airport;
 import travelDependency.Passenger;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -12,21 +13,21 @@ public abstract class Aeroplane extends MeansOfTransport{
     protected boolean beenIncrossRoad;
 
     protected int fuel;
+
     protected boolean asyncWasReportSent;
 
+    protected ArrayList<Airport> route = new ArrayList<Airport>();
+
     private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
+
     protected ImageView imageViewPlane = new ImageView(new Image("images/aircraft.png"));
 
     public static Semaphore aeroplaneCrossRoads = new Semaphore(1);
 
-    public Aeroplane(ArrayList<Point> allDestination, Pane context) {
-        super(allDestination, context);
-        for (int i = 0; i < allDestination.size(); i++) {
-            this.route.add(allDestination.get(i));
-        }
+    public Aeroplane( Pane context) {
+        super(context);
+
         this.crossRoadPoint = new Point(550, 350);
-        this.currentDestination = this.crossRoadPoint;
-        this.currentPosition = this.route.get(0);
         this.fuel = 1000;
         this.beenIncrossRoad = false;
         this.asyncWasReportSent = false;
@@ -38,21 +39,6 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     public void lossOfFuel() {
         this.fuel -= 4;
-    }
-
-    public Point findNearestAirport() {
-        Point nearestAirport = new Point();
-        nearestAirport.x = 12;
-        nearestAirport.y = 12;
-        return nearestAirport;
-    }
-
-    public void reportIssue() {
-
-    }
-
-    public void landOnNearestAirport() {
-
     }
 
 
@@ -69,9 +55,9 @@ public abstract class Aeroplane extends MeansOfTransport{
         return fuel;
     }
 
-
-
-
+    public ArrayList<Airport> getRoute() {
+        return route;
+    }
 
     public void setFuel(int fuel) {
         this.fuel = fuel;

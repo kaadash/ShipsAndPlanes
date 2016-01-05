@@ -23,13 +23,11 @@ public abstract class MeansOfTransport implements Runnable {
 
     protected Point tempPosition;
 
-    protected ArrayList<Point> route = new ArrayList<Point>();
-
     protected Pane context;
 
     protected int ID;
 
-    public MeansOfTransport(ArrayList<Point> allDestination, Pane context){
+    public MeansOfTransport(Pane context){
         this.context = context;
     }
 
@@ -37,9 +35,6 @@ public abstract class MeansOfTransport implements Runnable {
 
     }
 
-    public ArrayList<Point> getRoute() {
-        return route;
-    }
 
     public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;

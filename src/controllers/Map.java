@@ -95,7 +95,7 @@ public class Map {
             Point rightCord = rightTrackAirports.get(civilAirportLoopCounter);
 
             civilAirports.get(civilAirportLoopCounter).setLeftLaneStartingPoint(track);
-            civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightCord);
+            civilAirports.get(civilAirportLoopCounter).setRightLaneStartingPoint(rightCord);
 
             Point leftLineEndingPoint = new Point((int)(track.getX() + 550 - centerCord.getX()),
                     (int)(track.getY() + 350 - centerCord.getY()));
@@ -103,8 +103,8 @@ public class Map {
             Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + 550),
                     (int)(rightCord.getY() - centerCord.getY() + 350));
 
-            civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(track);
-            civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightCord);
+            civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(leftLineEndingPoint);
+            civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightLineEndingPoint);
 
             Line leftLine = new Line(track.getX(), track.getY(),
                     leftLineEndingPoint.getX(), leftLineEndingPoint.getY() );

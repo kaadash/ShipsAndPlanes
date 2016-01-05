@@ -1,6 +1,7 @@
 package meansOfTransport;
 
 import javafx.scene.layout.Pane;
+import spawners.Airport;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * Created by kadash on 18.10.15.
  */
 public class TravelShip extends Ship {
-    public TravelShip(ArrayList<Point> allDestination, Pane context) {
+    public TravelShip(ArrayList<Airport> allDestination, Pane context) {
         super(allDestination, context);
     }
     private int maxPassengers;
