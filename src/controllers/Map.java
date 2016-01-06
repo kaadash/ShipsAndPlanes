@@ -37,6 +37,77 @@ public class Map {
 
     private static Point centralPoint = new Point(550, 350);
 
+    public static void generateCivilAirports(int numberOfAirports, Pane context) {
+
+        ArrayList<Point> leftTrackAirports = new ArrayList<Point>();
+        ArrayList<Point> centerTrackAirports = new ArrayList<Point>();
+        ArrayList<Point> rightTrackAirports = new ArrayList<Point>();
+
+        segregateCords(leftTrackAirports, centerTrackAirports, rightTrackAirports, context,
+                "civil", numberOfAirports, 250);
+
+        assignCordsToCorrectAirport(leftTrackAirports, centerTrackAirports, rightTrackAirports, context, "civil");
+    }
+
+    public static void generateMilitaryAirports(int numberOfAirports, Pane context) {
+        ArrayList<Point> leftTrackAirports = new ArrayList<Point>();
+        ArrayList<Point> centerTrackAirports = new ArrayList<Point>();
+        ArrayList<Point> rightTrackAirports = new ArrayList<Point>();
+
+        segregateCords(leftTrackAirports, centerTrackAirports, rightTrackAirports, context,
+                "military", numberOfAirports, 350);
+        assignCordsToCorrectAirport(leftTrackAirports, centerTrackAirports, rightTrackAirports, context, "military");
+
+//        Adding cities into global military airports
+    }
+
+
+//    Helper methods
+
+
+    private static void segregateCords(ArrayList<Point> leftTrackAirports, ArrayList<Point> centerTrackAirports,
+                                       ArrayList<Point> rightTrackAirports, Pane context, String type,
+                                       int numberOfAirports, int distance) {
+
+        ArrayList<Point> cords = generateCordsInCircle(numberOfAirports, distance);
+        //        Adding cities into global civilAirports
+        int civilAirportLoopCounter = 0;
+
+        for (Point cord: cords){
+            civilAirportLoopCounter++;
+            cord.setLocation(cord.getX() + centralPoint.getX(), cord.getY() + centralPoint.getY());
+            int loopModulo = civilAirportLoopCounter % 3;
+            switch (loopModulo) {
+                case 0: leftTrackAirports.add(cord);
+                    civilAirportLoopCounter = 0;
+                    break;
+                case 1: centerTrackAirports.add(cord);
+//                    I know that it is ugly but deadline is coming :(
+                    switch (type) {
+                        case "civil":
+                            CivilAirport civilAirport = new CivilAirport(cord);
+                            civilAirport.draw(context, civilAirport.getImagePath());
+                            civilAirports.add(civilAirport);
+                            break;
+                        case "military":
+                            MilitaryAirport militaryAirport = new MilitaryAirport(cord);
+                            militaryAirport.draw(context, militaryAirport.getImagePath());
+                            militaryAirports.add(militaryAirport);
+                            break;
+                        default:
+                            System.out.println("bad type -> " + type);
+                            break;
+                    }
+                    break;
+                case 2: rightTrackAirports.add(cord);
+                    break;
+                default:
+                    System.out.println("error");
+                    break;
+            }
+        }
+    }
+
     public static ArrayList<Point> generateCordsInCircle(int numberOfAirports, int distance) {
         ArrayList<Point> cords = new ArrayList<Point>();
         double sizeOfStep = 2 * Math.PI/numberOfAirports;
@@ -61,72 +132,70 @@ public class Map {
         return cords;
     }
 
-    public static void generateCivilAirports(int numberOfAirports, Pane context) {
-
-        ArrayList<Point> cords = generateCordsInCircle(numberOfAirports, 250);
-//        Adding cities into global civilAirports
-        ArrayList<Point> leftTrackAirports = new ArrayList<Point>();
-        ArrayList<Point> centerTrackAirports = new ArrayList<Point>();
-        ArrayList<Point> rightTrackAirports = new ArrayList<Point>();
-
+    private static void assignCordsToCorrectAirport(ArrayList<Point> leftTrackAirports, ArrayList<Point> centerTrackAirports,
+                                                    ArrayList<Point> rightTrackAirports, Pane context,
+                                                    String type){
         int civilAirportLoopCounter = 0;
 
-        for (Point cord: cords){
-            civilAirportLoopCounter++;
-            cord.setLocation(cord.getX() + centralPoint.getX(), cord.getY() + centralPoint.getY());
-            int loopModulo = civilAirportLoopCounter % 3;
-            switch (loopModulo) {
-                case 0: leftTrackAirports.add(cord);
-                    civilAirportLoopCounter = 0;
-                    break;
-                case 1: centerTrackAirports.add(cord);
-                    CivilAirport airport = new CivilAirport(cord);
-                    airport.draw(context, airport.getImagePath());
-                    civilAirports.add(airport);
-                    break;
-                case 2: rightTrackAirports.add(cord);
-                    break;
-                default:
-                    System.out.println("error");
-                    break;
-            }
-        }
-        civilAirportLoopCounter = 0;
-        for(Point track : leftTrackAirports) {
-            Point centerCord = centerTrackAirports.get(civilAirportLoopCounter);
-            Point rightCord = rightTrackAirports.get(civilAirportLoopCounter);
+        switch (type) {
+            case "civil":
+                for(Point track : leftTrackAirports) {
+                    Point centerCord = centerTrackAirports.get(civilAirportLoopCounter);
+                    Point rightCord = rightTrackAirports.get(civilAirportLoopCounter);
 
-            civilAirports.get(civilAirportLoopCounter).setLeftLaneStartingPoint(track);
-            civilAirports.get(civilAirportLoopCounter).setRightLaneStartingPoint(rightCord);
+                    civilAirports.get(civilAirportLoopCounter).setLeftLaneStartingPoint(track);
+                    civilAirports.get(civilAirportLoopCounter).setRightLaneStartingPoint(rightCord);
 
-            Point leftLineEndingPoint = new Point((int)(track.getX() + centralPoint.getX() - centerCord.getX()),
-                    (int)(track.getY() + centralPoint.getY() - centerCord.getY()));
+                    Point leftLineEndingPoint = new Point((int)(track.getX() + centralPoint.getX() - centerCord.getX()),
+                            (int)(track.getY() + centralPoint.getY() - centerCord.getY()));
 
-            Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + centralPoint.getX()),
-                    (int)(rightCord.getY() - centerCord.getY() + centralPoint.getY()));
+                    Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + centralPoint.getX()),
+                            (int)(rightCord.getY() - centerCord.getY() + centralPoint.getY()));
 
-            civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(leftLineEndingPoint);
-            civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightLineEndingPoint);
+                    civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(leftLineEndingPoint);
+                    civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightLineEndingPoint);
 
-            Line leftLine = new Line(track.getX(), track.getY(),
-                    leftLineEndingPoint.getX(), leftLineEndingPoint.getY() );
+//            Draw Lines on screen
 
-            Line centerLine = new Line(centerCord.getX(), centerCord.getY(), centralPoint.getX(), centralPoint.getY());
-            Line rightLine = new Line(rightCord.getX(), rightCord.getY(),
-                    rightLineEndingPoint.getX(), rightLineEndingPoint.getY());
-            context.getChildren().addAll(leftLine, centerLine, rightLine);
-            civilAirportLoopCounter++;
-        }
-    }
 
-    public static void generateMilitaryAirports(int numberOfAirports, Pane context) {
-        ArrayList<Point> cords = generateCordsInCircle(numberOfAirports, 350);
-//        Adding cities into global military airports
-        for (Point cord: cords){
-            cord.setLocation(cord.getX() + centralPoint.getX(), cord.getY() + centralPoint.getY());
-            MilitaryAirport airport = new MilitaryAirport(cord);
-            airport.draw(context, airport.getImagePath());
-            militaryAirports.add(airport);
+                    civilAirportLoopCounter++;
+                }
+                break;
+            case "military":
+                for(Point track : leftTrackAirports) {
+                    Point centerCord = centerTrackAirports.get(civilAirportLoopCounter);
+                    Point rightCord = rightTrackAirports.get(civilAirportLoopCounter);
+
+                    militaryAirports.get(civilAirportLoopCounter).setLeftLaneStartingPoint(track);
+                    militaryAirports.get(civilAirportLoopCounter).setRightLaneStartingPoint(rightCord);
+
+                    Point leftLineEndingPoint = new Point((int)(track.getX() + centralPoint.getX() - centerCord.getX()),
+                            (int)(track.getY() + centralPoint.getY() - centerCord.getY()));
+
+                    Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + centralPoint.getX()),
+                            (int)(rightCord.getY() - centerCord.getY() + centralPoint.getY()));
+
+                    militaryAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(leftLineEndingPoint);
+                    militaryAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightLineEndingPoint);
+
+//            Draw Lines on screen
+                    Line leftLine = new Line(track.getX(), track.getY(),
+                            leftLineEndingPoint.getX(), leftLineEndingPoint.getY() );
+
+                    Line centerLine = new Line(centerCord.getX(), centerCord.getY(),
+                            centralPoint.getX(), centralPoint.getY());
+
+                    Line rightLine = new Line(rightCord.getX(), rightCord.getY(),
+                            rightLineEndingPoint.getX(), rightLineEndingPoint.getY());
+
+                    context.getChildren().addAll(leftLine, centerLine, rightLine);
+
+                    civilAirportLoopCounter++;
+                }
+                break;
+            default:
+                System.out.println("bad type -> " + type);
+                break;
         }
     }
 
@@ -137,10 +206,10 @@ public class Map {
         }
         return cordinates;
     }
-
     public static ArrayList<CivilAirport> getCivilAirports() {
         return civilAirports;
     }
+
     public static ArrayList<MilitaryAirport> getMilitaryAirports() {
         return militaryAirports;
     }

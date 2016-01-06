@@ -13,14 +13,10 @@ import spawners.Airport;
 import spawners.CivilAirport;
 import travelDependency.Passenger;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by kadash on 18.10.15.
- */
 public class PassengerPlane extends Aeroplane {
     private int maxPassengers;
 
