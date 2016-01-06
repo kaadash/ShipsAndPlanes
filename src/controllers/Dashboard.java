@@ -1,26 +1,15 @@
 package controllers;
 
-import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 import meansOfTransport.AircraftCarrier;
 import meansOfTransport.MilitaryAircraft;
 import meansOfTransport.PassengerPlane;
 import meansOfTransport.TravelShip;
-import spawners.Airport;
 import spawners.CivilAirport;
+import spawners.Harbor;
 import travelDependency.Passenger;
 
 import java.awt.Point;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -38,8 +27,11 @@ public class Dashboard {
     private MilitaryAircraft[] militaryAircraftCollection;
     private static ArrayList<PassengerPlane> passengerPlanes = new ArrayList<PassengerPlane>();
     private static ArrayList<Thread> passengerPlanesThreads = new ArrayList<Thread>();
+
+    private static ArrayList<TravelShip> travelShips = new ArrayList<TravelShip>();
+    private static ArrayList<Thread> travelShipsThreads = new ArrayList<Thread>();
+
     private AircraftCarrier[] aircraftCarrierCollection;
-    private TravelShip[] travelShipCollection;
     public static ArrayList<Passenger> waitingPassengers = new ArrayList<Passenger>();
 
     public static void createNewPassengerPlane(Pane root) {
@@ -52,6 +44,17 @@ public class Dashboard {
         passengerPlanesThreads.get(numberOfPassengerPlane).start();
         numberOfPassengerPlane++;
     }
+    public static void createNewTravelShip(Pane root) {
+        ArrayList<Harbor> destinationList =  Map.getHarbors();
+        Collections.shuffle(destinationList);
+        spawnPassengers(destinationList.get(0).getRightLaneStartingPoint());
+        TravelShip newTravelShip= new TravelShip(destinationList, root, numberOfTravelShip);
+        travelShips.add(newTravelShip);
+        travelShipsThreads.add(new Thread(newTravelShip));
+        travelShipsThreads.get(numberOfTravelShip).start();
+        numberOfTravelShip++;
+    }
+
 
     public static void spawnPassengers(Point startingPosition) {
         int numberToSpawn = (int)(Math.random() * 100) + 20;

@@ -6,10 +6,6 @@ import javafx.scene.layout.Pane;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.concurrent.Semaphore;
 
 /**
  * Created by kadash on 18.10.15.
@@ -27,14 +23,15 @@ public abstract class MeansOfTransport implements Runnable {
 
     protected int ID;
 
+    protected ImageView imageViewMeanOfTransport = new ImageView(new Image("images/aircraft.png"));
+
     public MeansOfTransport(Pane context){
         this.context = context;
+        int sizeImage = 32;
+        imageViewMeanOfTransport.setFitHeight(sizeImage);
+        imageViewMeanOfTransport.setFitWidth(sizeImage);
+        context.getChildren().add(imageViewMeanOfTransport);
     }
-
-    public void remove () {
-
-    }
-
 
     public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;

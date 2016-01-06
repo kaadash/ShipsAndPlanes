@@ -18,10 +18,6 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     protected ArrayList<Airport> route = new ArrayList<Airport>();
 
-    private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
-
-    protected ImageView imageViewPlane = new ImageView(new Image("images/aircraft.png"));
-
     public static Semaphore aeroplaneCrossRoads = new Semaphore(1);
 
     public Aeroplane( Pane context) {
@@ -31,10 +27,7 @@ public abstract class Aeroplane extends MeansOfTransport{
         this.fuel = 1000;
         this.beenIncrossRoad = false;
         this.asyncWasReportSent = false;
-        int sizeImage = 32;
-        imageViewPlane.setFitHeight(sizeImage);
-        imageViewPlane.setFitWidth(sizeImage);
-        context.getChildren().add(imageViewPlane);
+
     }
 
     public void lossOfFuel() {

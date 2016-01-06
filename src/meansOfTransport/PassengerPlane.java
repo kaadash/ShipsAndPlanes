@@ -33,7 +33,7 @@ public class PassengerPlane extends Aeroplane {
         this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
 
         this.ID = ID;
-        this.imageViewPlane.setImage(new Image(imagePath));
+        this.imageViewMeanOfTransport.setImage(new Image(imagePath));
         this.maxPassengers = 30;
     }
 
@@ -43,7 +43,7 @@ public class PassengerPlane extends Aeroplane {
             TabPane root = fxmlLoader.load(getClass().getResource("aeroplaneLayout.fxml").openStream());
             AeroplaneController aeroplaneController = (AeroplaneController) fxmlLoader.getController();
             aeroplaneController.updateView(this);
-            imageViewPlane.setOnMouseClicked(event -> {
+            imageViewMeanOfTransport.setOnMouseClicked(event -> {
                 Stage stage = new Stage();
                 stage.setTitle("Aeroplane Panel");
                 stage.setScene(new Scene(root, 450, 450));
@@ -55,8 +55,8 @@ public class PassengerPlane extends Aeroplane {
     }
 
     public void animate() {
-        imageViewPlane.setLayoutX(this.getCurrentPosition().getX());
-        imageViewPlane.setLayoutY(this.getCurrentPosition().getY());
+        imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
+        imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
         openInformationPanel();
     }
 
@@ -202,7 +202,7 @@ public class PassengerPlane extends Aeroplane {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    context.getChildren().remove(imageViewPlane);
+                                    context.getChildren().remove(imageViewMeanOfTransport);
                                 }
                             });
                             return;
@@ -239,7 +239,7 @@ public class PassengerPlane extends Aeroplane {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        context.getChildren().remove(imageViewPlane);
+                        context.getChildren().remove(imageViewMeanOfTransport);
                     }
                 });
                 return;

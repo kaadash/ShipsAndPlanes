@@ -65,7 +65,6 @@ public class Map {
         assignCordsToCorrectSpawner(leftTrackHarbor, centerTrackHarbor, rightTrackHarbor, context, "harbor");
     }
 
-
 //    Helper methods
 
 
@@ -115,6 +114,7 @@ public class Map {
             }
         }
     }
+
 
     private static void assignCordsToCorrectSpawner(ArrayList<Point> leftTrackAirports, ArrayList<Point> centerTrackAirports,
                                                     ArrayList<Point> rightTrackAirports, Pane context,
@@ -232,11 +232,19 @@ public class Map {
         }
         return cordinates;
     }
+
     public static ArrayList<CivilAirport> getCivilAirports() {
         return civilAirports;
     }
-
     public static ArrayList<MilitaryAirport> getMilitaryAirports() {
         return militaryAirports;
+    }
+
+    public static ArrayList<Harbor> getHarbors() {
+        return harbors;
+    }
+
+    public static void setHarbors(ArrayList<Harbor> harbors) {
+        Map.harbors = harbors;
     }
 }

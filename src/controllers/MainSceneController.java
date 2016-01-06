@@ -17,6 +17,10 @@ public class MainSceneController implements Initializable {
     public void createPassengerPlane() {
         Dashboard.createNewPassengerPlane(this.root);
     }
+    @FXML
+    public void createTravelShip() {
+        Dashboard.createNewTravelShip(this.root);
+    }
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
     }
