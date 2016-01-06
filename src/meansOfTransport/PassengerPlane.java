@@ -73,8 +73,8 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                     && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
                     || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))
 
-                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getRightLaneEndingPoint().getX()
-                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getRightLaneEndingPoint().getY()
+                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getX()
+                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getY()
                     ) {
 
                 passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
@@ -87,7 +87,6 @@ public class PassengerPlane extends Aeroplane implements Transporter {
 
     @Override
     public void checkAndAddRemovePassengers() {
-
         int counterOfPassengersToRemove = 0;
         ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
         for(Passenger passenger : passengersOnBoard) {
@@ -96,7 +95,6 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                     || passenger.getCurrentDestination().getX() == (int)Math.ceil(currentPosition.getX()))
                     && (passenger.getCurrentDestination().getY() == (int)Math.floor(currentPosition.getY())
                     || passenger.getCurrentDestination().getY() == (int)Math.ceil(currentPosition.getY()))) {
-
                 passenger.changeRoute();
                 Dashboard.waitingPassengers.add(passenger);
                 toRemove.add(passengersOnBoard.get(counterOfPassengersToRemove));
@@ -181,7 +179,6 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                             }
                             finally {
 //                                Leaving critical section
-//                                System.out.println("---- Wychodzę! ---- >>>> " + ID );
                                 if(destinationPointer == route.size() - 1) {
                                     destinationPointer = 0;
                                 }
@@ -214,12 +211,12 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                     travelCounter++;
                     switch (travelCounter) {
                         case 3:
+                            checkAndAddRemovePassengers();
                             currentDestination = route.get(destinationPointer).getRightLaneStartingPoint();
                             restoreFuel();
                             break;
                         case 4:
                             checkAndAddNewPassengers(destinationPointer);
-                            checkAndAddRemovePassengers();
                             currentDestination = route.get(destinationPointer).getRightLaneEndingPoint();
                             beenIncrossRoad = false;
                             travelCounter = 0;

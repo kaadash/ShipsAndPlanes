@@ -17,9 +17,6 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by kadash on 18.10.15.
- */
 public class TravelShip extends Ship implements Transporter {
     private String companyName;
 
@@ -31,6 +28,26 @@ public class TravelShip extends Ship implements Transporter {
 
     private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
 
+    public TravelShip(ArrayList<Harbor> allDestination, Pane context, int id ) {
+        super(allDestination, context);
+        this.imageViewMeanOfTransport.setImage(new Image(imagePath));
+        for (Harbor harbor : allDestination) {
+            this.route.add(harbor);
+        }
+        this.ID = id;
+        this.maxPassengers = 20;
+        this.companyName = generateCompanyName();
+        this.currentPosition = this.route.get(0).getRightLaneStartingPoint();
+        this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
+        imageViewMeanOfTransport.setFitWidth(40);
+        imageViewMeanOfTransport.setFitHeight(40);
+    }
+
+    private String generateCompanyName() {
+        String companyName[] = {"Super", "Fine", "Hello", "FaceBook", "AreYouSure"};
+        return companyName[(int)(Math.random() * companyName.length - 1)];
+    }
+
     public void openInformationPanel() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -39,24 +56,13 @@ public class TravelShip extends Ship implements Transporter {
             travelShipController.updateView(this);
             imageViewMeanOfTransport.setOnMouseClicked(event -> {
                 Stage stage = new Stage();
-                stage.setTitle("Aeroplane Panel");
+                stage.setTitle("TravelShip Panel");
                 stage.setScene(new Scene(root, 450, 450));
                 stage.show();
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public TravelShip(ArrayList<Harbor> allDestination, Pane context, int id ) {
-        super(allDestination, context);
-        this.imageViewMeanOfTransport.setImage(new Image(imagePath));
-        for (Harbor harbor : allDestination) {
-            this.route.add(harbor);
-        }
-        this.currentPosition = this.route.get(0).getRightLaneStartingPoint();
-        this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
-        imageViewMeanOfTransport.setFitWidth(40);
-        imageViewMeanOfTransport.setFitHeight(40);
     }
 
     @Override
@@ -96,7 +102,6 @@ public class TravelShip extends Ship implements Transporter {
                         try {
                             aeroplaneCrossRoads.acquire();
 //                                Critical Section
-//                            System.out.println("---- Wchodzę! ---- >>>> " + ID);
                             try {
                                 while(Math.floor(dist) >= 1){
                                     if(asyncWasReportSent) {
@@ -133,7 +138,6 @@ public class TravelShip extends Ship implements Transporter {
                             }
                             finally {
 //                                Leaving critical section
-//                                System.out.println("---- Wychodzę! ---- >>>> " + ID );
                                 if(destinationPointer == route.size() - 1) {
                                     destinationPointer = 0;
                                 }
@@ -166,12 +170,11 @@ public class TravelShip extends Ship implements Transporter {
                     travelCounter++;
                     switch (travelCounter) {
                         case 3:
+                            checkAndAddRemovePassengers();
                             currentDestination = route.get(destinationPointer).getRightLaneStartingPoint();
-//                            restoreFuel();
                             break;
                         case 4:
                             checkAndAddNewPassengers(destinationPointer);
-                            checkAndAddRemovePassengers();
                             currentDestination = route.get(destinationPointer).getRightLaneEndingPoint();
                             beenIncrossRoad = false;
                             travelCounter = 0;
@@ -208,7 +211,6 @@ public class TravelShip extends Ship implements Transporter {
 
     @Override
     public void checkAndAddNewPassengers(int destinationPointer) {
-        System.out.println("Checking and adding " + Dashboard.waitingPassengers.get(0).getCurrentPosition());
         int counterOfPassengersToAdd = 0;
         ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
         for(Passenger passenger : Dashboard.waitingPassengers) {
@@ -219,8 +221,8 @@ public class TravelShip extends Ship implements Transporter {
                     && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
                     || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))
 
-                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getRightLaneEndingPoint().getX()
-                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getRightLaneEndingPoint().getY()
+                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getX()
+                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getY()
                     ) {
                 passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
                 toRemove.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));

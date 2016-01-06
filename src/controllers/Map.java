@@ -228,7 +228,7 @@ public class Map {
     public static ArrayList<Point> getDestinationCord (ArrayList<CivilAirport> destination) {
         ArrayList<Point> cordinates = new ArrayList<Point>();
         for (int i = 0; i < destination.size(); i++) {
-            cordinates.add(destination.get(i).getRightLaneEndingPoint());
+            cordinates.add(destination.get(i).getLeftLaneStartingPoint());
         }
         return cordinates;
     }
