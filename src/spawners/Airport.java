@@ -9,17 +9,7 @@ import java.awt.Point;
 /**
  * Created by kadash on 18.10.15.
  */
-public abstract class Airport {
-
-    protected Point position;
-
-    protected Point leftLaneStartingPoint;
-
-    protected Point rightLaneStartingPoint;
-
-    protected Point leftLaneEndingPoint;
-
-    protected Point rightLaneEndingPoint;
+public abstract class Airport extends Spawner {
 
     protected String imagePath;
 
@@ -27,9 +17,8 @@ public abstract class Airport {
 
     protected int currentNumberOfPlanes;
 
-
     public Airport(Point airportPosition) {
-        this.position = airportPosition;
+        super(airportPosition);
     }
 
     public void draw (Pane context, String imagePath) {
@@ -44,46 +33,7 @@ public abstract class Airport {
         context.getChildren().add(imageView);
     }
 
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
     public String getImagePath() {
         return imagePath;
     }
-    public void setLeftLaneStartingPoint(Point leftLaneStartingPoint) {
-        this.leftLaneStartingPoint = leftLaneStartingPoint;
-    }
-
-    public Point getRightLaneStartingPoint() {
-        return rightLaneStartingPoint;
-    }
-
-    public void setRightLaneStartingPoint(Point rightLaneStartingPoint) {
-        this.rightLaneStartingPoint = rightLaneStartingPoint;
-    }
-
-    public Point getLeftLaneEndingPoint() {
-        return leftLaneEndingPoint;
-    }
-
-    public void setLeftLaneEndingPoint(Point leftLaneEndingPoint) {
-        this.leftLaneEndingPoint = leftLaneEndingPoint;
-    }
-
-    public Point getRightLaneEndingPoint() {
-        return rightLaneEndingPoint;
-    }
-
-    public void setRightLaneEndingPoint(Point rightLaneEndingPoint) {
-        this.rightLaneEndingPoint = rightLaneEndingPoint;
-    }
-
-    public Point getLeftLaneStartingPoint() {
-        return leftLaneStartingPoint;
-    }
-
 }

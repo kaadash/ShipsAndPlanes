@@ -1,6 +1,5 @@
 package controllers;
 
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import meansOfTransport.MilitaryAircraft;
@@ -18,21 +17,18 @@ public class Map {
     /**
      * draw Harbours and Airports
      */
-    private String backgroundImgPath;
-    private int sizeX;
-    private int sizeY;
-
     private static ArrayList<CivilAirport> civilAirports = new ArrayList<CivilAirport>();
 
     private static ArrayList<MilitaryAirport> militaryAirports = new ArrayList<MilitaryAirport>();
 
     private ArrayList<MilitaryAircraft> militaryAircrafts;
 
-    private ArrayList<Harbor> harbors;
+    private static ArrayList<Harbor> harbors = new ArrayList<Harbor>();
 
     public static void prepareMap(Pane stack) {
         generateMilitaryAirports(10, stack);
         generateCivilAirports(10, stack);
+        generateHarbors(10, stack);
     }
 
     private static Point centralPoint = new Point(550, 350);
@@ -46,7 +42,7 @@ public class Map {
         segregateCords(leftTrackAirports, centerTrackAirports, rightTrackAirports, context,
                 "civil", numberOfAirports, 250);
 
-        assignCordsToCorrectAirport(leftTrackAirports, centerTrackAirports, rightTrackAirports, context, "civil");
+        assignCordsToCorrectSpawner(leftTrackAirports, centerTrackAirports, rightTrackAirports, context, "civil");
     }
 
     public static void generateMilitaryAirports(int numberOfAirports, Pane context) {
@@ -56,9 +52,17 @@ public class Map {
 
         segregateCords(leftTrackAirports, centerTrackAirports, rightTrackAirports, context,
                 "military", numberOfAirports, 350);
-        assignCordsToCorrectAirport(leftTrackAirports, centerTrackAirports, rightTrackAirports, context, "military");
+        assignCordsToCorrectSpawner(leftTrackAirports, centerTrackAirports, rightTrackAirports, context, "military");
+    }
 
-//        Adding cities into global military airports
+    public static void generateHarbors(int numberOfHarbors, Pane context) {
+        ArrayList<Point> leftTrackHarbor = new ArrayList<Point>();
+        ArrayList<Point> centerTrackHarbor = new ArrayList<Point>();
+        ArrayList<Point> rightTrackHarbor = new ArrayList<Point>();
+
+        segregateCords(leftTrackHarbor, centerTrackHarbor, rightTrackHarbor, context,
+                "harbor", numberOfHarbors, 250);
+        assignCordsToCorrectSpawner(leftTrackHarbor, centerTrackHarbor, rightTrackHarbor, context, "harbor");
     }
 
 
@@ -94,6 +98,10 @@ public class Map {
                             militaryAirport.draw(context, militaryAirport.getImagePath());
                             militaryAirports.add(militaryAirport);
                             break;
+                        case "harbor":
+                            Harbor harbor = new Harbor(cord);
+                            harbors.add(harbor);
+                            break;
                         default:
                             System.out.println("bad type -> " + type);
                             break;
@@ -108,31 +116,7 @@ public class Map {
         }
     }
 
-    public static ArrayList<Point> generateCordsInCircle(int numberOfAirports, int distance) {
-        ArrayList<Point> cords = new ArrayList<Point>();
-        double sizeOfStep = 2 * Math.PI/numberOfAirports;
-        double angle = 0;
-
-//        Generator of city in circle
-        for (int i = 0; i < numberOfAirports; i++) {
-            angle +=sizeOfStep;
-// I know that for example A2 isn't name of variable, it is name of highway
-            int y2 = (int)Math.floor( distance * Math.sin( angle + 0.10 ) );
-            int x2 = (int)Math.floor( distance * Math.cos(angle + 0.10) );
-            cords.add(new Point(x2, y2));
-
-            int y = (int)Math.floor( distance * Math.sin( angle ) );
-            int x = (int)Math.floor( distance * Math.cos( angle ) );
-            cords.add(new Point(x, y));
-
-            int y1 = (int)Math.floor( distance * Math.sin(angle + 0.2) );
-            int x1 = (int)Math.floor( distance * Math.cos( angle + 0.2) );
-            cords.add(new Point(x1, y1));
-        }
-        return cords;
-    }
-
-    private static void assignCordsToCorrectAirport(ArrayList<Point> leftTrackAirports, ArrayList<Point> centerTrackAirports,
+    private static void assignCordsToCorrectSpawner(ArrayList<Point> leftTrackAirports, ArrayList<Point> centerTrackAirports,
                                                     ArrayList<Point> rightTrackAirports, Pane context,
                                                     String type){
         int civilAirportLoopCounter = 0;
@@ -154,9 +138,6 @@ public class Map {
 
                     civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(leftLineEndingPoint);
                     civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightLineEndingPoint);
-
-//            Draw Lines on screen
-
 
                     civilAirportLoopCounter++;
                 }
@@ -193,10 +174,55 @@ public class Map {
                     civilAirportLoopCounter++;
                 }
                 break;
+            case "harbor":
+                for(Point track : leftTrackAirports) {
+                    Point centerCord = centerTrackAirports.get(civilAirportLoopCounter);
+                    Point rightCord = rightTrackAirports.get(civilAirportLoopCounter);
+
+                    harbors.get(civilAirportLoopCounter).setLeftLaneStartingPoint(track);
+                    harbors.get(civilAirportLoopCounter).setRightLaneStartingPoint(rightCord);
+
+                    Point leftLineEndingPoint = new Point((int)(track.getX() + centralPoint.getX() - centerCord.getX()),
+                            (int)(track.getY() + centralPoint.getY() - centerCord.getY()));
+
+                    Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + centralPoint.getX()),
+                            (int)(rightCord.getY() - centerCord.getY() + centralPoint.getY()));
+
+                    harbors.get(civilAirportLoopCounter).setLeftLaneEndingPoint(leftLineEndingPoint);
+                    harbors.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightLineEndingPoint);
+
+                    civilAirportLoopCounter++;
+                }
+                break;
             default:
                 System.out.println("bad type -> " + type);
                 break;
         }
+    }
+
+    public static ArrayList<Point> generateCordsInCircle(int numberOfAirports, int distance) {
+        ArrayList<Point> cords = new ArrayList<Point>();
+        double sizeOfStep = 2 * Math.PI/numberOfAirports;
+        double angle = 0;
+
+//        Generator of city in circle
+
+        for (int i = 0; i < numberOfAirports; i++) {
+            angle +=sizeOfStep;
+// I know that for example A2 isn't name of variable, it is name of highway
+            int y2 = (int)Math.floor( distance * Math.sin( angle + 0.10 ) );
+            int x2 = (int)Math.floor( distance * Math.cos(angle + 0.10) );
+            cords.add(new Point(x2, y2));
+
+            int y = (int)Math.floor( distance * Math.sin( angle ) );
+            int x = (int)Math.floor( distance * Math.cos( angle ) );
+            cords.add(new Point(x, y));
+
+            int y1 = (int)Math.floor( distance * Math.sin(angle + 0.2) );
+            int x1 = (int)Math.floor( distance * Math.cos( angle + 0.2) );
+            cords.add(new Point(x1, y1));
+        }
+        return cords;
     }
 
     public static ArrayList<Point> getDestinationCord (ArrayList<CivilAirport> destination) {
