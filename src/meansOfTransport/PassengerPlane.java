@@ -113,9 +113,9 @@ public class PassengerPlane extends Aeroplane {
     @Override
     public void run() {
         int destinationPointer = 1;
+        int travelCounter = 0;
 //        Check if in starting city, there are passengers wanting to travel
         checkAndAddNewPassengers(destinationPointer);
-
 
         double delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
         double delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
@@ -127,6 +127,7 @@ public class PassengerPlane extends Aeroplane {
                 double currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                 double currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
                 double dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
+
                 if(asyncWasReportSent) {
                     delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                     delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
@@ -141,7 +142,8 @@ public class PassengerPlane extends Aeroplane {
                     double y_move = ratio * delta_y;
                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                             y_move + getCurrentPosition().getY()));
-                    if(dist < 70 && !beenIncrossRoad && dist > 2) {
+
+                    if(dist < 70 && !beenIncrossRoad && dist > 2 ) {
                         try {
                             aeroplaneCrossRoads.acquire();
 //                                Critical Section
@@ -161,8 +163,21 @@ public class PassengerPlane extends Aeroplane {
                                     currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                                     currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
                                     dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
+
+                                    if((Math.floor(dist) < 4) && travelCounter == 0) {
+                                        currentDestination = route.get(destinationPointer).getLeftLaneEndingPoint();
+                                        delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
+                                        delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
+                                        goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                                        ratio = speed_per_tick / goal_dist;
+                                        x_move = ratio * delta_x;
+                                        y_move = ratio * delta_y;
+                                        travelCounter++;
+                                    }
+
                                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                                             y_move + getCurrentPosition().getY()));
+
                                     animate();
                                     Thread.sleep(35);
                                 }
@@ -175,17 +190,19 @@ public class PassengerPlane extends Aeroplane {
                                 }
                                 currentPosition.setLocation(this.getCurrentPosition().getX(),
                                         this.getCurrentPosition().getY());
-                                currentDestination = route.get(destinationPointer).getLeftLaneEndingPoint();
                                 destinationPointer++;
-                                beenIncrossRoad = true;
+                                travelCounter++;
+                                if (travelCounter == 2) {
+                                    currentDestination = route.get(destinationPointer).getLeftLaneStartingPoint();
+                                    beenIncrossRoad = true;
+                                    aeroplaneCrossRoads.release();
+                                }
                                 delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                                 delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
                                 goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
-                                aeroplaneCrossRoads.release();
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-//                            this.context.getChildren().remove(imageViewPlane);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -197,11 +214,23 @@ public class PassengerPlane extends Aeroplane {
                     }
 
                 } else {
-                    checkAndAddNewPassengers(destinationPointer);
-                    checkAndAddRemovePassengers();
-                    restoreFuel();
-                    beenIncrossRoad = false;
-                    currentDestination = crossRoadPoint;
+                    travelCounter++;
+                    switch (travelCounter) {
+                        case 3:
+                            currentDestination = route.get(destinationPointer).getRightLaneStartingPoint();
+                            restoreFuel();
+                            break;
+                        case 4:
+                            checkAndAddNewPassengers(destinationPointer);
+                            checkAndAddRemovePassengers();
+                            currentDestination = route.get(destinationPointer).getRightLaneEndingPoint();
+                            beenIncrossRoad = false;
+                            travelCounter = 0;
+                            break;
+                        default:
+                            System.out.println("error");
+                            break;
+                    }
                     currentPosition.setLocation(this.getCurrentPosition().getX(),
                             this.getCurrentPosition().getY());
                     delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();

@@ -35,6 +35,8 @@ public class Map {
         generateCivilAirports(10, stack);
     }
 
+    private static Point centralPoint = new Point(550, 350);
+
     public static ArrayList<Point> generateCordsInCircle(int numberOfAirports, int distance) {
         ArrayList<Point> cords = new ArrayList<Point>();
         double sizeOfStep = 2 * Math.PI/numberOfAirports;
@@ -44,16 +46,16 @@ public class Map {
         for (int i = 0; i < numberOfAirports; i++) {
             angle +=sizeOfStep;
 // I know that for example A2 isn't name of variable, it is name of highway
-            int y2 = (int)Math.floor( distance * Math.sin( angle + 0.20 ) );
-            int x2 = (int)Math.floor( distance * Math.cos(angle + 0.20) );
+            int y2 = (int)Math.floor( distance * Math.sin( angle + 0.10 ) );
+            int x2 = (int)Math.floor( distance * Math.cos(angle + 0.10) );
             cords.add(new Point(x2, y2));
 
             int y = (int)Math.floor( distance * Math.sin( angle ) );
             int x = (int)Math.floor( distance * Math.cos( angle ) );
             cords.add(new Point(x, y));
 
-            int y1 = (int)Math.floor( distance * Math.sin(angle + 0.4) );
-            int x1 = (int)Math.floor( distance * Math.cos( angle + 0.4) );
+            int y1 = (int)Math.floor( distance * Math.sin(angle + 0.2) );
+            int x1 = (int)Math.floor( distance * Math.cos( angle + 0.2) );
             cords.add(new Point(x1, y1));
         }
         return cords;
@@ -71,7 +73,7 @@ public class Map {
 
         for (Point cord: cords){
             civilAirportLoopCounter++;
-            cord.setLocation(cord.getX() + 550, cord.getY() + 350);
+            cord.setLocation(cord.getX() + centralPoint.getX(), cord.getY() + centralPoint.getY());
             int loopModulo = civilAirportLoopCounter % 3;
             switch (loopModulo) {
                 case 0: leftTrackAirports.add(cord);
@@ -97,11 +99,11 @@ public class Map {
             civilAirports.get(civilAirportLoopCounter).setLeftLaneStartingPoint(track);
             civilAirports.get(civilAirportLoopCounter).setRightLaneStartingPoint(rightCord);
 
-            Point leftLineEndingPoint = new Point((int)(track.getX() + 550 - centerCord.getX()),
-                    (int)(track.getY() + 350 - centerCord.getY()));
+            Point leftLineEndingPoint = new Point((int)(track.getX() + centralPoint.getX() - centerCord.getX()),
+                    (int)(track.getY() + centralPoint.getY() - centerCord.getY()));
 
-            Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + 550),
-                    (int)(rightCord.getY() - centerCord.getY() + 350));
+            Point rightLineEndingPoint = new Point( (int)(rightCord.getX() - centerCord.getX() + centralPoint.getX()),
+                    (int)(rightCord.getY() - centerCord.getY() + centralPoint.getY()));
 
             civilAirports.get(civilAirportLoopCounter).setLeftLaneEndingPoint(leftLineEndingPoint);
             civilAirports.get(civilAirportLoopCounter).setRightLaneEndingPoint(rightLineEndingPoint);
@@ -109,7 +111,7 @@ public class Map {
             Line leftLine = new Line(track.getX(), track.getY(),
                     leftLineEndingPoint.getX(), leftLineEndingPoint.getY() );
 
-            Line centerLine = new Line(centerCord.getX(), centerCord.getY(), 550, 350);
+            Line centerLine = new Line(centerCord.getX(), centerCord.getY(), centralPoint.getX(), centralPoint.getY());
             Line rightLine = new Line(rightCord.getX(), rightCord.getY(),
                     rightLineEndingPoint.getX(), rightLineEndingPoint.getY());
             context.getChildren().addAll(leftLine, centerLine, rightLine);
@@ -121,7 +123,7 @@ public class Map {
         ArrayList<Point> cords = generateCordsInCircle(numberOfAirports, 350);
 //        Adding cities into global military airports
         for (Point cord: cords){
-            cord.setLocation(cord.getX() + 550, cord.getY() + 350);
+            cord.setLocation(cord.getX() + centralPoint.getX(), cord.getY() + centralPoint.getY());
             MilitaryAirport airport = new MilitaryAirport(cord);
             airport.draw(context, airport.getImagePath());
             militaryAirports.add(airport);

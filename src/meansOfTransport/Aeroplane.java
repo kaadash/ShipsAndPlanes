@@ -31,7 +31,7 @@ public abstract class Aeroplane extends MeansOfTransport{
         this.fuel = 1000;
         this.beenIncrossRoad = false;
         this.asyncWasReportSent = false;
-        int sizeImage = 50;
+        int sizeImage = 32;
         imageViewPlane.setFitHeight(sizeImage);
         imageViewPlane.setFitWidth(sizeImage);
         context.getChildren().add(imageViewPlane);
