@@ -2,6 +2,7 @@ package meansOfTransport;
 
 import controllers.AeroplaneController;
 import controllers.Dashboard;
+import interfaces.Transporter;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,7 +18,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PassengerPlane extends Aeroplane {
+public class PassengerPlane extends Aeroplane implements Transporter {
     private int maxPassengers;
 
     private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
@@ -60,7 +61,8 @@ public class PassengerPlane extends Aeroplane {
         openInformationPanel();
     }
 
-    protected void checkAndAddNewPassengers(int destinationPointer) {
+    @Override
+    public void checkAndAddNewPassengers(int destinationPointer) {
         int counterOfPassengersToAdd = 0;
         ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
         for(Passenger passenger : Dashboard.waitingPassengers) {
@@ -71,11 +73,10 @@ public class PassengerPlane extends Aeroplane {
                     && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
                     || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))
 
-                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getPosition().getX()
-                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getPosition().getX()
+                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getRightLaneEndingPoint().getX()
+                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getRightLaneEndingPoint().getY()
                     ) {
 
-                numberOfStaff++;
                 passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
                 toRemove.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
             }
@@ -84,7 +85,8 @@ public class PassengerPlane extends Aeroplane {
         Dashboard.waitingPassengers.removeAll(toRemove);
     }
 
-    protected void checkAndAddRemovePassengers() {
+    @Override
+    public void checkAndAddRemovePassengers() {
 
         int counterOfPassengersToRemove = 0;
         ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
@@ -96,7 +98,6 @@ public class PassengerPlane extends Aeroplane {
                     || passenger.getCurrentDestination().getY() == (int)Math.ceil(currentPosition.getY()))) {
 
                 passenger.changeRoute();
-                numberOfStaff--;
                 Dashboard.waitingPassengers.add(passenger);
                 toRemove.add(passengersOnBoard.get(counterOfPassengersToRemove));
             }

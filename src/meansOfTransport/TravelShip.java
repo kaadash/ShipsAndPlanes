@@ -1,6 +1,8 @@
 package meansOfTransport;
 
+import controllers.Dashboard;
 import controllers.TravelShipController;
+import interfaces.Transporter;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by kadash on 18.10.15.
  */
-public class TravelShip extends Ship {
+public class TravelShip extends Ship implements Transporter {
     private String companyName;
 
     private final String imagePath = "images/ship.png";
@@ -62,7 +64,7 @@ public class TravelShip extends Ship {
         int destinationPointer = 1;
         int travelCounter = 0;
 //        Check if in starting city, there are passengers wanting to travel
-//        checkAndAddNewPassengers(destinationPointer);
+        checkAndAddNewPassengers(destinationPointer);
 
         double delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
         double delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
@@ -97,16 +99,16 @@ public class TravelShip extends Ship {
 //                            System.out.println("---- Wchodzę! ---- >>>> " + ID);
                             try {
                                 while(Math.floor(dist) >= 1){
-//                                    if(asyncWasReportSent) {
-//                                        delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-//                                        delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
-//                                        goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
-//                                        ratio = speed_per_tick / goal_dist;
-//                                        x_move = ratio * delta_x;
-//                                        y_move = ratio * delta_y;
-//                                        aeroplaneCrossRoads.release();
-//                                        asyncWasReportSent = false;
-//                                    }
+                                    if(asyncWasReportSent) {
+                                        delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
+                                        delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
+                                        goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                                        ratio = speed_per_tick / goal_dist;
+                                        x_move = ratio * delta_x;
+                                        y_move = ratio * delta_y;
+                                        aeroplaneCrossRoads.release();
+                                        asyncWasReportSent = false;
+                                    }
                                     currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
                                     currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
                                     dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
@@ -168,8 +170,8 @@ public class TravelShip extends Ship {
 //                            restoreFuel();
                             break;
                         case 4:
-//                            checkAndAddNewPassengers(destinationPointer);
-//                            checkAndAddRemovePassengers();
+                            checkAndAddNewPassengers(destinationPointer);
+                            checkAndAddRemovePassengers();
                             currentDestination = route.get(destinationPointer).getRightLaneEndingPoint();
                             beenIncrossRoad = false;
                             travelCounter = 0;
@@ -203,6 +205,54 @@ public class TravelShip extends Ship {
             });
         }
     }
+
+    @Override
+    public void checkAndAddNewPassengers(int destinationPointer) {
+        System.out.println("Checking and adding " + Dashboard.waitingPassengers.get(0).getCurrentPosition());
+        int counterOfPassengersToAdd = 0;
+        ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
+        for(Passenger passenger : Dashboard.waitingPassengers) {
+
+//            This is the most ugly condition ever :c
+            if ((passenger.getCurrentPosition().getX() == (int)Math.floor(currentPosition.getX())
+                    || passenger.getCurrentPosition().getX() == (int)Math.ceil(currentPosition.getX()))
+                    && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
+                    || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))
+
+                    && passenger.getCurrentDestination().getX() == route.get(destinationPointer).getRightLaneEndingPoint().getX()
+                    && passenger.getCurrentDestination().getY() == route.get(destinationPointer).getRightLaneEndingPoint().getY()
+                    ) {
+                passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+                toRemove.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+            }
+            counterOfPassengersToAdd++;
+        }
+        Dashboard.waitingPassengers.removeAll(toRemove);
+    }
+
+    @Override
+    public void checkAndAddRemovePassengers() {
+
+        int counterOfPassengersToRemove = 0;
+        ArrayList<Passenger> toRemove = new ArrayList<Passenger>();
+        for(Passenger passenger : passengersOnBoard) {
+//            This is the most ugly condition ever :c
+            if((passenger.getCurrentDestination().getX() == (int)Math.floor(currentPosition.getX())
+                    || passenger.getCurrentDestination().getX() == (int)Math.ceil(currentPosition.getX()))
+                    && (passenger.getCurrentDestination().getY() == (int)Math.floor(currentPosition.getY())
+                    || passenger.getCurrentDestination().getY() == (int)Math.ceil(currentPosition.getY()))) {
+
+                passenger.changeRoute();
+                Dashboard.waitingPassengers.add(passenger);
+                toRemove.add(passengersOnBoard.get(counterOfPassengersToRemove));
+            }
+            counterOfPassengersToRemove++;
+        }
+        passengersOnBoard.removeAll(toRemove);
+    }
+
+
+
     public void animate() {
         imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
         imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());

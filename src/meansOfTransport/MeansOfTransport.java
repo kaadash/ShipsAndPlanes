@@ -38,10 +38,10 @@ public abstract class MeansOfTransport implements Runnable {
     public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;
     }
+
     public Point2D getCurrentPosition() {
         return currentPosition;
     }
-
     public Point2D getCurrentDestination() {
         return currentDestination;
     }
@@ -65,11 +65,12 @@ public abstract class MeansOfTransport implements Runnable {
     public int getID() {
         return ID;
     }
-    public void setAsyncWasReportSent(boolean asyncWasReportSent) {
-        this.asyncWasReportSent = asyncWasReportSent;
-    }
+
     public boolean isAsyncWasReportSent() {
         return asyncWasReportSent;
     }
 
+    public void setAsyncWasReportSent(boolean asyncWasReportSent) {
+        this.asyncWasReportSent = asyncWasReportSent;
+    }
 }
