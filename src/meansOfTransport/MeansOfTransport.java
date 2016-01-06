@@ -23,6 +23,8 @@ public abstract class MeansOfTransport implements Runnable {
 
     protected int ID;
 
+    protected boolean asyncWasReportSent;
+
     protected ImageView imageViewMeanOfTransport = new ImageView(new Image("images/aircraft.png"));
 
     public MeansOfTransport(Pane context){
@@ -63,4 +65,11 @@ public abstract class MeansOfTransport implements Runnable {
     public int getID() {
         return ID;
     }
+    public void setAsyncWasReportSent(boolean asyncWasReportSent) {
+        this.asyncWasReportSent = asyncWasReportSent;
+    }
+    public boolean isAsyncWasReportSent() {
+        return asyncWasReportSent;
+    }
+
 }

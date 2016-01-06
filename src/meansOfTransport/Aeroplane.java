@@ -14,8 +14,6 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     protected int fuel;
 
-    protected boolean asyncWasReportSent;
-
     protected ArrayList<Airport> route = new ArrayList<Airport>();
 
     public static Semaphore aeroplaneCrossRoads = new Semaphore(1);
@@ -62,13 +60,5 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     public void setBeenIncrossRoad(boolean beenIncrossRoad) {
         this.beenIncrossRoad = beenIncrossRoad;
-    }
-
-    public boolean isAsyncWasReportSent() {
-        return asyncWasReportSent;
-    }
-
-    public void setAsyncWasReportSent(boolean asyncWasReportSent) {
-        this.asyncWasReportSent = asyncWasReportSent;
     }
 }

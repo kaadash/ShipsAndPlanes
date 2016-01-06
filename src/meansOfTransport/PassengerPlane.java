@@ -139,7 +139,7 @@ public class PassengerPlane extends Aeroplane {
                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                             y_move + getCurrentPosition().getY()));
 
-                    if(dist < 70 && !beenIncrossRoad && dist > 2 ) {
+                    if(dist < 110 && !beenIncrossRoad && dist > 2 ) {
                         try {
                             aeroplaneCrossRoads.acquire();
 //                                Critical Section
