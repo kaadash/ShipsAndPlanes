@@ -25,6 +25,10 @@ public class MainSceneController implements Initializable {
     public void createAiracraftCarrier() {
         Dashboard.createNewAircraftCarrier(this.root);
     }
+    @FXML
+    public void createMilitaryAircraft() {
+        Dashboard.createNewMilitaryAircraft(this.root);
+    }
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
     }

@@ -54,8 +54,8 @@ public class TravelShipController implements Initializable {
         travelShipContext.setAsyncWasReportSent(true);
     }
     @FXML
-    private void removeTravelShip(){
-        Dashboard.removePassengerPlane(travelShipContext.getID());
+    public void removeTravelShip(){
+        Dashboard.removeTravelShip(travelShipContext.getID());
     }
 
     public void updateView(TravelShip travelShip) {
