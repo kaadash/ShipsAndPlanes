@@ -9,10 +9,11 @@ import java.util.ArrayList;
 /**
  * Created by kadash on 18.10.15.
  */
-public class MilitaryAircraft extends Aeroplane {
+public class MilitaryAircraft extends Aeroplane  {
     private String ammoType;
-    public MilitaryAircraft(Pane context) {
+    public MilitaryAircraft(Pane context, int id) {
         super(context);
+        this.ID = id;
     }
 
 }

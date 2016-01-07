@@ -24,12 +24,14 @@ public class Dashboard {
     private static int numberOfTravelShip = 0;
     private static int numberOfPassenger = 0;
 
-    private MilitaryAircraft[] militaryAircraftCollection;
     private static ArrayList<PassengerPlane> passengerPlanes = new ArrayList<PassengerPlane>();
     private static ArrayList<Thread> passengerPlanesThreads = new ArrayList<Thread>();
 
     private static ArrayList<TravelShip> travelShips = new ArrayList<TravelShip>();
     private static ArrayList<Thread> travelShipsThreads = new ArrayList<Thread>();
+
+    private static ArrayList<AircraftCarrier> aircraftCarriers = new ArrayList<AircraftCarrier>();
+    private static ArrayList<Thread> aircraftCarriersThreads = new ArrayList<Thread>();
 
     private AircraftCarrier[] aircraftCarrierCollection;
     public static ArrayList<Passenger> waitingPassengers = new ArrayList<Passenger>();
@@ -55,6 +57,15 @@ public class Dashboard {
         numberOfTravelShip++;
     }
 
+    public static void createNewAircraftCarrier(Pane root) {
+        ArrayList<Harbor> destinationList =  Map.getHarbors();
+        Collections.shuffle(destinationList);
+        AircraftCarrier newAircraftCarrier= new AircraftCarrier(destinationList, root, numberOfAircraftCarrier);
+        aircraftCarriers.add(newAircraftCarrier);
+        aircraftCarriersThreads.add(new Thread(newAircraftCarrier));
+        aircraftCarriersThreads.get(numberOfAircraftCarrier).start();
+        numberOfAircraftCarrier++;
+    }
 
     public static void spawnPassengers(Point startingPosition) {
         int numberToSpawn = (int)(Math.random() * 100) + 20;
