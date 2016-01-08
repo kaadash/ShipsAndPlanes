@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import meansOfTransport.Aeroplane;
+import meansOfTransport.MilitaryAircraft;
 import meansOfTransport.PassengerPlane;
 import travelDependency.Passenger;
 
@@ -22,13 +23,11 @@ import java.util.ResourceBundle;
 /**
  * Created by kadash on 29.12.15.
  */
-public class AeroplaneController implements Initializable {
-    private PassengerPlane passengerPlaneContext;
+public class MilitaryAircraftController implements Initializable {
+    private MilitaryAircraft militaryAircraftContext;
 
     @FXML
     private Label fuelValueLabel;
-    @FXML
-    private Label passengersValueLabel;
     @FXML
     private Label currentPositionLabel;
     @FXML
@@ -36,12 +35,12 @@ public class AeroplaneController implements Initializable {
     @FXML
     private Label numberOfStaffLabel;
     @FXML
+    private Label ammoTypeLabel;
+    @FXML
     private Label currentDestinationLabel;
     @FXML
-    private TableView<Passenger> tableView;
-    @FXML
     public void reportIssue() {
-        Point2D currentPosition = passengerPlaneContext.getCurrentPosition();
+        Point2D currentPosition = militaryAircraftContext.getCurrentPosition();
         double minDist = Integer.MAX_VALUE;
         Point2D minDistDestination = new Point2D.Double();
         for(Point civilAirport : Map.getDestinationCord(Map.getCivilAirports())) {
@@ -53,29 +52,26 @@ public class AeroplaneController implements Initializable {
                 minDistDestination.setLocation(civilAirport.getX(), civilAirport.getY());
             }
         }
-        passengerPlaneContext.setCurrentDestination(minDistDestination);
-        passengerPlaneContext.setAsyncWasReportSent(true);
+        militaryAircraftContext.setCurrentDestination(minDistDestination);
+        militaryAircraftContext.setAsyncWasReportSent(true);
     }
     @FXML
-    private void deletePassengerPlane(){
-        Dashboard.removePassengerPlane(passengerPlaneContext.getID());
+    private void removeMilitaryAircraft(){
+        Dashboard.removePassengerPlane(militaryAircraftContext.getID());
     }
 
 
     private StringProperty text = new SimpleStringProperty(this, "text", "");
 
-    public void updateView(PassengerPlane passengerPlane) {
-        passengerPlaneContext = passengerPlane;
+    public void updateView(MilitaryAircraft militaryAircraft) {
+        militaryAircraftContext = militaryAircraft;
 
-        fuelValueLabel.setText(Integer.toString(passengerPlane.getFuel()));
-        numberOfStaffLabel.setText(Integer.toString(passengerPlane.getNumberOfStaff()));
-        passengersValueLabel.setText(Integer.toString(passengerPlane.getPassengersOnBoard().size()) +
-                "/" + passengerPlane.getMaxPassengers());
-        currentPositionLabel.setText(passengerPlane.getCurrentPosition().toString());
-        IDLabel.setText(Integer.toString(passengerPlane.getID()));
-        currentDestinationLabel.setText(passengerPlane.getCurrentDestination().toString());
-        ObservableList<Passenger> data = FXCollections.observableArrayList(passengerPlane.getPassengersOnBoard());
-        tableView.setItems(data);
+        fuelValueLabel.setText(Integer.toString(militaryAircraft.getFuel()));
+        numberOfStaffLabel.setText(Integer.toString(militaryAircraft.getNumberOfStaff()));
+        currentPositionLabel.setText(militaryAircraft.getCurrentPosition().toString());
+        IDLabel.setText(Integer.toString(militaryAircraft.getID()));
+        ammoTypeLabel.setText(militaryAircraftContext.getAmmoType());
+        currentDestinationLabel.setText(militaryAircraft.getCurrentDestination().toString());
     }
 
     @Override

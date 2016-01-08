@@ -1,16 +1,23 @@
 package meansOfTransport;
 
+import controllers.AeroplaneController;
 import controllers.Dashboard;
+import controllers.MilitaryAircraftController;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import spawners.Airport;
 import spawners.Harbor;
 import spawners.MilitaryAirport;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,21 +28,23 @@ public class MilitaryAircraft extends Aeroplane  {
 
     private final String imagePath = "images/airplane.png";
 
-    public MilitaryAircraft(ArrayList<MilitaryAirport> allDestination, Pane context, int id) {
+    public MilitaryAircraft(ArrayList<MilitaryAirport> allDestination, Pane context, int id,
+                            int IDOfSpawningAircraftCarrier) {
         super(context);
         for (MilitaryAirport militaryAirport : allDestination) {
             this.route.add(militaryAirport );
         }
         this.ID = id;
         this.imageViewMeanOfTransport.setImage(new Image(imagePath));
-        int randomAircraftCarrierIndex = (int)(Math.random() * Dashboard.getAircraftCarriers().size() - 1);
-        this.currentPosition = Dashboard.getAircraftCarriers().get(randomAircraftCarrierIndex).currentPosition;
+        AircraftCarrier spawner = Dashboard.getAircraftCarriers().get(IDOfSpawningAircraftCarrier);
+        this.currentPosition = spawner.currentPosition;
+        this.ammoType = spawner.getAmmoType();
         this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
     }
     public void animate() {
         imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
         imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
-//        openInformationPanel();
+        openInformationPanel();
     }
     @Override
     public void run() {
@@ -179,9 +188,27 @@ public class MilitaryAircraft extends Aeroplane  {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
+                    openInformationPanel();
                     animate();
+                    lossOfFuel();
                 }
             });
+        }
+    }
+    public void openInformationPanel() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            TabPane root = fxmlLoader.load(getClass().getResource("militaryAircraftLayout.fxml").openStream());
+            MilitaryAircraftController militaryAircraftController = (MilitaryAircraftController) fxmlLoader.getController();
+            militaryAircraftController.updateView(this);
+            imageViewMeanOfTransport.setOnMouseClicked(event -> {
+                Stage stage = new Stage();
+                stage.setTitle("militaryAircraft Panel");
+                stage.setScene(new Scene(root, 450, 450));
+                stage.show();
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     public String getAmmoType() {

@@ -73,7 +73,10 @@ public class Dashboard {
     public static void createNewMilitaryAircraft(Pane root) {
         ArrayList<MilitaryAirport> destinationList = Map.getMilitaryAirports();
         Collections.shuffle(destinationList);
-        MilitaryAircraft newMilitaryAircraft= new MilitaryAircraft(destinationList, root, numberOfMilitaryAircraft);
+        int indexOfSpawner = (int)(Math.random() * aircraftCarriers.size() - 1);
+        MilitaryAircraft newMilitaryAircraft= new MilitaryAircraft(destinationList, root,
+                numberOfMilitaryAircraft, indexOfSpawner);
+
         militaryAircrafts.add(newMilitaryAircraft);
         militaryAircraftsThreads.add(new Thread(newMilitaryAircraft));
         militaryAircraftsThreads.get(numberOfMilitaryAircraft).start();

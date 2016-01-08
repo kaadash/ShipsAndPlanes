@@ -26,8 +26,8 @@
                         <Label text="Current destination: " GridPane.columnIndex="0" GridPane.rowIndex="4" />
                         <Label fx:id="currentDestinationLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                        <Label text="Route: " GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                        <Label fx:id="routeLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="Number of staff: " GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Label fx:id="numberOfStaffLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
                         <Button text="Report Issue" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#reportIssue" />
                         <Button text="Remove Plane" GridPane.columnIndex="1" GridPane.rowIndex="7" onAction="#deletePassengerPlane" />

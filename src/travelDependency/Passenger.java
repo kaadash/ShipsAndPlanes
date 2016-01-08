@@ -29,6 +29,10 @@ public class Passenger implements Runnable {
 
     private int routePointer;
 
+    private enum typeOfTravel {
+        PRIVATE, BUSINESS
+    }
+
     public Passenger(Point currentPosition) {
         this.PESEL = generatePESEL();
         this.name = generateName();

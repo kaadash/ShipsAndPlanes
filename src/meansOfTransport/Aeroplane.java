@@ -25,17 +25,17 @@ public abstract class Aeroplane extends MeansOfTransport{
         this.fuel = 1000;
         this.beenIncrossRoad = false;
         this.asyncWasReportSent = false;
-
+        this.numberOfStaff = (int)(Math.random() * 30) + 20;
     }
 
     public void lossOfFuel() {
         this.fuel -= 4;
     }
 
-
     public void restoreFuel() {
         this.fuel = 1000;
     }
+
 
     @Override
     public void run() {
@@ -60,5 +60,13 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     public void setBeenIncrossRoad(boolean beenIncrossRoad) {
         this.beenIncrossRoad = beenIncrossRoad;
+    }
+
+    public int getNumberOfStaff() {
+        return numberOfStaff;
+    }
+
+    public void setNumberOfStaff(int numberOfStaff) {
+        this.numberOfStaff = numberOfStaff;
     }
 }

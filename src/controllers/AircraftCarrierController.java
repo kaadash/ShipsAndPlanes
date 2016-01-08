@@ -51,7 +51,6 @@ public class AircraftCarrierController implements Initializable {
         IDLabel.setText(Integer.toString(aircraftCarrier.getID()));
     }
 
-
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
     }

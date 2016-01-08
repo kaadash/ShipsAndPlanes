@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by kadash on 18.10.15.
@@ -30,6 +32,7 @@ public class AircraftCarrier extends Ship {
         for (Harbor harbor : allDestination) {
             this.route.add(harbor);
         }
+        Collections.shuffle(this.route);
         this.imageViewMeanOfTransport.setImage(new Image(imagePath));
         this.ID = id;
         this.ammoType = generateAmmoType();
