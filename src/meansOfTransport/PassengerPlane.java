@@ -173,7 +173,12 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                                             y_move + getCurrentPosition().getY()));
 
-                                    animate();
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            animate();
+                                        }
+                                    });
                                     Thread.sleep(35);
                                 }
                             }

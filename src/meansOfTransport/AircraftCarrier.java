@@ -132,7 +132,12 @@ public class AircraftCarrier extends Ship {
                                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                                             y_move + getCurrentPosition().getY()));
 
-                                    animate();
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            animate();
+                                        }
+                                    });
                                     Thread.sleep(60);
                                 }
                             }

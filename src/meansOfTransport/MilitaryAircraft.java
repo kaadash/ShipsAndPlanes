@@ -104,7 +104,12 @@ public class MilitaryAircraft extends Aeroplane  {
                                     setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
                                             y_move + getCurrentPosition().getY()));
 
-                                    animate();
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            animate();
+                                        }
+                                    });
                                     Thread.sleep(35);
                                 }
                             }
@@ -174,7 +179,6 @@ public class MilitaryAircraft extends Aeroplane  {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    lossOfFuel();
                     animate();
                 }
             });
