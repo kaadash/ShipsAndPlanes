@@ -32,11 +32,11 @@ public class Dashboard {
     private static ArrayList<Thread> travelShipsThreads = new ArrayList<Thread>();
 
     private static ArrayList<AircraftCarrier> aircraftCarriers = new ArrayList<AircraftCarrier>();
+
     private static ArrayList<Thread> aircraftCarriersThreads = new ArrayList<Thread>();
-
     private static ArrayList<MilitaryAircraft> militaryAircrafts = new ArrayList<MilitaryAircraft>();
-    private static ArrayList<Thread> militaryAircraftsThreads = new ArrayList<Thread>();
 
+    private static ArrayList<Thread> militaryAircraftsThreads = new ArrayList<Thread>();
     public static ArrayList<Passenger> waitingPassengers = new ArrayList<Passenger>();
 
     public static void createNewPassengerPlane(Pane root) {
@@ -49,6 +49,7 @@ public class Dashboard {
         passengerPlanesThreads.get(numberOfPassengerPlane).start();
         numberOfPassengerPlane++;
     }
+
     public static void createNewTravelShip(Pane root) {
         ArrayList<Harbor> destinationList =  Map.getHarbors();
         Collections.shuffle(destinationList);
@@ -59,7 +60,6 @@ public class Dashboard {
         travelShipsThreads.get(numberOfTravelShip).start();
         numberOfTravelShip++;
     }
-
     public static void createNewAircraftCarrier(Pane root) {
         ArrayList<Harbor> destinationList =  Map.getHarbors();
         Collections.shuffle(destinationList);
@@ -71,7 +71,7 @@ public class Dashboard {
     }
 
     public static void createNewMilitaryAircraft(Pane root) {
-        ArrayList<MilitaryAirport> destinationList =  Map.getMilitaryAirports();
+        ArrayList<MilitaryAirport> destinationList = Map.getMilitaryAirports();
         Collections.shuffle(destinationList);
         MilitaryAircraft newMilitaryAircraft= new MilitaryAircraft(destinationList, root, numberOfMilitaryAircraft);
         militaryAircrafts.add(newMilitaryAircraft);
@@ -88,6 +88,7 @@ public class Dashboard {
             numberOfPassenger++;
         }
     }
+
     public static void removePassengerPlane(int ID) {
         Iterator<PassengerPlane> passengerPlaneIterator = passengerPlanes.iterator();
         int loopCounter = 0;
@@ -100,7 +101,6 @@ public class Dashboard {
             loopCounter++;
         }
     }
-
     public static void removeTravelShip(int ID) {
         Iterator<TravelShip> travelShipIterator = travelShips.iterator();
         int loopCounter = 0;
@@ -113,6 +113,7 @@ public class Dashboard {
             loopCounter++;
         }
     }
+
     public static void removeAircraftCarrier(int ID) {
         Iterator<TravelShip> travelShipIterator = travelShips.iterator();
         int loopCounter = 0;
@@ -124,5 +125,8 @@ public class Dashboard {
             }
             loopCounter++;
         }
+    }
+    public static ArrayList<AircraftCarrier> getAircraftCarriers() {
+        return aircraftCarriers;
     }
 }

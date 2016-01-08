@@ -220,7 +220,7 @@ public class TravelShip extends Ship implements Transporter {
                     || passenger.getCurrentPosition().getX() == (int)Math.ceil(currentPosition.getX()))
                     && (passenger.getCurrentPosition().getY() == (int)Math.floor(currentPosition.getY())
                     || passenger.getCurrentPosition().getY() == (int)Math.ceil(currentPosition.getY()))
-
+// TODO: fix out of bound index
                     && passenger.getCurrentDestination().getX() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getX()
                     && passenger.getCurrentDestination().getY() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getY()
                     ) {
