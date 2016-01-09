@@ -1,8 +1,11 @@
 package meansOfTransport;
 
+import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -35,13 +38,26 @@ public abstract class MeansOfTransport implements Runnable {
         context.getChildren().add(imageViewMeanOfTransport);
     }
 
+    public void animate() {
+        imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
+        imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
+    }
+    protected void addClickActionToObject(TabPane root, String windowTitle){
+        imageViewMeanOfTransport.setOnMouseClicked(event -> {
+            Stage stage = new Stage();
+            stage.setTitle(windowTitle);
+            stage.setScene(new Scene(root, 450, 450));
+            stage.show();
+        });
+    }
+
     public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;
     }
-
     public Point2D getCurrentPosition() {
         return currentPosition;
     }
+
     public Point2D getCurrentDestination() {
         return currentDestination;
     }

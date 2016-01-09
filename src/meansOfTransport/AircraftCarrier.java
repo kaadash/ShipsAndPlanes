@@ -52,23 +52,11 @@ public class AircraftCarrier extends Ship {
             TabPane root = fxmlLoader.load(getClass().getResource("aircraftCarrierLayout.fxml").openStream());
             AircraftCarrierController aircraftCarrierController = (AircraftCarrierController) fxmlLoader.getController();
             aircraftCarrierController.updateView(this);
-            imageViewMeanOfTransport.setOnMouseClicked(event -> {
-                Stage stage = new Stage();
-                stage.setTitle("AircraftCarrier Panel");
-                stage.setScene(new Scene(root, 450, 450));
-                stage.show();
-            });
+            addClickActionToObject(root, "Aircraft Carrier Dashboard");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public void animate() {
-        imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
-        imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
-        openInformationPanel();
-    }
-
 
     @Override
     public void run() {
@@ -139,6 +127,7 @@ public class AircraftCarrier extends Ship {
                                         @Override
                                         public void run() {
                                             animate();
+                                            openInformationPanel();
                                         }
                                     });
                                     Thread.sleep(60);
@@ -210,6 +199,7 @@ public class AircraftCarrier extends Ship {
                 @Override
                 public void run() {
                     animate();
+                    openInformationPanel();
                 }
             });
         }

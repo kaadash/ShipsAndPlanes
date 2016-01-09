@@ -44,21 +44,10 @@ public class PassengerPlane extends Aeroplane implements Transporter {
             TabPane root = fxmlLoader.load(getClass().getResource("aeroplaneLayout.fxml").openStream());
             AeroplaneController aeroplaneController = (AeroplaneController) fxmlLoader.getController();
             aeroplaneController.updateView(this);
-            imageViewMeanOfTransport.setOnMouseClicked(event -> {
-                Stage stage = new Stage();
-                stage.setTitle("Aeroplane Panel");
-                stage.setScene(new Scene(root, 450, 450));
-                stage.show();
-            });
+            addClickActionToObject(root, "Passenger Plane Dashboard");
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void animate() {
-        imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
-        imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
-        openInformationPanel();
     }
 
     @Override
@@ -178,6 +167,7 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                                         @Override
                                         public void run() {
                                             animate();
+                                            openInformationPanel();
                                         }
                                     });
                                     Thread.sleep(35);
@@ -253,6 +243,7 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                 public void run() {
                     lossOfFuel();
                     animate();
+                    openInformationPanel();
                 }
             });
         }

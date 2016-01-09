@@ -54,12 +54,7 @@ public class TravelShip extends Ship implements Transporter {
             TabPane root = fxmlLoader.load(getClass().getResource("travelShipLayout.fxml").openStream());
             TravelShipController travelShipController = (TravelShipController) fxmlLoader.getController();
             travelShipController.updateView(this);
-            imageViewMeanOfTransport.setOnMouseClicked(event -> {
-                Stage stage = new Stage();
-                stage.setTitle("TravelShip Panel");
-                stage.setScene(new Scene(root, 450, 450));
-                stage.show();
-            });
+            addClickActionToObject(root, "Travel Ship Dashboard");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,6 +131,7 @@ public class TravelShip extends Ship implements Transporter {
                                         @Override
                                         public void run() {
                                             animate();
+                                            openInformationPanel();
                                         }
                                     });
                                     Thread.sleep(60);
@@ -209,6 +205,7 @@ public class TravelShip extends Ship implements Transporter {
                 @Override
                 public void run() {
                     animate();
+                    openInformationPanel();
                 }
             });
         }
@@ -258,13 +255,6 @@ public class TravelShip extends Ship implements Transporter {
         passengersOnBoard.removeAll(toRemove);
     }
 
-
-
-    public void animate() {
-        imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
-        imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
-        openInformationPanel();
-    }
 
     public String getCompanyName() {
         return companyName;

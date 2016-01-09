@@ -41,11 +41,7 @@ public class MilitaryAircraft extends Aeroplane  {
         this.ammoType = spawner.getAmmoType();
         this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
     }
-    public void animate() {
-        imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
-        imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
-        openInformationPanel();
-    }
+
     @Override
     public void run() {
         int destinationPointer = 1;
@@ -201,12 +197,7 @@ public class MilitaryAircraft extends Aeroplane  {
             TabPane root = fxmlLoader.load(getClass().getResource("militaryAircraftLayout.fxml").openStream());
             MilitaryAircraftController militaryAircraftController = (MilitaryAircraftController) fxmlLoader.getController();
             militaryAircraftController.updateView(this);
-            imageViewMeanOfTransport.setOnMouseClicked(event -> {
-                Stage stage = new Stage();
-                stage.setTitle("militaryAircraft Panel");
-                stage.setScene(new Scene(root, 450, 450));
-                stage.show();
-            });
+            addClickActionToObject(root, "Military Aircraft Dashboard");
         } catch (IOException e) {
             e.printStackTrace();
         }
