@@ -30,7 +30,7 @@
                         <Label fx:id="numberOfStaffLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
                         <Button text="Report Issue" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#reportIssue" />
-                        <Button text="Remove Plane" GridPane.columnIndex="1" GridPane.rowIndex="7" onAction="#deletePassengerPlane" />
+                        <Button text="Remove vehicle" GridPane.columnIndex="1" GridPane.rowIndex="7" onAction="#deletePassengerPlane" />
                     </children>
                 </GridPane>
             </content>

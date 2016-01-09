@@ -122,13 +122,25 @@ public class Dashboard {
     }
 
     public static void removeAircraftCarrier(int ID) {
-        Iterator<TravelShip> travelShipIterator = travelShips.iterator();
+        Iterator<AircraftCarrier> aircraftCarrierIterator = aircraftCarriers.iterator();
         int loopCounter = 0;
-        while (travelShipIterator.hasNext()) {
-            TravelShip p = travelShipIterator.next();
+        while (aircraftCarrierIterator.hasNext()) {
+            AircraftCarrier p = aircraftCarrierIterator.next();
             if (p.getID()==ID) {
-                travelShipIterator.remove();
-                travelShipsThreads.get(loopCounter).interrupt();
+                aircraftCarrierIterator.remove();
+                aircraftCarriersThreads.get(loopCounter).interrupt();
+            }
+            loopCounter++;
+        }
+    }
+    public static void removeMilitaryAircraft(int ID) {
+        Iterator<MilitaryAircraft> militaryAircraftIterator = militaryAircrafts.iterator();
+        int loopCounter = 0;
+        while (militaryAircraftIterator.hasNext()) {
+            MilitaryAircraft p = militaryAircraftIterator.next();
+            if (p.getID()==ID) {
+                militaryAircraftIterator.remove();
+                militaryAircraftsThreads.get(loopCounter).interrupt();
             }
             loopCounter++;
         }

@@ -57,7 +57,7 @@ public class MilitaryAircraftController implements Initializable {
     }
     @FXML
     private void removeMilitaryAircraft(){
-        Dashboard.removePassengerPlane(militaryAircraftContext.getID());
+        Dashboard.removeMilitaryAircraft(militaryAircraftContext.getID());
     }
 
 

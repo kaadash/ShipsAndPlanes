@@ -20,7 +20,7 @@
                         <Label fx:id="IDLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                         <Button text="Report Issue" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#reportIssue" />
-                        <Button text="Remove Plane" GridPane.columnIndex="1" GridPane.rowIndex="7" onAction="#removeAircraftCarrier" />
+                        <Button text="Remove vehicle" GridPane.columnIndex="1" GridPane.rowIndex="7" onAction="#removeAircraftCarrier" />
                     </children>
                 </GridPane>
             </content>

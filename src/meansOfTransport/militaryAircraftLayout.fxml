@@ -30,7 +30,7 @@
                         <Label fx:id="ammoTypeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
                         <Button text="Report Issue" GridPane.columnIndex="1" GridPane.rowIndex="7" onAction="#reportIssue" />
-                        <Button text="Remove Plane" GridPane.columnIndex="1" GridPane.rowIndex="8" onAction="#removeMilitaryAircraft" />
+                        <Button text="Remove vehicle" GridPane.columnIndex="1" GridPane.rowIndex="8" onAction="#removeMilitaryAircraft" />
                     </children>
                 </GridPane>
             </content>
