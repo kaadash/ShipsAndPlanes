@@ -6,11 +6,9 @@ import helpers.MutableDouble;
 import interfaces.Transporter;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import spawners.Airport;
 import spawners.CivilAirport;
 import travelDependency.Passenger;
@@ -132,7 +130,6 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                         try {
                             aeroplaneCrossRoads.acquire();
 //                                Critical Section
-//                            System.out.println("---- Wchodzę! ---- >>>> " + ID);
                             try {
                                 while(Math.floor(dist.getValue()) >= 1){
                                     if(asyncWasReportSent) {
@@ -250,5 +247,4 @@ public class PassengerPlane extends Aeroplane implements Transporter {
     public void setMaxPassengers(int maxPassengers) {
         this.maxPassengers = maxPassengers;
     }
-
 }

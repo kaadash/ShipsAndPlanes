@@ -2,14 +2,13 @@ package meansOfTransport;
 
 import controllers.Dashboard;
 import controllers.TravelShipController;
+import helpers.MutableDouble;
 import interfaces.Transporter;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import spawners.Harbor;
 import travelDependency.Passenger;
 
@@ -67,65 +66,56 @@ public class TravelShip extends Ship implements Transporter {
 //        Check if in starting city, there are passengers wanting to travel
         checkAndAddNewPassengers(destinationPointer);
 
-        double delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-        double delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
-        double goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+        MutableDouble deltaX = new MutableDouble();
+        MutableDouble deltaY = new MutableDouble();
+        MutableDouble goalDist = new MutableDouble();
+        updatePositionOnMap(deltaX, deltaY, goalDist);
 
         while (true) {
             try {
-                double speed_per_tick = 2;
-                double currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-                double currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
-                double dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
+                int speedPerTick = 2;
+                MutableDouble currentDeltaX = new MutableDouble();
+                MutableDouble currentDeltaY = new MutableDouble();
+                MutableDouble dist = new MutableDouble();
+                updateCurrentCordinates(currentDeltaX, currentDeltaY, dist);
 
                 if(asyncWasReportSent) {
-                    delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-                    delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
-                    goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                    updatePositionOnMap(deltaX, deltaY, goalDist);
                     beenIncrossRoad = true;
                     asyncWasReportSent = false;
                 }
 
-                if (Math.floor(dist) != 0) {
-                    double ratio = speed_per_tick / goal_dist;
-                    double x_move = ratio * delta_x;
-                    double y_move = ratio * delta_y;
-                    setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
-                            y_move + getCurrentPosition().getY()));
+                if (Math.floor(dist.getValue()) != 0) {
+                    MutableDouble ratio = new MutableDouble();
+                    MutableDouble xMove = new MutableDouble();
+                    MutableDouble yMove = new MutableDouble();
+                    updateStepToMove(ratio, deltaX, deltaY, xMove, yMove, goalDist, speedPerTick);
+                    setCurrentPosition(new Point2D.Double(xMove.getValue() + getCurrentPosition().getX(),
+                            yMove.getValue() + getCurrentPosition().getY()));
 
-                    if(dist < 70 && !beenIncrossRoad && dist > 2 ) {
+                    if(dist.getValue() < 70 && !beenIncrossRoad && dist.getValue() > 2 ) {
                         try {
                             aeroplaneCrossRoads.acquire();
 //                                Critical Section
                             try {
-                                while(Math.floor(dist) >= 1){
+                                while(Math.floor(dist.getValue()) >= 1){
                                     if(asyncWasReportSent) {
-                                        delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-                                        delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
-                                        goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
-                                        ratio = speed_per_tick / goal_dist;
-                                        x_move = ratio * delta_x;
-                                        y_move = ratio * delta_y;
+                                        updatePositionOnMap(deltaX, deltaY, goalDist);
+                                        updateStepToMove(ratio, deltaX, deltaY, xMove, yMove, goalDist, speedPerTick);
                                         aeroplaneCrossRoads.release();
                                         asyncWasReportSent = false;
                                     }
-                                    currentDelta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-                                    currentDelta_Y = getCurrentDestination().getY() - getCurrentPosition().getY();
-                                    dist = Math.sqrt((currentDelta_x * currentDelta_x) + (currentDelta_Y * currentDelta_Y));
+                                    updateCurrentCordinates(currentDeltaX, currentDeltaY, dist);
 
-                                    if((Math.floor(dist) < 4) && travelCounter == 0) {
+                                    if((Math.floor(dist.getValue()) < 4) && travelCounter == 0) {
                                         currentDestination = route.get(destinationPointer).getLeftLaneEndingPoint();
-                                        delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-                                        delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
-                                        goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
-                                        ratio = speed_per_tick / goal_dist;
-                                        x_move = ratio * delta_x;
-                                        y_move = ratio * delta_y;
+                                        updatePositionOnMap(deltaX, deltaY, goalDist);
+                                        updateStepToMove(ratio, deltaX, deltaY, xMove, yMove, goalDist, speedPerTick);
                                         travelCounter++;
                                     }
 
-                                    setCurrentPosition(new Point2D.Double(x_move + getCurrentPosition().getX(),
-                                            y_move + getCurrentPosition().getY()));
+                                    setCurrentPosition(new Point2D.Double(xMove.getValue() + getCurrentPosition().getX(),
+                                            yMove.getValue() + getCurrentPosition().getY()));
 
                                     Platform.runLater(new Runnable() {
                                         @Override
@@ -151,9 +141,7 @@ public class TravelShip extends Ship implements Transporter {
                                     beenIncrossRoad = true;
                                     aeroplaneCrossRoads.release();
                                 }
-                                delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-                                delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
-                                goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                                updatePositionOnMap(deltaX, deltaY, goalDist);
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -186,9 +174,7 @@ public class TravelShip extends Ship implements Transporter {
                     }
                     currentPosition.setLocation(this.getCurrentPosition().getX(),
                             this.getCurrentPosition().getY());
-                    delta_x = getCurrentDestination().getX() - getCurrentPosition().getX();
-                    delta_y = getCurrentDestination().getY() - getCurrentPosition().getY();
-                    goal_dist = Math.sqrt((delta_x * delta_x) + (delta_y * delta_y));
+                    updatePositionOnMap(deltaX, deltaY, goalDist);
                 }
                 Thread.sleep(60);
             } catch (InterruptedException e) {
