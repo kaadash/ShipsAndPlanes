@@ -1,22 +1,14 @@
 package meansOfTransport;
 
-import controllers.AeroplaneController;
 import controllers.Dashboard;
 import controllers.MilitaryAircraftController;
 import helpers.MutableDouble;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import spawners.Airport;
-import spawners.Harbor;
 import spawners.MilitaryAirport;
-
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +19,7 @@ import java.util.ArrayList;
 public class MilitaryAircraft extends Aeroplane  {
     private String ammoType;
 
-    private final String imagePath = "images/airplane.png";
+    private final String imagePath = "images/enemy.png";
 
     public MilitaryAircraft(ArrayList<MilitaryAirport> allDestination, Pane context, int id,
                             int IDOfSpawningAircraftCarrier) {
@@ -38,7 +30,7 @@ public class MilitaryAircraft extends Aeroplane  {
         this.ID = id;
         this.imageViewMeanOfTransport.setImage(new Image(imagePath));
         AircraftCarrier spawner = Dashboard.getAircraftCarriers().get(IDOfSpawningAircraftCarrier);
-        this.currentPosition = spawner.currentPosition;
+        this.currentPosition = spawner.getCurrentPosition();
         this.ammoType = spawner.getAmmoType();
         this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
     }
@@ -196,5 +188,4 @@ public class MilitaryAircraft extends Aeroplane  {
     public void setAmmoType(String ammoType) {
         this.ammoType = ammoType;
     }
-
 }

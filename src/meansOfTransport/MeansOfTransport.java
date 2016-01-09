@@ -1,6 +1,7 @@
 package meansOfTransport;
 
 import controllers.AeroplaneController;
+import helpers.Drawable;
 import helpers.MutableDouble;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,8 +18,7 @@ import java.io.IOException;
 /**
  * Created by kadash on 18.10.15.
  */
-public abstract class MeansOfTransport implements Runnable {
-    protected Point2D currentPosition;
+public abstract class MeansOfTransport extends Drawable implements Runnable {
 
     protected Point2D currentDestination;
 
@@ -26,33 +26,12 @@ public abstract class MeansOfTransport implements Runnable {
 
     protected Point tempPosition;
 
-    protected Pane context;
-
     protected int ID;
 
     protected boolean asyncWasReportSent;
 
-    protected ImageView imageViewMeanOfTransport = new ImageView(new Image("images/aircraft.png"));
-
     public MeansOfTransport(Pane context){
-        this.context = context;
-        int sizeImage = 32;
-        imageViewMeanOfTransport.setFitHeight(sizeImage);
-        imageViewMeanOfTransport.setFitWidth(sizeImage);
-        context.getChildren().add(imageViewMeanOfTransport);
-    }
-
-    public void animate() {
-        imageViewMeanOfTransport.setLayoutX(this.getCurrentPosition().getX());
-        imageViewMeanOfTransport.setLayoutY(this.getCurrentPosition().getY());
-    }
-    protected void addClickActionToObject(TabPane root, String windowTitle){
-        imageViewMeanOfTransport.setOnMouseClicked(event -> {
-            Stage stage = new Stage();
-            stage.setTitle(windowTitle);
-            stage.setScene(new Scene(root, 450, 450));
-            stage.show();
-        });
+        super(context);
     }
 
     protected void updatePositionOnMap(MutableDouble deltaX, MutableDouble deltaY, MutableDouble goalDist) {
@@ -78,16 +57,10 @@ public abstract class MeansOfTransport implements Runnable {
         this.currentDestination = currentDestination;
     }
 
-    public Point2D getCurrentPosition() {
-        return currentPosition;
-    }
+
 
     public Point2D getCurrentDestination() {
         return currentDestination;
-    }
-
-    public void setCurrentPosition(Point2D currentPosition) {
-        this.currentPosition = currentPosition;
     }
 
     public Point getTempPosition() {
