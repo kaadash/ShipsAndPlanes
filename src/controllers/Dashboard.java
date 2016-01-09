@@ -35,9 +35,10 @@ public class Dashboard {
 
     private static ArrayList<Thread> aircraftCarriersThreads = new ArrayList<Thread>();
     private static ArrayList<MilitaryAircraft> militaryAircrafts = new ArrayList<MilitaryAircraft>();
-
     private static ArrayList<Thread> militaryAircraftsThreads = new ArrayList<Thread>();
+
     public static ArrayList<Passenger> waitingPassengers = new ArrayList<Passenger>();
+    public static ArrayList<Thread> waitingPassengersThreads = new ArrayList<Thread>();
 
     public static void createNewPassengerPlane(Pane root) {
         ArrayList<CivilAirport> destinationList =  Map.getCivilAirports();
@@ -86,7 +87,10 @@ public class Dashboard {
     public static void spawnPassengers(Point startingPosition) {
         int numberToSpawn = (int)(Math.random() * 100) + 20;
         while (numberToSpawn > 0) {
-            waitingPassengers.add(new Passenger(startingPosition));
+            Passenger newPassenger = new Passenger(startingPosition);
+            waitingPassengers.add(newPassenger);
+            waitingPassengersThreads.add(new Thread(newPassenger));
+            waitingPassengersThreads.get(numberOfPassenger).start();
             numberToSpawn--;
             numberOfPassenger++;
         }

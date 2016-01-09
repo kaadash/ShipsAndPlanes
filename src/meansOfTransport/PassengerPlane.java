@@ -98,6 +98,7 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                 passenger.changeRoute();
                 Dashboard.waitingPassengers.add(passenger);
                 toRemove.add(passengersOnBoard.get(counterOfPassengersToRemove));
+                passenger.setOnDestinationPoint(true);
             }
             counterOfPassengersToRemove++;
         }

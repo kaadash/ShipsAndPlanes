@@ -27,24 +27,29 @@ public class Passenger implements Runnable {
 
     private Point2D currentDestination;
 
+    private boolean isOnDestinationPoint;
+
     private int routePointer;
 
-    private enum typeOfTravel {
+
+
+    private enum TypeOfTravel {
         PRIVATE, BUSINESS
     }
-
+    private TypeOfTravel eTypeOfTravel;
     public Passenger(Point currentPosition) {
         this.PESEL = generatePESEL();
         this.name = generateName();
         this.surname = generateName();
         this.age = generateAge();
-        this.route = Map.getDestinationCord(Map.getCivilAirports());
-        Collections.shuffle(this.route);
-        this.route.add(0, currentPosition);
-        this.route.remove(this.route.size() - 1);
-        this.route.remove(this.route.size() - 2);
-        this.route.add(currentPosition);
-        this.changeRoute();
+        isOnDestinationPoint = false;
+        generateRoute(currentPosition);
+        if((int)(Math.random() * 100) % 2 == 0) {
+            this.eTypeOfTravel = TypeOfTravel.BUSINESS;
+        }
+        else {
+            this.eTypeOfTravel = TypeOfTravel.PRIVATE;
+        }
     }
 
     public String generatePESEL(){
@@ -54,9 +59,22 @@ public class Passenger implements Runnable {
         }
         return PESELNumber;
     }
+
     public String generateName() {
-        String names[] = {"Anna", "Artur", "Jan", "Iza", "Maciej", "Monika", "Kuba"};
+        String names[] = {"Anna", "Artur", "Jan", "Iza", "Maciej", "Monika", "Kuba", "Mateusz"};
         return names[(int)(Math.random() * names.length)];
+    }
+    public void generateRoute(Point startingPosition) {
+        this.route = Map.getDestinationCord(Map.getCivilAirports());
+        this.routePointer = 0;
+        int lengthOfTravel = Math.abs((int) (Math.random() * route.size() - 1) - 4);
+        for (int i = lengthOfTravel; i >= 0; i--) {
+            this.route.remove(this.route.size() - 2);
+        }
+        Collections.shuffle(this.route);
+        this.route.add(0, startingPosition);
+        this.route.add(startingPosition);
+        changeRoute();
     }
 
     public int generateAge() {
@@ -76,7 +94,36 @@ public class Passenger implements Runnable {
 
     @Override
     public void run() {
-
+        while(true) {
+            if(isOnDestinationPoint){
+//                Depends on type of travel different time spend in destination city
+                switch (eTypeOfTravel) {
+                    case PRIVATE:
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case BUSINESS:
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        System.out.println("error with enum type");
+                        break;
+                }
+                isOnDestinationPoint = false;
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Point2D getCurrentDestination() {
@@ -102,6 +149,7 @@ public class Passenger implements Runnable {
     public void setRoutePointer(int routePointer) {
         this.routePointer = routePointer;
     }
+
     public String getName() {
         return name;
     }
@@ -111,7 +159,6 @@ public class Passenger implements Runnable {
     public String getSurname() {
         return surname;
     }
-
     public void setSurname(String surname) {
         this.surname = surname;
     }
@@ -138,5 +185,13 @@ public class Passenger implements Runnable {
 
     public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;
+    }
+
+    public boolean isOnDestinationPoint() {
+        return isOnDestinationPoint;
+    }
+
+    public void setOnDestinationPoint(boolean isOnDestinationPoint) {
+        this.isOnDestinationPoint = isOnDestinationPoint;
     }
 }
