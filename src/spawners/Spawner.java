@@ -1,11 +1,14 @@
 package spawners;
 
+import helpers.Drawable;
+import javafx.scene.layout.Pane;
+
 import java.awt.*;
 
 /**
  * Created by kadash on 06.01.16.
  */
-public abstract class Spawner {
+public abstract class Spawner extends Drawable {
 
     protected Point position;
 
@@ -17,7 +20,9 @@ public abstract class Spawner {
 
     protected Point rightLaneEndingPoint;
 
-    public Spawner(Point airportPosition) {
+    public Spawner(Point airportPosition, Pane context) {
+        super(context);
+        this.currentPosition = airportPosition;
         this.position = airportPosition;
     }
 

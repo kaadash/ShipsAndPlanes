@@ -36,11 +36,11 @@ public abstract class Aeroplane extends MeansOfTransport{
         this.fuel = 1000;
     }
 
-
     @Override
     public void run() {
 
     }
+
 
     public int getFuel() {
         return fuel;
@@ -68,5 +68,9 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     public void setNumberOfStaff(int numberOfStaff) {
         this.numberOfStaff = numberOfStaff;
+    }
+
+    public void setRoute(ArrayList<Airport> route) {
+        this.route = route;
     }
 }

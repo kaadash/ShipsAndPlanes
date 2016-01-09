@@ -1,24 +1,17 @@
 package meansOfTransport;
 
 import controllers.AircraftCarrierController;
-import controllers.TravelShipController;
 import helpers.MutableDouble;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import spawners.Airport;
 import spawners.Harbor;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -34,7 +27,7 @@ public class AircraftCarrier extends Ship {
             this.route.add(harbor);
         }
         Collections.shuffle(this.route);
-        this.imageViewMeanOfTransport.setImage(new Image(imagePath));
+        this.imageViewOfObject.setImage(new Image(imagePath));
         this.ID = id;
         this.ammoType = generateAmmoType();
         this.currentPosition = this.route.get(0).getRightLaneStartingPoint();
@@ -146,7 +139,7 @@ public class AircraftCarrier extends Ship {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    context.getChildren().remove(imageViewMeanOfTransport);
+                                    context.getChildren().remove(imageViewOfObject);
                                 }
                             });
                             return;
@@ -178,7 +171,7 @@ public class AircraftCarrier extends Ship {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        context.getChildren().remove(imageViewMeanOfTransport);
+                        context.getChildren().remove(imageViewOfObject);
                     }
                 });
                 return;

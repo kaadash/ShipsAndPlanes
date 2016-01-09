@@ -1,19 +1,10 @@
 package meansOfTransport;
 
-import controllers.AeroplaneController;
 import helpers.Drawable;
 import helpers.MutableDouble;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.TabPane;
-import javafx.scene.image.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.io.IOException;
 
 /**
  * Created by kadash on 18.10.15.
@@ -23,8 +14,6 @@ public abstract class MeansOfTransport extends Drawable implements Runnable {
     protected Point2D currentDestination;
 
     protected Point crossRoadPoint;
-
-    protected Point tempPosition;
 
     protected int ID;
 
@@ -61,10 +50,6 @@ public abstract class MeansOfTransport extends Drawable implements Runnable {
 
     public Point2D getCurrentDestination() {
         return currentDestination;
-    }
-
-    public Point getTempPosition() {
-        return tempPosition;
     }
 
     public Point getCrossRoadPoint() {

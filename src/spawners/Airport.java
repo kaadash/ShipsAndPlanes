@@ -17,21 +17,21 @@ public abstract class Airport extends Spawner {
 
     protected int currentNumberOfPlanes;
 
-    public Airport(Point airportPosition) {
-        super(airportPosition);
+    public Airport(Point airportPosition, Pane context) {
+        super(airportPosition, context);
+        animate();
     }
-
-    public void draw (Pane context, String imagePath) {
-        Image image = new Image(imagePath);
-        ImageView imageView = new ImageView(image);
-
-        imageView.setFitHeight(50);
-        imageView.setFitWidth(50);
-        imageView.setLayoutX(this.getPosition().getX());
-        imageView.setLayoutY(this.getPosition().getY());
-
-        context.getChildren().add(imageView);
-    }
+//    public void draw (Pane context, String imagePath) {
+//        Image image = new Image(imagePath);
+//        ImageView imageView = new ImageView(image);
+//
+//        imageView.setFitHeight(50);
+//        imageView.setFitWidth(50);
+//        imageView.setLayoutX(this.getPosition().getX());
+//        imageView.setLayoutY(this.getPosition().getY());
+//
+//        context.getChildren().add(imageView);
+//    }
 
     public String getImagePath() {
         return imagePath;

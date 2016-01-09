@@ -29,7 +29,7 @@ public class TravelShip extends Ship implements Transporter {
 
     public TravelShip(ArrayList<Harbor> allDestination, Pane context, int id ) {
         super(allDestination, context);
-        this.imageViewMeanOfTransport.setImage(new Image(imagePath));
+        this.imageViewOfObject.setImage(new Image(imagePath));
         for (Harbor harbor : allDestination) {
             this.route.add(harbor);
         }
@@ -38,8 +38,8 @@ public class TravelShip extends Ship implements Transporter {
         this.companyName = generateCompanyName();
         this.currentPosition = this.route.get(0).getRightLaneStartingPoint();
         this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
-        imageViewMeanOfTransport.setFitWidth(40);
-        imageViewMeanOfTransport.setFitHeight(40);
+        imageViewOfObject.setFitWidth(40);
+        imageViewOfObject.setFitHeight(40);
     }
 
     private String generateCompanyName() {
@@ -148,7 +148,7 @@ public class TravelShip extends Ship implements Transporter {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    context.getChildren().remove(imageViewMeanOfTransport);
+                                    context.getChildren().remove(imageViewOfObject);
                                 }
                             });
                             return;
@@ -182,7 +182,7 @@ public class TravelShip extends Ship implements Transporter {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        context.getChildren().remove(imageViewMeanOfTransport);
+                        context.getChildren().remove(imageViewOfObject);
                     }
                 });
                 return;

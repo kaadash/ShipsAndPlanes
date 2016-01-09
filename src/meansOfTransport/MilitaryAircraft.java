@@ -28,7 +28,7 @@ public class MilitaryAircraft extends Aeroplane  {
             this.route.add(militaryAirport );
         }
         this.ID = id;
-        this.imageViewMeanOfTransport.setImage(new Image(imagePath));
+        this.imageViewOfObject.setImage(new Image(imagePath));
         AircraftCarrier spawner = Dashboard.getAircraftCarriers().get(IDOfSpawningAircraftCarrier);
         this.currentPosition = spawner.getCurrentPosition();
         this.ammoType = spawner.getAmmoType();
@@ -122,7 +122,7 @@ public class MilitaryAircraft extends Aeroplane  {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    context.getChildren().remove(imageViewMeanOfTransport);
+                                    context.getChildren().remove(imageViewOfObject);
                                 }
                             });
                             return;
@@ -155,7 +155,7 @@ public class MilitaryAircraft extends Aeroplane  {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        context.getChildren().remove(imageViewMeanOfTransport);
+                        context.getChildren().remove(imageViewOfObject);
                     }
                 });
                 return;

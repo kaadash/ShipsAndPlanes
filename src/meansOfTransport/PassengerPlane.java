@@ -33,7 +33,7 @@ public class PassengerPlane extends Aeroplane implements Transporter {
         this.currentDestination = this.route.get(0).getRightLaneEndingPoint();
 
         this.ID = ID;
-        this.imageViewMeanOfTransport.setImage(new Image(imagePath));
+        this.imageViewOfObject.setImage(new Image(imagePath));
         this.maxPassengers = 30;
     }
 
@@ -181,7 +181,7 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    context.getChildren().remove(imageViewMeanOfTransport);
+                                    context.getChildren().remove(imageViewOfObject);
                                 }
                             });
                             return;
@@ -216,7 +216,7 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        context.getChildren().remove(imageViewMeanOfTransport);
+                        context.getChildren().remove(imageViewOfObject);
                     }
                 });
                 return;

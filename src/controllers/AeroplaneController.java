@@ -11,12 +11,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import meansOfTransport.Aeroplane;
 import meansOfTransport.PassengerPlane;
+import spawners.Airport;
 import travelDependency.Passenger;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 /**
@@ -57,8 +60,15 @@ public class AeroplaneController implements Initializable {
         passengerPlaneContext.setAsyncWasReportSent(true);
     }
     @FXML
-    private void deletePassengerPlane(){
+    public void deletePassengerPlane(){
         Dashboard.removePassengerPlane(passengerPlaneContext.getID());
+    }
+
+    @FXML
+    public void changeRoute() {
+        ArrayList <Airport> newRoute = passengerPlaneContext.getRoute();
+        Collections.shuffle(newRoute);
+        passengerPlaneContext.setRoute(newRoute);
     }
 
 

@@ -88,17 +88,15 @@ public class Map {
 //                    I know that it is ugly but deadline is coming :(
                     switch (type) {
                         case "civil":
-                            CivilAirport civilAirport = new CivilAirport(cord);
-                            civilAirport.draw(context, civilAirport.getImagePath());
+                            CivilAirport civilAirport = new CivilAirport(cord, context);
                             civilAirports.add(civilAirport);
                             break;
                         case "military":
-                            MilitaryAirport militaryAirport = new MilitaryAirport(cord);
-                            militaryAirport.draw(context, militaryAirport.getImagePath());
+                            MilitaryAirport militaryAirport = new MilitaryAirport(cord, context);
                             militaryAirports.add(militaryAirport);
                             break;
                         case "harbor":
-                            Harbor harbor = new Harbor(cord);
+                            Harbor harbor = new Harbor(cord, context);
                             harbors.add(harbor);
                             break;
                         default:
