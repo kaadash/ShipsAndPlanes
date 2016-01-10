@@ -21,6 +21,15 @@ public class AircraftCarrier extends Ship {
     private String ammoType;
 
     private final String imagePath = "images/militarymightjl2.jpg";
+
+    /**
+     * Randomize route using Harbors position on the Map
+     * Set which image should be shown
+     * Set current Position and destination position
+     * @param allDestination
+     * @param context
+     * @param id
+     */
     public AircraftCarrier(ArrayList<Harbor> allDestination, Pane context, int id) {
         super(context);
         for (Harbor harbor : allDestination) {
@@ -33,6 +42,11 @@ public class AircraftCarrier extends Ship {
         this.currentPosition = this.route.get(0).getRightLaneStartingPoint();
         this.currentDestination = this.route.get((int)(Math.random() * this.route.size() - 1)).getLeftLaneEndingPoint();
     }
+
+    /**
+     * Generate name of ammoType by const strings combination
+     * @return
+     */
     private String generateAmmoType() {
 
         String firstPart[] = {"Super", "Fine", "Hello", "FaceBook", "AreYouSure"};
@@ -52,6 +66,9 @@ public class AircraftCarrier extends Ship {
         }
     }
 
+    /**
+     * Main logic function of thread
+     */
     @Override
     public void run() {
         int destinationPointer = 1;

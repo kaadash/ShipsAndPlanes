@@ -23,18 +23,43 @@ public abstract class MeansOfTransport extends Drawable implements Runnable {
         super(context);
     }
 
+    /**
+     * Helper method to move vehicle
+     * Update vehicle position on map by deltaX params
+     * @param deltaX
+     * @param deltaY
+     * @param goalDist
+     */
     protected void updatePositionOnMap(MutableDouble deltaX, MutableDouble deltaY, MutableDouble goalDist) {
         deltaX.setValue(getCurrentDestination().getX() - getCurrentPosition().getX());
         deltaY.setValue(getCurrentDestination().getY() - getCurrentPosition().getY());
         goalDist.setValue(Math.sqrt((deltaX.getValue() * deltaX.getValue()) + (deltaY.getValue() * deltaY.getValue())));
     }
 
+    /**
+     * Helper method to move vehicle
+     * Update vehicle current position on map by deltaX params
+     * @param currentDeltaX
+     * @param currentDeltaY
+     * @param dist
+     */
     protected void updateCurrentCordinates(MutableDouble currentDeltaX, MutableDouble currentDeltaY, MutableDouble dist) {
         currentDeltaX.setValue(getCurrentDestination().getX() - getCurrentPosition().getX());
         currentDeltaY.setValue(getCurrentDestination().getY() - getCurrentPosition().getY());
         dist.setValue(Math.sqrt((currentDeltaX.getValue() * currentDeltaX.getValue()) + (currentDeltaY.getValue() * currentDeltaY.getValue())));
     }
 
+    /**
+     * Helper method to move vehicle
+     * Update parts xMove and yMove how far vehicle should run
+     * @param ratio
+     * @param deltaX
+     * @param deltaY
+     * @param xMove
+     * @param yMove
+     * @param goalDist
+     * @param speedPerTick
+     */
     protected void updateStepToMove(MutableDouble ratio, MutableDouble deltaX, MutableDouble deltaY,
                                     MutableDouble xMove, MutableDouble yMove, MutableDouble goalDist, int speedPerTick) {
         ratio.setValue(speedPerTick / goalDist.getValue());
@@ -42,6 +67,10 @@ public abstract class MeansOfTransport extends Drawable implements Runnable {
         yMove.setValue(ratio.getValue() * deltaY.getValue());
     }
 
+    /**
+     * set current position
+     * @param currentDestination
+     */
     public void setCurrentDestination(Point2D currentDestination) {
         this.currentDestination = currentDestination;
     }
@@ -68,6 +97,10 @@ public abstract class MeansOfTransport extends Drawable implements Runnable {
         return asyncWasReportSent;
     }
 
+    /**
+     * inform vehicle to find nearest airport
+     * @param asyncWasReportSent
+     */
     public void setAsyncWasReportSent(boolean asyncWasReportSent) {
         this.asyncWasReportSent = asyncWasReportSent;
     }

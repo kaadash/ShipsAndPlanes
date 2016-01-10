@@ -18,6 +18,10 @@ public abstract class Aeroplane extends MeansOfTransport{
 
     public static Semaphore aeroplaneCrossRoads = new Semaphore(1);
 
+    /**
+     * Set fuel and randomize number of staff on the Plane
+     * @param context
+     */
     public Aeroplane( Pane context) {
         super(context);
 
@@ -28,10 +32,17 @@ public abstract class Aeroplane extends MeansOfTransport{
         this.numberOfStaff = (int)(Math.random() * 30) + 20;
     }
 
+    /**
+     * loss of fuel in one iteration
+     */
     public void lossOfFuel() {
         this.fuel -= 4;
     }
 
+    /**
+     * Set value fuel to restore
+     * hard coded 1000
+     */
     public void restoreFuel() {
         this.fuel = 1000;
     }

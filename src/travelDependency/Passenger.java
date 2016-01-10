@@ -31,12 +31,19 @@ public class Passenger implements Runnable {
 
     private int routePointer;
 
-
-
     private enum TypeOfTravel {
         PRIVATE, BUSINESS
     }
     private TypeOfTravel eTypeOfTravel;
+
+    /**
+     * randomize all fields of object Passengers
+     * - position
+     * - age
+     * - name
+     * - type of travel
+     * @param currentPosition
+     */
     public Passenger(Point currentPosition) {
         this.PESEL = generatePESEL();
         this.name = generateName();
@@ -52,6 +59,10 @@ public class Passenger implements Runnable {
         }
     }
 
+    /**
+     * generate PESEL which has 9 random numbers
+     * @return
+     */
     public String generatePESEL(){
         String PESELNumber = "";
         while(PESELNumber.length() < 9) {
@@ -60,10 +71,20 @@ public class Passenger implements Runnable {
         return PESELNumber;
     }
 
+    /**
+     * Generate name using some const strings
+     * @return
+     */
     public String generateName() {
         String names[] = {"Anna", "Artur", "Jan", "Iza", "Maciej", "Monika", "Kuba", "Mateusz"};
         return names[(int)(Math.random() * names.length)];
     }
+
+    /**
+     * generate travel route which route size is randomized
+     * and the smallest route contains 4 destination points
+     * @param startingPosition
+     */
     public void generateRoute(Point startingPosition) {
         this.route = Map.getDestinationCord(Map.getCivilAirports());
         this.routePointer = 0;
@@ -77,10 +98,17 @@ public class Passenger implements Runnable {
         changeRoute();
     }
 
+    /**
+     * generate age between 0 - 100 years old
+     * @return
+     */
     public int generateAge() {
         return (int)(Math.random() * 100);
     }
 
+    /**
+     * Change route when passenger is on his current destination
+     */
     public void changeRoute() {
         if(routePointer == this.route.size()) {
             routePointer = 0;
@@ -92,6 +120,10 @@ public class Passenger implements Runnable {
         this.routePointer++;
     }
 
+    /**
+     * Main logic where is set how long should be in the city each passenger
+     * depending on type of travel
+     */
     @Override
     public void run() {
         while(true) {

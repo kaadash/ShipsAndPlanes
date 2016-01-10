@@ -198,6 +198,10 @@ public class TravelShip extends Ship implements Transporter {
         }
     }
 
+    /**
+     * Check waiting passengers and add them to the ship if there are any
+     * @param destinationPointer
+     */
     @Override
     public void checkAndAddNewPassengers(int destinationPointer) {
         int counterOfPassengersToAdd = 0;
@@ -222,7 +226,9 @@ public class TravelShip extends Ship implements Transporter {
         }
         Dashboard.waitingPassengers.removeAll(toRemove);
     }
-
+    /**
+     * Check passengers on board and remove them from ship and add to the array list of waiting passengers
+     */
     @Override
     public void checkAndAddRemovePassengers() {
 

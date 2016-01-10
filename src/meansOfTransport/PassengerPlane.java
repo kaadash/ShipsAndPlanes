@@ -24,6 +24,13 @@ public class PassengerPlane extends Aeroplane implements Transporter {
 
     private final String imagePath = "images/aircraft.png";
 
+    /**
+     * Set up destination by civilAirport position ArrayList and shuffle them
+     * set up id and randomize all fields
+     * @param allDestination
+     * @param context
+     * @param ID
+     */
     public PassengerPlane(ArrayList<CivilAirport> allDestination, Pane context, int ID) {
         super(context);
         for (Airport airport : allDestination) {
@@ -37,6 +44,9 @@ public class PassengerPlane extends Aeroplane implements Transporter {
         this.maxPassengers = 30;
     }
 
+    /**
+     * Send information about changes in model to controller
+     */
     public void openInformationPanel() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -49,6 +59,11 @@ public class PassengerPlane extends Aeroplane implements Transporter {
         }
     }
 
+    /**
+     * Check if there are any passengers with the same position and current desitnation
+     * Remove from waiting passengers and add to passengers on board
+     * @param destinationPointer
+     */
     @Override
     public void checkAndAddNewPassengers(int destinationPointer) {
         int counterOfPassengersToAdd = 0;
@@ -74,6 +89,10 @@ public class PassengerPlane extends Aeroplane implements Transporter {
         Dashboard.waitingPassengers.removeAll(toRemove);
     }
 
+    /**
+     * Remove from passengers on board and add to waiting passengers
+     *
+     * */
     @Override
     public void checkAndAddRemovePassengers() {
         int counterOfPassengersToRemove = 0;
@@ -94,6 +113,9 @@ public class PassengerPlane extends Aeroplane implements Transporter {
         passengersOnBoard.removeAll(toRemove);
     }
 
+    /**
+     * Main logic about running passenger plane
+     */
     @Override
     public void run() {
         int destinationPointer = 1;

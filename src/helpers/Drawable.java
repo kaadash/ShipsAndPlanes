@@ -16,6 +16,10 @@ public abstract class Drawable {
     protected Pane context;
     protected Point2D currentPosition;
 
+    /**
+     * get context of Scene and add image to scene with set up image size
+     * @param context
+     */
     public Drawable(Pane context){
         this.context = context;
         int sizeImage = 32;
@@ -23,10 +27,20 @@ public abstract class Drawable {
         imageViewOfObject.setFitWidth(sizeImage);
         context.getChildren().add(imageViewOfObject);
     }
+
+    /**
+     * update position of image on scene
+     */
     public void animate() {
         imageViewOfObject.setLayoutX(this.getCurrentPosition().getX());
         imageViewOfObject.setLayoutY(this.getCurrentPosition().getY());
     }
+
+    /**
+     * open dashboard window
+     * @param root
+     * @param windowTitle
+     */
     protected void addClickActionToObject(TabPane root, String windowTitle){
         imageViewOfObject.setOnMouseClicked(event -> {
             Stage stage = new Stage();
