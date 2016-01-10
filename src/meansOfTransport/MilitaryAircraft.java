@@ -133,10 +133,15 @@ public class MilitaryAircraft extends Aeroplane  {
                     travelCounter++;
                     switch (travelCounter) {
                         case 3:
+                            int baseValue = route.get(destinationPointer).getCurrentVehicles();
+                            route.get(destinationPointer).setCurrentVehicles(baseValue + 1);
+                            Thread.sleep(3000);
                             currentDestination = route.get(destinationPointer).getRightLaneStartingPoint();
                             restoreFuel();
                             break;
                         case 4:
+                            baseValue = route.get(destinationPointer).getCurrentVehicles();
+                            route.get(destinationPointer).setCurrentVehicles(baseValue - 1);
                             currentDestination = route.get(destinationPointer).getRightLaneEndingPoint();
                             beenIncrossRoad = false;
                             travelCounter = 0;

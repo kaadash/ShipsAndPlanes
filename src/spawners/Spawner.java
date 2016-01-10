@@ -20,10 +20,16 @@ public abstract class Spawner extends Drawable {
 
     protected Point rightLaneEndingPoint;
 
+    protected int currentVehicles;
+
+    protected int maxCapability;
+
     public Spawner(Point airportPosition, Pane context) {
         super(context);
         this.currentPosition = airportPosition;
         this.position = airportPosition;
+        this.maxCapability = 5;
+        this.currentVehicles = 0;
     }
 
     public void setLeftLaneStartingPoint(Point leftLaneStartingPoint) {
@@ -57,11 +63,27 @@ public abstract class Spawner extends Drawable {
     public Point getLeftLaneStartingPoint() {
         return leftLaneStartingPoint;
     }
+
     public Point getPosition() {
         return position;
     }
 
     public void setPosition(Point position) {
         this.position = position;
+    }
+    public int getCurrentVehicles() {
+        return currentVehicles;
+    }
+
+    public void setCurrentVehicles(int currentVehicles) {
+        this.currentVehicles = currentVehicles;
+    }
+
+    public int getMaxCapability() {
+        return maxCapability;
+    }
+
+    public void setMaxCapability(int maxCapability) {
+        this.maxCapability = maxCapability;
     }
 }

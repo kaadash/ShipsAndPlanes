@@ -13,11 +13,21 @@ import java.util.concurrent.Semaphore;
  */
 public abstract class Ship extends MeansOfTransport {
     protected int maxVelocity;
+
     protected boolean beenIncrossRoad;
     public static Semaphore aeroplaneCrossRoads = new Semaphore(1);
     protected ArrayList<Harbor> route = new ArrayList<Harbor>();
-    public Ship(ArrayList<Harbor> allDestination, Pane context) {
+    public Ship(Pane context) {
         super(context);
+        this.maxVelocity = (int)(Math.abs((Math.random() * 50) - 100));
+    }
+
+    public int getMaxVelocity() {
+        return maxVelocity;
+    }
+
+    public void setMaxVelocity(int maxVelocity) {
+        this.maxVelocity = maxVelocity;
     }
 
 }

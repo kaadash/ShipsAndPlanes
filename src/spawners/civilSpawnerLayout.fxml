@@ -17,8 +17,8 @@
                         <Label text="Current position: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <Label fx:id="currentPositionLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                        <Label text="ID: " GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <Label fx:id="IDLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Planes in the city: " GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="currentVehiclesLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                     </children>
                 </GridPane>

@@ -22,7 +22,7 @@ public class AircraftCarrier extends Ship {
 
     private final String imagePath = "images/militarymightjl2.jpg";
     public AircraftCarrier(ArrayList<Harbor> allDestination, Pane context, int id) {
-        super(allDestination, context);
+        super(context);
         for (Harbor harbor : allDestination) {
             this.route.add(harbor);
         }
@@ -84,7 +84,7 @@ public class AircraftCarrier extends Ship {
                     setCurrentPosition(new Point2D.Double(xMove.getValue() + getCurrentPosition().getX(),
                             yMove.getValue() + getCurrentPosition().getY()));
 
-                    if(dist.getValue() < 70 && !beenIncrossRoad && dist.getValue() > 2 ) {
+                    if(dist.getValue() < 110 && !beenIncrossRoad && dist.getValue() > 2 ) {
                         try {
                             aeroplaneCrossRoads.acquire();
 //                                Critical Section
@@ -115,7 +115,7 @@ public class AircraftCarrier extends Ship {
                                             openInformationPanel();
                                         }
                                     });
-                                    Thread.sleep(60);
+                                    Thread.sleep(maxVelocity);
                                 }
                             }
                             finally {
@@ -165,7 +165,7 @@ public class AircraftCarrier extends Ship {
                             this.getCurrentPosition().getY());
                     updatePositionOnMap(deltaX, deltaY, goalDist);
                 }
-                Thread.sleep(60);
+                Thread.sleep(maxVelocity);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Platform.runLater(new Runnable() {

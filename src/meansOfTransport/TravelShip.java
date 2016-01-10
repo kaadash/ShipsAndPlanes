@@ -28,7 +28,7 @@ public class TravelShip extends Ship implements Transporter {
     private ArrayList<Passenger> passengersOnBoard = new ArrayList<Passenger>();
 
     public TravelShip(ArrayList<Harbor> allDestination, Pane context, int id ) {
-        super(allDestination, context);
+        super(context);
         this.imageViewOfObject.setImage(new Image(imagePath));
         for (Harbor harbor : allDestination) {
             this.route.add(harbor);
@@ -93,7 +93,7 @@ public class TravelShip extends Ship implements Transporter {
                     setCurrentPosition(new Point2D.Double(xMove.getValue() + getCurrentPosition().getX(),
                             yMove.getValue() + getCurrentPosition().getY()));
 
-                    if(dist.getValue() < 70 && !beenIncrossRoad && dist.getValue() > 2 ) {
+                    if(dist.getValue() < 110 && !beenIncrossRoad && dist.getValue() > 2 ) {
                         try {
                             aeroplaneCrossRoads.acquire();
 //                                Critical Section
@@ -124,7 +124,7 @@ public class TravelShip extends Ship implements Transporter {
                                             openInformationPanel();
                                         }
                                     });
-                                    Thread.sleep(60);
+                                    Thread.sleep(maxVelocity);
                                 }
                             }
                             finally {
@@ -159,6 +159,7 @@ public class TravelShip extends Ship implements Transporter {
                     travelCounter++;
                     switch (travelCounter) {
                         case 3:
+                            Thread.sleep(3000);
                             checkAndAddRemovePassengers();
                             currentDestination = route.get(destinationPointer).getRightLaneStartingPoint();
                             break;
@@ -176,7 +177,7 @@ public class TravelShip extends Ship implements Transporter {
                             this.getCurrentPosition().getY());
                     updatePositionOnMap(deltaX, deltaY, goalDist);
                 }
-                Thread.sleep(60);
+                Thread.sleep(maxVelocity);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Platform.runLater(new Runnable() {
@@ -212,7 +213,9 @@ public class TravelShip extends Ship implements Transporter {
                     && passenger.getCurrentDestination().getX() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getX()
                     && passenger.getCurrentDestination().getY() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getY()
                     ) {
-                passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+                if(passengersOnBoard.size() < maxPassengers) {
+                    passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+                }
                 toRemove.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
             }
             counterOfPassengersToAdd++;

@@ -33,7 +33,7 @@ public class TravelShipController implements Initializable {
     @FXML
     private Label currentDestinationLabel;
     @FXML
-    private Label routeLabel;
+    private Label maxVelocityLabel;
     @FXML
     private TableView<Passenger> tableView;
     @FXML
@@ -67,7 +67,7 @@ public class TravelShipController implements Initializable {
         currentPositionLabel.setText(travelShip.getCurrentPosition().toString());
         IDLabel.setText(Integer.toString(travelShip.getID()));
         currentDestinationLabel.setText(travelShip.getCurrentDestination().toString());
-//        routeLabel.setText(travelShip.getRoute().toString());
+        maxVelocityLabel.setText(Integer.toString(100 - travelShip.getMaxVelocity()) + "km/h");
         ObservableList<Passenger> data = FXCollections.observableArrayList(travelShip.getPassengersOnBoard());
         tableView.setItems(data);
     }

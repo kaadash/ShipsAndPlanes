@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by kadash on 18.10.15.
  */
-public class CivilAirport extends Airport implements Runnable{
+public class CivilAirport extends Airport implements Runnable {
     private final String imagePath = "images/Airport-icon.png";
 
     private ArrayList<Passenger> passengersInCity = new ArrayList<Passenger>();

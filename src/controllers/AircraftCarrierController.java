@@ -23,6 +23,8 @@ public class AircraftCarrierController implements Initializable {
     @FXML
     private Label IDLabel;
     @FXML
+    private Label maxVelocityLabel;
+    @FXML
     public void reportIssue() {
         Point2D currentPosition = aircraftCarrierContext.getCurrentPosition();
         double minDist = Integer.MAX_VALUE;
@@ -49,6 +51,7 @@ public class AircraftCarrierController implements Initializable {
         ammoTypeLabel.setText(aircraftCarrier.getAmmoType());
         currentPositionLabel.setText(aircraftCarrier.getCurrentPosition().toString());
         IDLabel.setText(Integer.toString(aircraftCarrier.getID()));
+        maxVelocityLabel.setText(Integer.toString(100 - aircraftCarrier.getMaxVelocity()) + "km/h");
     }
 
     @Override

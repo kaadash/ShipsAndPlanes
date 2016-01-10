@@ -64,8 +64,9 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                     && passenger.getCurrentDestination().getX() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getX()
                     && passenger.getCurrentDestination().getY() == route.get(destinationPointer + 1).getLeftLaneStartingPoint().getY()
                     ) {
-
-                passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+                if(passengersOnBoard.size() < maxPassengers) {
+                    passengersOnBoard.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
+                }
                 toRemove.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
             }
             counterOfPassengersToAdd++;
@@ -192,11 +193,16 @@ public class PassengerPlane extends Aeroplane implements Transporter {
                     travelCounter++;
                     switch (travelCounter) {
                         case 3:
+                            int baseValue = route.get(destinationPointer).getCurrentVehicles();
+                            route.get(destinationPointer).setCurrentVehicles(baseValue + 1);
+                            Thread.sleep(3000);
                             checkAndAddRemovePassengers();
                             currentDestination = route.get(destinationPointer).getRightLaneStartingPoint();
                             restoreFuel();
                             break;
                         case 4:
+                            baseValue = route.get(destinationPointer).getCurrentVehicles();
+                            route.get(destinationPointer).setCurrentVehicles(baseValue - 1);
                             checkAndAddNewPassengers(destinationPointer);
                             currentDestination = route.get(destinationPointer).getRightLaneEndingPoint();
                             beenIncrossRoad = false;

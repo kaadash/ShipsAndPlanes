@@ -22,23 +22,22 @@ public class CivilSpawnerController implements Initializable {
     private MilitaryAirport militaryAirportContext;
 
     @FXML
-    public Label ammoTypeLabel;
+    private Label ammoTypeLabel;
     @FXML
-    public Label passengersValueLabel;
+    private Label passengersValueLabel;
     @FXML
-    public Label currentPositionLabel;
+    private Label currentPositionLabel;
     @FXML
-    public Button refreshButton;
+    private Label currentVehiclesLabel;
     @FXML
-    public Label IDLabel;
-    @FXML
-    public TableView<Passenger> tableView;
+    private TableView<Passenger> tableView;
 
     public void updateView(CivilAirport civilAirport) {
         civilAirportContext = civilAirport;
         passengersValueLabel.setText(Integer.toString(civilAirport.getPassengersInCity().size()));
-
         currentPositionLabel.setText(civilAirport.getRightLaneStartingPoint().toString());
+        currentVehiclesLabel.setText(Integer.toString(civilAirport.getCurrentVehicles()) +
+                "/" + Integer.toString(civilAirport.getMaxCapability()));
         ObservableList<Passenger> data = FXCollections.observableArrayList(civilAirport.getPassengersInCity());
         tableView.setItems(data);
     }
@@ -46,6 +45,9 @@ public class CivilSpawnerController implements Initializable {
     public void updateView(MilitaryAirport militaryAirport) {
         militaryAirportContext = militaryAirport;
         currentPositionLabel.setText(militaryAirport.getCurrentPosition().toString());
+        passengersValueLabel.setText("none - this is military airport");
+        currentVehiclesLabel.setText(Integer.toString(militaryAirport.getCurrentVehicles()) +
+                "/" + Integer.toString(militaryAirport.getMaxCapability()));
     }
 
     @Override
