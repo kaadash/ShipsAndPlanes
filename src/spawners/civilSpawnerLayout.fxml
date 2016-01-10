@@ -19,7 +19,6 @@
 
                         <Label text="ID: " GridPane.columnIndex="0" GridPane.rowIndex="3" />
                         <Label fx:id="IDLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Button fx:id="refreshButton" text="Refresh" GridPane.columnIndex="1" GridPane.rowIndex="8" onAction="#refresh" />
 
                     </children>
                 </GridPane>

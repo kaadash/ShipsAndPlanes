@@ -34,17 +34,9 @@ public class CivilSpawnerController implements Initializable {
     @FXML
     public TableView<Passenger> tableView;
 
-    @FXML
-    public void refresh() {
-        civilAirportContext.setNotificationSent(true);
-        Stage stage = (Stage) refreshButton.getScene().getWindow();
-        stage.close();
-    }
-
     public void updateView(CivilAirport civilAirport) {
         civilAirportContext = civilAirport;
-        passengersValueLabel.setText(Integer.toString(civilAirport.getPassengersInCity().size()) +
-                "/" + 30);
+        passengersValueLabel.setText(Integer.toString(civilAirport.getPassengersInCity().size()));
 
         currentPositionLabel.setText(civilAirport.getRightLaneStartingPoint().toString());
         ObservableList<Passenger> data = FXCollections.observableArrayList(civilAirport.getPassengersInCity());

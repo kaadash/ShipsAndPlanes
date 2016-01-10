@@ -2,6 +2,7 @@ package spawners;
 
 import controllers.CivilSpawnerController;
 import controllers.Dashboard;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
@@ -19,14 +20,12 @@ import java.util.ArrayList;
  */
 public class CivilAirport extends Airport implements Runnable{
     private final String imagePath = "images/Airport-icon.png";
-    private boolean notificationSent;
 
     private ArrayList<Passenger> passengersInCity = new ArrayList<Passenger>();
 
     public CivilAirport(Point civilAirportPosition, Pane context) {
         super(civilAirportPosition, context);
         this.imageViewOfObject.setImage(new Image(this.imagePath));
-        this.notificationSent = false;
     }
     public void openInformationPanel() {
         try {
@@ -41,7 +40,6 @@ public class CivilAirport extends Airport implements Runnable{
     }
     @Override
     protected void addClickActionToObject(TabPane root, String windowTitle){
-//        System.out.println(passengersInCity.size());
         imageViewOfObject.setOnMouseClicked(event -> {
             Stage stage = new Stage();
             stage.setTitle(windowTitle);
@@ -53,17 +51,14 @@ public class CivilAirport extends Airport implements Runnable{
         int counterOfPassengersToAdd = 0;
         for(Passenger passenger : Dashboard.waitingPassengers) {
 
-            if ((passenger.getCurrentPosition().getX() == (int)Math.floor(getRightLaneStartingPoint().getX())
-                    || passenger.getCurrentPosition().getX() == (int)Math.ceil(getRightLaneStartingPoint().getX()))
-                    && (passenger.getCurrentPosition().getY() == (int)Math.floor(getRightLaneStartingPoint().getY())
-                    || passenger.getCurrentPosition().getY() == (int)Math.ceil(getRightLaneStartingPoint().getY()))
-                    ) {
+            if ((passenger.getCurrentPosition().getX() == (int)getRightLaneStartingPoint().getX()
+                    && passenger.getCurrentPosition().getY() == (int)getRightLaneStartingPoint().getY())
+                    || (passenger.getCurrentPosition().getX() == (int)getLeftLaneStartingPoint().getX()
+                    && passenger.getCurrentPosition().getY() == (int)getLeftLaneStartingPoint().getY())) {
                 this.passengersInCity.add(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
-                System.out.println(Dashboard.waitingPassengers.get(counterOfPassengersToAdd));
             }
             counterOfPassengersToAdd++;
         }
-        System.out.println(Dashboard.waitingPassengers.size());
     }
 
     public String getImagePath() {
@@ -82,24 +77,18 @@ public class CivilAirport extends Airport implements Runnable{
     public void run() {
         while(true) {
             try {
-                if(notificationSent){
-                    passengersInCity.clear();
-                    checkAndAddNewPassengers();
-                    notificationSent = false;
-                }
-                openInformationPanel();
+                passengersInCity.clear();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkAndAddNewPassengers();
+                        openInformationPanel();
+                    }
+                });
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public boolean isNotificationSent() {
-        return notificationSent;
-    }
-
-    public void setNotificationSent(boolean notificationSent) {
-        this.notificationSent = notificationSent;
     }
 }
