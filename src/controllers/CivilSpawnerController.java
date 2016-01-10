@@ -1,13 +1,16 @@
 package controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import meansOfTransport.AircraftCarrier;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import spawners.CivilAirport;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
+import spawners.MilitaryAirport;
+import travelDependency.Passenger;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -16,16 +19,41 @@ import java.util.ResourceBundle;
  */
 public class CivilSpawnerController implements Initializable {
     private CivilAirport civilAirportContext;
+    private MilitaryAirport militaryAirportContext;
 
     @FXML
-    private Label ammoTypeLabel;
+    public Label ammoTypeLabel;
     @FXML
-    private Label currentPositionLabel;
+    public Label passengersValueLabel;
     @FXML
-    private Label IDLabel;
+    public Label currentPositionLabel;
+    @FXML
+    public Button refreshButton;
+    @FXML
+    public Label IDLabel;
+    @FXML
+    public TableView<Passenger> tableView;
+
+    @FXML
+    public void refresh() {
+        civilAirportContext.setNotificationSent(true);
+        Stage stage = (Stage) refreshButton.getScene().getWindow();
+        stage.close();
+    }
 
     public void updateView(CivilAirport civilAirport) {
         civilAirportContext = civilAirport;
+        passengersValueLabel.setText(Integer.toString(civilAirport.getPassengersInCity().size()) +
+                "/" + 30);
+
+        currentPositionLabel.setText(civilAirport.getRightLaneStartingPoint().toString());
+        ObservableList<Passenger> data = FXCollections.observableArrayList(civilAirport.getPassengersInCity());
+        tableView.setItems(data);
+    }
+
+    public void updateView(MilitaryAirport militaryAirport) {
+        militaryAirportContext = militaryAirport;
+        currentPositionLabel.setText(militaryAirport.getCurrentPosition().toString());
     }
 
     @Override

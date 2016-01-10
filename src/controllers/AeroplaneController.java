@@ -71,7 +71,7 @@ public class AeroplaneController implements Initializable {
         passengerPlaneContext.setRoute(newRoute);
     }
 
-
+//TODO: Bind values
     private StringProperty text = new SimpleStringProperty(this, "text", "");
 
     public void updateView(PassengerPlane passengerPlane) {

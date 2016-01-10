@@ -18,6 +18,7 @@ public class Map {
      * draw Harbours and Airports
      */
     private static ArrayList<CivilAirport> civilAirports = new ArrayList<CivilAirport>();
+    private static ArrayList<Thread> civilAirportsThreads = new ArrayList<Thread>();
 
     private static ArrayList<MilitaryAirport> militaryAirports = new ArrayList<MilitaryAirport>();
 
@@ -27,8 +28,8 @@ public class Map {
 
     public static void prepareMap(Pane stack) {
         generateMilitaryAirports(10, stack);
-        generateCivilAirports(10, stack);
         generateHarbors(10, stack);
+        generateCivilAirports(10, stack);
     }
 
     private static Point centralPoint = new Point(550, 350);
@@ -43,6 +44,9 @@ public class Map {
                 "civil", numberOfAirports, 250);
 
         assignCordsToCorrectSpawner(leftTrackAirports, centerTrackAirports, rightTrackAirports, context, "civil");
+        for(Thread civilAirportThread : civilAirportsThreads) {
+            civilAirportThread.start();
+        }
     }
 
     public static void generateMilitaryAirports(int numberOfAirports, Pane context) {
@@ -90,6 +94,7 @@ public class Map {
                         case "civil":
                             CivilAirport civilAirport = new CivilAirport(cord, context);
                             civilAirports.add(civilAirport);
+                            civilAirportsThreads.add(new Thread(civilAirport));
                             break;
                         case "military":
                             MilitaryAirport militaryAirport = new MilitaryAirport(cord, context);
